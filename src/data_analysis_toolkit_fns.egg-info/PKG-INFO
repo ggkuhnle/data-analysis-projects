@@ -1,0 +1,296 @@
+Metadata-Version: 2.4
+Name: data-analysis-toolkit-fns
+Version: 2.0.0
+Summary: Teaching toolkit for Food & Nutrition Science data analysis
+Author: Gunter Academic
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Education
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: anyio==4.9.0
+Requires-Dist: appnope==0.1.4
+Requires-Dist: argon2-cffi==23.1.0
+Requires-Dist: argon2-cffi-bindings==21.2.0
+Requires-Dist: arrow==1.3.0
+Requires-Dist: arviz==0.16.1
+Requires-Dist: asttokens==3.0.0
+Requires-Dist: async-lru==2.0.5
+Requires-Dist: attrs==25.3.0
+Requires-Dist: autograd==1.7.0
+Requires-Dist: autograd-gamma==0.5.0
+Requires-Dist: babel==2.17.0
+Requires-Dist: beautifulsoup4==4.13.3
+Requires-Dist: bleach==6.2.0
+Requires-Dist: cachetools==5.5.2
+Requires-Dist: certifi==2025.1.31
+Requires-Dist: cffi==1.17.1
+Requires-Dist: charset-normalizer==3.4.1
+Requires-Dist: cloudpickle==3.1.1
+Requires-Dist: comm==0.2.2
+Requires-Dist: cons==0.4.6
+Requires-Dist: contourpy==1.3.0
+Requires-Dist: cycler==0.12.1
+Requires-Dist: debugpy==1.8.13
+Requires-Dist: decorator==5.2.1
+Requires-Dist: defusedxml==0.7.1
+Requires-Dist: et_xmlfile==2.0.0
+Requires-Dist: etuples==0.3.9
+Requires-Dist: exceptiongroup==1.2.2
+Requires-Dist: executing==2.2.0
+Requires-Dist: fastjsonschema==2.21.1
+Requires-Dist: fastprogress==1.0.3
+Requires-Dist: filelock==3.18.0
+Requires-Dist: fonttools==4.57.0
+Requires-Dist: formulaic==1.1.1
+Requires-Dist: fqdn==1.5.1
+Requires-Dist: h11==0.14.0
+Requires-Dist: h5netcdf==1.6.1
+Requires-Dist: h5py==3.13.0
+Requires-Dist: httpcore==1.0.7
+Requires-Dist: httpx==0.28.1
+Requires-Dist: idna==3.10
+Requires-Dist: importlib_metadata==8.6.1
+Requires-Dist: importlib_resources==6.5.2
+Requires-Dist: interface-meta==1.3.0
+Requires-Dist: ipykernel==6.29.5
+Requires-Dist: ipython==8.18.1
+Requires-Dist: ipywidgets==8.1.6
+Requires-Dist: isoduration==20.11.0
+Requires-Dist: jedi==0.19.2
+Requires-Dist: Jinja2==3.1.6
+Requires-Dist: json5==0.12.0
+Requires-Dist: jsonpointer==3.0.0
+Requires-Dist: jsonschema==4.23.0
+Requires-Dist: jsonschema-specifications==2024.10.1
+Requires-Dist: jupyter==1.1.1
+Requires-Dist: jupyter-console==6.6.3
+Requires-Dist: jupyter-events==0.12.0
+Requires-Dist: jupyter-lsp==2.2.5
+Requires-Dist: jupyter_client==8.6.3
+Requires-Dist: jupyter_core==5.7.2
+Requires-Dist: jupyter_server==2.15.0
+Requires-Dist: jupyter_server_terminals==0.5.3
+Requires-Dist: jupyterlab==4.4.0
+Requires-Dist: jupyterlab_pygments==0.3.0
+Requires-Dist: jupyterlab_server==2.27.3
+Requires-Dist: jupyterlab_widgets==3.0.14
+Requires-Dist: kiwisolver==1.4.7
+Requires-Dist: lifelines==0.30.0
+Requires-Dist: logical-unification==0.4.6
+Requires-Dist: MarkupSafe==3.0.2
+Requires-Dist: matplotlib==3.9.4
+Requires-Dist: matplotlib-inline==0.1.7
+Requires-Dist: miniKanren==1.0.3
+Requires-Dist: mistune==3.1.3
+Requires-Dist: multipledispatch==1.0.0
+Requires-Dist: nbclient==0.10.2
+Requires-Dist: nbconvert==7.16.6
+Requires-Dist: nbformat==5.10.4
+Requires-Dist: nest-asyncio==1.6.0
+Requires-Dist: notebook==7.4.0
+Requires-Dist: notebook_shim==0.2.4
+Requires-Dist: numpy==1.26.4
+Requires-Dist: openpyxl==3.1.5
+Requires-Dist: overrides==7.7.0
+Requires-Dist: packaging==24.2
+Requires-Dist: pandas==2.2.3
+Requires-Dist: pandocfilters==1.5.1
+Requires-Dist: parso==0.8.4
+Requires-Dist: patsy==1.0.1
+Requires-Dist: pexpect==4.9.0
+Requires-Dist: pillow==11.1.0
+Requires-Dist: platformdirs==4.3.7
+Requires-Dist: prometheus_client==0.21.1
+Requires-Dist: prompt_toolkit==3.0.50
+Requires-Dist: psutil==7.0.0
+Requires-Dist: ptyprocess==0.7.0
+Requires-Dist: pure_eval==0.2.3
+Requires-Dist: pycparser==2.22
+Requires-Dist: Pygments==2.19.1
+Requires-Dist: pymc==5.9.0
+Requires-Dist: pyparsing==3.2.3
+Requires-Dist: pytensor==2.17.4
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: python-json-logger==3.3.0
+Requires-Dist: pytz==2025.2
+Requires-Dist: PyYAML==6.0.2
+Requires-Dist: pyzmq==26.4.0
+Requires-Dist: referencing==0.36.2
+Requires-Dist: requests==2.32.3
+Requires-Dist: rfc3339-validator==0.1.4
+Requires-Dist: rfc3986-validator==0.1.1
+Requires-Dist: rpds-py==0.24.0
+Requires-Dist: scipy==1.11.3
+Requires-Dist: seaborn==0.13.2
+Requires-Dist: Send2Trash==1.8.3
+Requires-Dist: six==1.17.0
+Requires-Dist: sniffio==1.3.1
+Requires-Dist: soupsieve==2.6
+Requires-Dist: stack-data==0.6.3
+Requires-Dist: statsmodels==0.14.4
+Requires-Dist: tableone==0.9.4
+Requires-Dist: tabulate==0.9.0
+Requires-Dist: terminado==0.18.1
+Requires-Dist: tinycss2==1.4.0
+Requires-Dist: tomli==2.2.1
+Requires-Dist: toolz==1.0.0
+Requires-Dist: tornado==6.4.2
+Requires-Dist: traitlets==5.14.3
+Requires-Dist: types-python-dateutil==2.9.0.20241206
+Requires-Dist: typing_extensions==4.13.1
+Requires-Dist: tzdata==2025.2
+Requires-Dist: uri-template==1.3.0
+Requires-Dist: urllib3==2.3.0
+Requires-Dist: wcwidth==0.2.13
+Requires-Dist: webcolors==24.11.1
+Requires-Dist: webencodings==0.5.1
+Requires-Dist: websocket-client==1.8.0
+Requires-Dist: widgetsnbextension==4.0.14
+Requires-Dist: wrapt==1.17.2
+Requires-Dist: xarray==2024.7.0
+Requires-Dist: xarray-einstats==0.7.0
+Requires-Dist: zipp==3.21.0
+Provides-Extra: dev
+Requires-Dist: black; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: nbqa; extra == "dev"
+Requires-Dist: jupyter; extra == "dev"
+Requires-Dist: ipykernel; extra == "dev"
+Requires-Dist: quarto-cli; extra == "dev"
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 🦛 Data Analysis Toolkit for Food and Nutrition Sciences
+
+Welcome to the **Data Analysis Toolkit for Food and Nutrition Sciences**! This repository provides a collection of Jupyter notebooks designed to support students, researchers, and enthusiasts in exploring data analysis techniques for nutrition studies. With a hippo-themed flair (🦛), the toolkit covers topics from basic programming to advanced statistical methods, using datasets inspired by nutrition research.
+
+Visit the toolkit online at: [https://ggkuhnle.github.io/data-analysis-toolkit-FNS/](https://ggkuhnle.github.io/data-analysis-toolkit-FNS/)
+
+## 📊 How to Use the Toolkit
+
+This toolkit is designed to be user-friendly, whether you’re running the notebooks in the cloud or on your local machine. Below are the two main ways to get started.
+
+### Preferred Method: Google Colab (Cloud-Based) 🌐
+
+Google Colab allows you to run the notebooks in the cloud without installing anything on your machine. It’s the recommended way to explore the toolkit, especially for beginners.
+
+#### Steps to Use in Colab
+
+1. **Visit the Toolkit Website** (~1 minute):
+   - Open [https://ggkuhnle.github.io/data-analysis-toolkit-FNS/](https://ggkuhnle.github.io/data-analysis-toolkit-FNS/) in your browser.
+   - Navigate to the module you’re interested in (e.g., `04_data_analysis`).
+
+2. **Open a Notebook in Colab** (~1 minute):
+   - Each module lists notebooks with a badge that says “Open in Colab” (e.g., [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com)).
+   - Click the badge for the notebook you want to explore (e.g., in `04_data_analysis`, you might choose “Clinical Trial Analysis”).
+
+3. **Authorise Colab to Access GitHub** (~2 minutes):
+   - The first time you open a notebook, Colab may ask for permission to access the GitHub repository.
+   - Click “Authorise” to allow Colab to use the GitHub API. This is necessary to fetch the notebook and associated datasets.
+   - If prompted, sign in to your GitHub account and grant access to Google Colab. This is a one-time step for public repositories like this one.
+   - **Tip**: If you encounter a “Notebook not found” error, try restarting your Colab runtime (`Runtime > Restart runtime`) or re-authorising Colab in your GitHub settings (`https://github.com/settings/applications`).
+
+4. **Run the Notebook** (~5–10 minutes):
+   - Once the notebook loads in Colab, you’ll see a setup cell at the top.
+   - Click the “Run” button (▶) on the setup cell to clone the repository, install dependencies, and load datasets.
+   - Follow the notebook’s instructions to run each cell, explore the analyses, and complete any exercises.
+   - **Note**: Some notebooks (e.g., Bayesian analyses) may take a few minutes to run due to sampling. Be patient! ⏳
+
+5. **Save Your Work** (Optional, ~1 minute):
+   - To save your changes, click `File > Save a copy in Drive` to store the notebook in your Google Drive.
+   - You can also download the notebook as an `.ipynb` file via `File > Download > Download .ipynb`.
+
+#### Troubleshooting Colab
+- **Error: “Notebook not found”**:
+  - Ensure you’ve authorised Colab to access GitHub.
+  - Restart the runtime (`Runtime > Restart runtime`) and try again.
+  - Test in an incognito browser to rule out session issues.
+- **Error: Dataset not found**:
+  - The setup cell attempts to clone the repository automatically. If it fails, it will prompt you to upload the dataset manually.
+  - Follow the instructions to upload the required dataset (e.g., `simulated_trial.csv`) from your local machine.
+
+### Alternative Method: Local Setup 💻
+
+If you prefer to run the notebooks on your own machine, you can set up a local environment. This requires some initial setup but gives you more control.
+
+#### Prerequisites
+- **Python 3.9+**: Ensure Python is installed ([Download Python](https://www.python.org/downloads/)).
+- **Quarto**: For rendering the website locally ([Install Quarto](https://quarto.org/docs/get-started/)).
+- **Jupyter Notebook or JupyterLab**: For running the notebooks.
+- **Git**: To clone the repository ([Install Git](https://git-scm.com/downloads)).
+
+#### Steps to Use Locally
+
+1. **Clone the Repository** (~2 minutes):
+   - Open a terminal or command prompt.
+   - Clone the repository to your machine:
+     ```
+     git clone https://github.com/ggkuhnle/data-analysis-toolkit-FNS.git
+     ```
+   - Navigate to the repository directory:
+     ```
+     cd data-analysis-toolkit-FNS
+     ```
+
+2. **Set Up a Python Environment** (~5 minutes):
+   - Create a virtual environment to manage dependencies:
+     ```
+     python -m venv venv
+     source venv/bin/activate  # On Windows: venv\Scripts\activate
+     ```
+   - Install required packages:
+     ```
+     pip install jupyter pandas numpy pymc arviz matplotlib seaborn scipy scikit-learn lifelines
+     ```
+
+3. **Run Jupyter Notebook** (~2 minutes):
+   - Start Jupyter Notebook or JupyterLab:
+     ```
+     jupyter notebook
+     ```
+   - Your browser will open to the Jupyter interface.
+   - Navigate to `notebooks/04_data_analysis/` (or another module) and open a notebook (e.g., `4.7_clinical_trial_analysis.ipynb`).
+
+4. **Run the Notebook** (~5–10 minutes):
+   - The setup cell in each notebook is designed for Colab but can be skipped locally since you’ve already cloned the repository and installed packages.
+   - Run the remaining cells to perform the analyses and complete exercises.
+   - **Note**: Datasets (e.g., `data/simulated_trial.csv`) are already in the `data/` directory within each module.
+
+5. **Render the Website Locally** (Optional, ~5 minutes):
+   - To view the website as it appears online, use Quarto:
+     ```
+     quarto render
+     ```
+   - Open `_site/index.html` in your browser to explore the rendered site.
+
+#### Troubleshooting Local Setup
+- **Error: Package not found**:
+  - Ensure your virtual environment is activated (`source venv/bin/activate`).
+  - Reinstall missing packages (e.g., `pip install pymc`).
+- **Error: Dataset not found**:
+  - Verify the dataset is in the correct path (e.g., `notebooks/04_data_analysis/data/simulated_trial.csv`).
+  - If missing, ensure you cloned the repository correctly.
+
+## 📧 Contact Information
+
+For questions, feedback, or support, please contact:
+
+- **Dr Gunter Kuhnle**  
+  Email: [g.g.kuhnle@reading.ac.uk](mailto:g.g.kuhnle@reading.ac.uk)
+
+## Additional Notes
+
+- **Explore and Learn**: The toolkit is designed for learning. Each notebook includes exercises to deepen your understanding of data analysis in nutrition science.
+- **Contribute**: If you’d like to contribute to the toolkit (e.g., add a new notebook), feel free to fork the repository and submit a pull request on GitHub.
+- **Have Fun**: Let the hippos guide you through your data analysis journey! 🦛📊
+
+Happy analysing!

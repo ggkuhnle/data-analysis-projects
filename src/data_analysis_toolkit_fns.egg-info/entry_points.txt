@@ -1,0 +1,2 @@
+[console_scripts]
+fns-download-data = fns_toolkit.cli:download_data

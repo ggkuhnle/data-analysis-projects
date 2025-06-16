@@ -23,3 +23,14 @@ def get_dataset(name: str) -> pd.DataFrame:
     raise FileNotFoundError(
         f"Dataset '{filename}' not found in package resources or data/ folder."
     )
+
+
+def get_data_path(name: str) -> Path:
+    """Locate any data file (csv, txt, etc) under data/ or _resources/."""
+    filename = name if name.lower().endswith((".csv", ".txt")) else f"{name}.csv"
+    # same lookup logic as get_dataset(), but return the Path instead of reading
+    pkg = Path(__file__).parent / "_resources" / filename
+    if pkg.exists():  return pkg
+    repo = Path(__file__).resolve().parents[2] / "data" / filename
+    if repo.exists(): return repo
+    raise FileNotFoundError(f"Couldn’t find data file {filename!r}")
