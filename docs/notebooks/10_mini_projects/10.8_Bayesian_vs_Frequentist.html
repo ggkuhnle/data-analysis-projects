@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊 – Data Analysis Toolkit for Food and Nutrition Sciences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notebooks/10_mini_projects/10.9_fortran.html" rel="next">
+<link href="../../notebooks/10_mini_projects/10.7_llm.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/index.html">10 Mini Projects</a></li><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.html"><span class="chapter-title">Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Data Analysis Toolkit for Food and Nutrition Sciences</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ggkuhnle/data-analysis-projects" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Analysis Toolkit for Food and Nutrition Sciences</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../syllabus.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Syllabus: Data Analysis Toolkit for Food and Nutrition Sciences 🦛</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">01 Infrastructure</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Infrastructure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/0_getting_started.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">👩‍💻 Notebook 0 – Getting Started</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.1_what_is_data_science_env.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 1.1 Introduction to Data Science Environments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.2_python_vs_r.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧮 1.2 Python vs R vs Other Tools for Nutrition Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.3_intro_to_git.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📚 1.3 Introduction to Git 🦛</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.4_quarto_basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📓 1.4 Quarto Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">02 Programming Basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2 – Programming Basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.0_intro_to_programming.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧠 2.0 Introduction to Programming for Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.1_programming_fundamentals.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧠 Programming Fundamentals: The Big Picture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.2_data_types_conversion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧮 2.2 Data Types and Conversion (Revised)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.3_functions_loops.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🚀 2.3 Functions, Loops, and Control Flow in Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.4_data_structures.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 2.4 Data Structures</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.5_input_output.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🖥️ 2.6 Input &amp; Output in Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.6_oop_basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧑‍💻 2.5 Object-Oriented Programming (OOP) Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">03 Data Handling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.0_introduction_to_data_handling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧰 3.0 Introduction to Data‑Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.1_principles_of_tidy_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🦛 3.1 Principles of Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.2_importing_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 3.2 Importing Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.3_data_cleaning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧹 3.3 Data Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.4_reshaping_merging.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🔄 3.4 Data Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.5_feature_engineering_and_calculation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🔄 3.4 Data Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.6_data_aggregation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 3.5 Data Aggregation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">04 Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.1_distributions_visualisation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 4.1 Data Distributions and Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.2_exploratory_data_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 4.2 Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.3_correlation_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 4.3 Correlation Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.4_statistical_testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 4.4 Statistical Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.5_regression_modelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📉 4.5 Regression Modelling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/04_logistic_and_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Regression and Survival Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.7_clinical_trial_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🩺 4.7 Analysing a Simulated Clinical Trial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.8_clinical_trial_analysis_bp.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🩺 4.8 Advanced Clinical Trial Analysis: Pre/Post Blood Pressure Study</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">05 Advanced</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Advanced Topics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.1_bayesian_methods.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 5.1 Bayesian Methods in Nutrition Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.2_workflow_automation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">⚙️ 5.2 Workflow Automation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/advanced_bayesian.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Advanced Bayesian Modelling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.4_databases_sql.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🗄️ 5.4 Databases and SQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.5_dashboards.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 5.5 Creating Dashboards</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">06 Qualitative</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/6.1_intro_qualitative_research.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧾 6.1 Introduction to Qualitative Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/6.2_text_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📝 6.2 Text Analysis for Qualitative Research</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">10 Mini Projects</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10 Mini Projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.1_clinical_trial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 Clinical Trial: Hipponol Intervention Study</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.2_epidemiology_case_study.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Epidemiological Analysis: Cross-Sectional and Prospective Studies in Nutrition 🥗📊</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.3_handling_missing_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Handling Missing Data in Nutrition Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.4_metabolomics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 Multivariate Analysis: Concepts and Applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.5_machine_learning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Machine Learning for Nutrition &amp; Food Science: Cooking Up Insights! 🥗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.6_ai.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Artificial Intelligence for Nutrition &amp; Food Science: Serving Up the Future! 🤖</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.7_llm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.9_fortran.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploring Fortran in Nutrition Science 🧪📊</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#step-1-understanding-frequentist-methods" id="toc-step-1-understanding-frequentist-methods" class="nav-link active" data-scroll-target="#step-1-understanding-frequentist-methods">Step 1: Understanding Frequentist Methods 📏</a>
+  <ul class="collapse">
+  <li><a href="#key-concepts" id="toc-key-concepts" class="nav-link" data-scroll-target="#key-concepts">Key Concepts</a></li>
+  </ul></li>
+  <li><a href="#step-2-understanding-bayesian-methods" id="toc-step-2-understanding-bayesian-methods" class="nav-link" data-scroll-target="#step-2-understanding-bayesian-methods">Step 2: Understanding Bayesian Methods 🌐</a>
+  <ul class="collapse">
+  <li><a href="#key-concepts-1" id="toc-key-concepts-1" class="nav-link" data-scroll-target="#key-concepts-1">Key Concepts</a></li>
+  </ul></li>
+  <li><a href="#step-3-comparing-strengths-and-limitations" id="toc-step-3-comparing-strengths-and-limitations" class="nav-link" data-scroll-target="#step-3-comparing-strengths-and-limitations">Step 3: Comparing Strengths and Limitations ⚖️</a>
+  <ul class="collapse">
+  <li><a href="#narrative-summary" id="toc-narrative-summary" class="nav-link" data-scroll-target="#narrative-summary">Narrative Summary</a></li>
+  </ul></li>
+  <li><a href="#step-4-practical-example-clinical-trial-on-a-nutritional-supplement" id="toc-step-4-practical-example-clinical-trial-on-a-nutritional-supplement" class="nav-link" data-scroll-target="#step-4-practical-example-clinical-trial-on-a-nutritional-supplement">Step 4: Practical Example: Clinical Trial on a Nutritional Supplement 🧪</a>
+  <ul class="collapse">
+  <li><a href="#simulate-the-data" id="toc-simulate-the-data" class="nav-link" data-scroll-target="#simulate-the-data">Simulate the Data</a></li>
+  </ul></li>
+  <li><a href="#step-5-frequentist-analysis-t-test" id="toc-step-5-frequentist-analysis-t-test" class="nav-link" data-scroll-target="#step-5-frequentist-analysis-t-test">Step 5: Frequentist Analysis: T-Test 📉</a></li>
+  <li><a href="#step-6-bayesian-analysis-modelling-the-treatment-effect" id="toc-step-6-bayesian-analysis-modelling-the-treatment-effect" class="nav-link" data-scroll-target="#step-6-bayesian-analysis-modelling-the-treatment-effect">Step 6: Bayesian Analysis: Modelling the Treatment Effect 🌐</a></li>
+  <li><a href="#step-7-comparing-the-results" id="toc-step-7-comparing-the-results" class="nav-link" data-scroll-target="#step-7-comparing-the-results">Step 7: Comparing the Results 🔍</a>
+  <ul class="collapse">
+  <li><a href="#frequentist-results" id="toc-frequentist-results" class="nav-link" data-scroll-target="#frequentist-results">Frequentist Results</a></li>
+  <li><a href="#bayesian-results" id="toc-bayesian-results" class="nav-link" data-scroll-target="#bayesian-results">Bayesian Results</a></li>
+  <li><a href="#key-differences" id="toc-key-differences" class="nav-link" data-scroll-target="#key-differences">Key Differences</a></li>
+  </ul></li>
+  <li><a href="#step-8-learning-points-and-next-steps" id="toc-step-8-learning-points-and-next-steps" class="nav-link" data-scroll-target="#step-8-learning-points-and-next-steps">Step 8: Learning Points and Next Steps 🎓</a>
+  <ul class="collapse">
+  <li><a href="#learning-points" id="toc-learning-points" class="nav-link" data-scroll-target="#learning-points">Learning Points</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next Steps</a></li>
+  <li><a href="#setup-requirements" id="toc-setup-requirements" class="nav-link" data-scroll-target="#setup-requirements">Setup Requirements</a></li>
+  <li><a href="#expected-output" id="toc-expected-output" class="nav-link" data-scroll-target="#expected-output">Expected Output</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ggkuhnle/data-analysis-projects/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/index.html">10 Mini Projects</a></li><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.html"><span class="chapter-title">Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Welcome to this Jupyter notebook on statistical methods in nutrition and food science! Whether you’re analysing dietary patterns, conducting clinical trials on supplements, or exploring metabolomics data, choosing the right statistical approach is crucial. Two main paradigms dominate: <strong>Frequentist</strong> and <strong>Bayesian</strong> methods. Each has unique strengths and limitations, especially in the context of nutrition research, where data can be noisy, sample sizes vary, and prior knowledge (e.g., from past studies) is often valuable.</p>
+<p>In this notebook, we’ll: - <strong>Define Frequentist and Bayesian methods</strong> and their core principles 🧩 - <strong>Compare their strengths and limitations</strong> in nutrition and food science contexts - <strong>Apply both methods</strong> to a clinical trial example, comparing their outputs 📈</p>
+<p>Let’s dive in and explore how these methods can help us uncover insights in nutrition and food science!</p>
+<hr>
+<section id="step-1-understanding-frequentist-methods" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-understanding-frequentist-methods">Step 1: Understanding Frequentist Methods 📏</h2>
+<p>Frequentist statistics is the traditional approach used in many scientific studies, including nutrition and food science. It relies on the idea of <strong>long-run frequencies</strong>—how often an event would occur if an experiment were repeated infinitely under identical conditions.</p>
+<section id="key-concepts" class="level3">
+<h3 class="anchored" data-anchor-id="key-concepts">Key Concepts</h3>
+<ul>
+<li><strong>P-values</strong>: Measure the probability of observing data (or more extreme) under the null hypothesis. Common in clinical trials (e.g., testing if a dietary intervention reduces cholesterol).</li>
+<li><strong>Confidence Intervals</strong>: Provide a range of plausible values for a parameter (e.g., mean weight loss) with a specified confidence level (e.g., 95%).</li>
+<li><strong>Hypothesis Testing</strong>: Tests null vs.&nbsp;alternative hypotheses (e.g., “Does a low-carb diet affect blood sugar levels?”).</li>
+</ul>
+<p>Frequentist methods are widely used in nutrition research, such as t-tests for comparing group means (e.g., fibre intake in two diets) or ANOVA for multi-group comparisons (e.g., nutrient levels across diets).</p>
+<hr>
+</section>
+</section>
+<section id="step-2-understanding-bayesian-methods" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-understanding-bayesian-methods">Step 2: Understanding Bayesian Methods 🌐</h2>
+<p>Bayesian statistics offers a different perspective, treating probabilities as <strong>degrees of belief</strong> that can be updated with new data. It’s particularly powerful in nutrition and food science, where prior knowledge (e.g., from previous studies) can be incorporated.</p>
+<section id="key-concepts-1" class="level3">
+<h3 class="anchored" data-anchor-id="key-concepts-1">Key Concepts</h3>
+<ul>
+<li><strong>Prior Distribution</strong>: Encodes existing knowledge or assumptions (e.g., expected effect size of a vitamin supplement based on past trials).</li>
+<li><strong>Likelihood</strong>: Describes how likely the observed data is under different parameter values.</li>
+<li><strong>Posterior Distribution</strong>: Combines the prior and likelihood to update beliefs after seeing data, giving a full distribution of parameter estimates.</li>
+<li><strong>Credible Intervals</strong>: Provide a range where the parameter lies with a specified probability (e.g., 95%), directly interpretable as probability statements.</li>
+</ul>
+<p>Bayesian methods are gaining traction in nutrition research, especially for clinical trials with small sample sizes or when integrating prior studies (e.g., modelling the effect of omega-3 on heart health).</p>
+<hr>
+</section>
+</section>
+<section id="step-3-comparing-strengths-and-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-comparing-strengths-and-limitations">Step 3: Comparing Strengths and Limitations ⚖️</h2>
+<p>Let’s compare Frequentist and Bayesian methods, focusing on their application in nutrition and food science, including clinical trials, dietary studies, and metabolomics.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 40%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Aspect</th>
+<th>Frequentist Methods</th>
+<th>Bayesian Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Interpretability</strong></td>
+<td>P-values and confidence intervals can be hard to interpret (e.g., a 95% CI does not mean a 95% chance the true value lies within it).</td>
+<td>Posterior distributions and credible intervals are intuitive (e.g., a 95% credible interval directly means a 95% probability).</td>
+</tr>
+<tr class="even">
+<td><strong>Prior Knowledge</strong></td>
+<td>Does not incorporate prior knowledge; relies solely on current data.</td>
+<td>Incorporates prior knowledge via priors, useful in nutrition (e.g., using past studies on calcium intake).</td>
+</tr>
+<tr class="odd">
+<td><strong>Small Sample Sizes</strong></td>
+<td>Less reliable with small samples, common in clinical trials (e.g., pilot studies on dietary interventions).</td>
+<td>Handles small samples better by leveraging priors, improving estimates (e.g., effect of a new diet on blood pressure).</td>
+</tr>
+<tr class="even">
+<td><strong>Flexibility</strong></td>
+<td>Less flexible for complex models or hierarchical data (e.g., nested dietary studies).</td>
+<td>Highly flexible for complex models, such as hierarchical models in nutrition (e.g., varying effects across populations).</td>
+</tr>
+<tr class="odd">
+<td><strong>Computational Cost</strong></td>
+<td>Generally faster, using analytical solutions (e.g., t-tests in dietary comparisons).</td>
+<td>Computationally intensive, requiring MCMC sampling (e.g., Bayesian models for clinical trial outcomes).</td>
+</tr>
+<tr class="even">
+<td><strong>Uncertainty</strong></td>
+<td>Provides point estimates and intervals but no full distribution (e.g., mean nutrient intake).</td>
+<td>Provides full posterior distributions, capturing uncertainty comprehensively (e.g., distribution of supplement effects).</td>
+</tr>
+<tr class="odd">
+<td><strong>Risk of Misuse</strong></td>
+<td>P-value misuse (e.g., p-hacking in nutrition studies) can lead to false positives.</td>
+<td>Requires careful prior specification; poor priors can bias results (e.g., overly optimistic priors in clinical trials).</td>
+</tr>
+</tbody>
+</table>
+<section id="narrative-summary" class="level3">
+<h3 class="anchored" data-anchor-id="narrative-summary">Narrative Summary</h3>
+<ul>
+<li><strong>Frequentist Strengths</strong>: Ideal for straightforward hypothesis testing in large-scale clinical trials (e.g., testing if a supplement reduces cholesterol). They’re computationally efficient and widely accepted in scientific publishing.</li>
+<li><strong>Frequentist Limitations</strong>: Struggle with small sample sizes or complex models, and don’t incorporate prior knowledge, which is often available in nutrition research (e.g., prior studies on dietary fat intake).</li>
+<li><strong>Bayesian Strengths</strong>: Excellent for integrating prior knowledge and handling small or complex datasets, common in nutrition (e.g., pilot trials, metabolomics). They provide intuitive uncertainty quantification via posteriors.</li>
+<li><strong>Bayesian Limitations</strong>: Computationally demanding and sensitive to prior choices, which can be subjective (e.g., choosing priors for a dietary intervention’s effect).</li>
+</ul>
+<p>In nutrition and food science, the choice depends on your study’s goals. Frequentist methods suit large, well-controlled trials, while Bayesian methods shine in exploratory studies or when prior data is available.</p>
+<hr>
+</section>
+</section>
+<section id="step-4-practical-example-clinical-trial-on-a-nutritional-supplement" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-practical-example-clinical-trial-on-a-nutritional-supplement">Step 4: Practical Example: Clinical Trial on a Nutritional Supplement 🧪</h2>
+<p>Let’s apply both methods to a simulated clinical trial in nutrition science. Suppose we’re testing a new supplement claimed to reduce fasting blood glucose levels in 50 participants over 8 weeks. We have:</p>
+<ul>
+<li><strong>Control Group</strong>: 25 participants receiving a placebo.</li>
+<li><strong>Treatment Group</strong>: 25 participants receiving the supplement.</li>
+<li><strong>Outcome</strong>: Change in fasting blood glucose (mmol/L) after 8 weeks.</li>
+<li><strong>Prior Knowledge</strong>: Past studies suggest the supplement reduces glucose by ~0.5 mmol/L on average, with a standard deviation of 0.2.</li>
+</ul>
+<p>We’ll: 1. Use a <strong>Frequentist t-test</strong> to compare the groups. 2. Use a <strong>Bayesian model</strong> to estimate the treatment effect, incorporating prior knowledge. 3. Compare the results to highlight differences in interpretation.</p>
+<section id="simulate-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="simulate-the-data">Simulate the Data</h3>
+<p>First, let’s simulate the data and visualize it.</p>
+<div id="0bbf3974" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries for simulation and analysis</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> ttest_ind</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Set random seed for reproducibility</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">11088</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate clinical trial data</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>n_per_group <span class="op">=</span> <span class="dv">25</span>  <span class="co"># 25 participants per group</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Control group: Mean change = 0, SD = 0.3</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>control <span class="op">=</span> np.random.normal(loc<span class="op">=</span><span class="dv">0</span>, scale<span class="op">=</span><span class="fl">0.3</span>, size<span class="op">=</span>n_per_group)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Treatment group: Mean change = -0.4 (reduction), SD = 0.3</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>treatment <span class="op">=</span> np.random.normal(loc<span class="op">=-</span><span class="fl">0.4</span>, scale<span class="op">=</span><span class="fl">0.3</span>, size<span class="op">=</span>n_per_group)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine into a DataFrame</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Group'</span>: [<span class="st">'Control'</span>] <span class="op">*</span> n_per_group <span class="op">+</span> [<span class="st">'Treatment'</span>] <span class="op">*</span> n_per_group,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Glucose_Change'</span>: np.concatenate([control, treatment])</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the data</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>sns.boxplot(x<span class="op">=</span><span class="st">'Group'</span>, y<span class="op">=</span><span class="st">'Glucose_Change'</span>, data<span class="op">=</span>data)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Change in Fasting Blood Glucose by Group 📊'</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Glucose Change (mmol/L)'</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Group'</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+</section>
+<section id="step-5-frequentist-analysis-t-test" class="level2">
+<h2 class="anchored" data-anchor-id="step-5-frequentist-analysis-t-test">Step 5: Frequentist Analysis: T-Test 📉</h2>
+<p>Let’s perform a two-sample t-test to compare the mean glucose change between the control and treatment groups. The null hypothesis (H₀) is that there’s no difference between the groups, while the alternative (H₁) is that the supplement reduces glucose levels.</p>
+<p>We’ll calculate the p-value and a 95% confidence interval for the difference in means.</p>
+<div id="8db4778a" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform two-sample t-test</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>t_stat, p_value <span class="op">=</span> ttest_ind(control, treatment, equal_var<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate means and standard error for confidence interval</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>mean_diff <span class="op">=</span> np.mean(treatment) <span class="op">-</span> np.mean(control)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>se_diff <span class="op">=</span> np.sqrt((np.var(control, ddof<span class="op">=</span><span class="dv">1</span>) <span class="op">/</span> n_per_group) <span class="op">+</span> (np.var(treatment, ddof<span class="op">=</span><span class="dv">1</span>) <span class="op">/</span> n_per_group))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>ci_95 <span class="op">=</span> <span class="fl">1.96</span> <span class="op">*</span> se_diff  <span class="co"># 95% CI: 1.96 * SE</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>ci_lower <span class="op">=</span> mean_diff <span class="op">-</span> ci_95</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>ci_upper <span class="op">=</span> mean_diff <span class="op">+</span> ci_95</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Frequentist T-Test Results:"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"T-statistic: </span><span class="sc">{</span>t_stat<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P-value: </span><span class="sc">{</span>p_value<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean Difference (Treatment - Control): </span><span class="sc">{</span>mean_diff<span class="sc">:.2f}</span><span class="ss"> mmol/L"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"95% Confidence Interval: [</span><span class="sc">{</span>ci_lower<span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>ci_upper<span class="sc">:.2f}</span><span class="ss">] mmol/L"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="step-6-bayesian-analysis-modelling-the-treatment-effect" class="level2">
+<h2 class="anchored" data-anchor-id="step-6-bayesian-analysis-modelling-the-treatment-effect">Step 6: Bayesian Analysis: Modelling the Treatment Effect 🌐</h2>
+<p>Now, let’s use a Bayesian model to estimate the treatment effect, incorporating prior knowledge from past studies (mean reduction of 0.5 mmol/L, SD 0.2). We’ll model the glucose change in each group as normal distributions with unknown means, using PyMC to sample from the posterior distribution of the treatment effect.</p>
+<p>We’ll compare the posterior distribution of the difference in means to the Frequentist results.</p>
+<div id="4c263462" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define Bayesian model</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Priors for group means based on prior knowledge</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    mu_control <span class="op">=</span> pm.Normal(<span class="st">'mu_control'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="fl">0.5</span>)  <span class="co"># Control group mean</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    mu_treatment <span class="op">=</span> pm.Normal(<span class="st">'mu_treatment'</span>, mu<span class="op">=-</span><span class="fl">0.5</span>, sigma<span class="op">=</span><span class="fl">0.2</span>)  <span class="co"># Treatment group mean, informed by prior</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Common standard deviation</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pm.HalfNormal(<span class="st">'sigma'</span>, sigma<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Likelihoods</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    control_obs <span class="op">=</span> pm.Normal(<span class="st">'control_obs'</span>, mu<span class="op">=</span>mu_control, sigma<span class="op">=</span>sigma, observed<span class="op">=</span>control)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    treatment_obs <span class="op">=</span> pm.Normal(<span class="st">'treatment_obs'</span>, mu<span class="op">=</span>mu_treatment, sigma<span class="op">=</span>sigma, observed<span class="op">=</span>treatment)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Derived quantity: difference in means</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    diff_means <span class="op">=</span> pm.Deterministic(<span class="st">'diff_means'</span>, mu_treatment <span class="op">-</span> mu_control)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample from posterior</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    trace <span class="op">=</span> pm.sample(<span class="dv">1000</span>, tune<span class="op">=</span><span class="dv">1000</span>, return_inferencedata<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot posterior of the difference in means</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>az.plot_posterior(trace, var_names<span class="op">=</span>[<span class="st">'diff_means'</span>])</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Posterior of Treatment Effect (Difference in Means) 📈'</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Difference in Means (mmol/L)'</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of posterior</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> az.summary(trace, var_names<span class="op">=</span>[<span class="st">'diff_means'</span>])</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Bayesian Posterior Summary:"</span>)</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="step-7-comparing-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="step-7-comparing-the-results">Step 7: Comparing the Results 🔍</h2>
+<section id="frequentist-results" class="level3">
+<h3 class="anchored" data-anchor-id="frequentist-results">Frequentist Results</h3>
+<p>The t-test gave us a p-value (e.g., 0.002), suggesting a statistically significant difference if p &lt; 0.05. The 95% confidence interval (e.g., [-0.60, -0.20]) indicates the plausible range for the true difference in means, but it’s not a probability statement—95% of such intervals would contain the true value if the experiment were repeated.</p>
+</section>
+<section id="bayesian-results" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-results">Bayesian Results</h3>
+<p>The posterior distribution of the difference in means directly shows the probability distribution of the treatment effect. The 94% highest density interval (HDI, similar to a credible interval) might be [-0.58, -0.22], meaning there’s a 94% probability the true difference lies in this range. The posterior mean (e.g., -0.40) aligns with the Frequentist point estimate but provides a full distribution of uncertainty.</p>
+</section>
+<section id="key-differences" class="level3">
+<h3 class="anchored" data-anchor-id="key-differences">Key Differences</h3>
+<ul>
+<li><strong>Interpretation</strong>: The Bayesian HDI is directly interpretable as a probability, while the Frequentist CI is not. This makes Bayesian results more intuitive for nutrition researchers (e.g., assessing supplement efficacy).</li>
+<li><strong>Prior Knowledge</strong>: The Bayesian model used prior knowledge (mean reduction of 0.5), which can stabilise estimates in small trials, unlike the Frequentist approach.</li>
+<li><strong>Uncertainty</strong>: Bayesian methods provide a full posterior distribution, offering richer insights (e.g., probability of a clinically meaningful reduction &gt; 0.3 mmol/L).</li>
+</ul>
+<p>In nutrition and food science, Bayesian methods can be particularly useful when sample sizes are small (e.g., pilot trials) or when integrating prior studies, while Frequentist methods are efficient for large, well-controlled trials.</p>
+<hr>
+</section>
+</section>
+<section id="step-8-learning-points-and-next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="step-8-learning-points-and-next-steps">Step 8: Learning Points and Next Steps 🎓</h2>
+<section id="learning-points" class="level3">
+<h3 class="anchored" data-anchor-id="learning-points">Learning Points</h3>
+<ul>
+<li><strong>Frequentist Methods</strong>: Efficient and widely accepted, but they don’t incorporate prior knowledge and can be less reliable with small samples, common in nutrition pilot studies.</li>
+<li><strong>Bayesian Methods</strong>: Intuitive and flexible, especially for integrating prior studies or handling complex data in nutrition (e.g., hierarchical models for dietary effects across populations).</li>
+<li><strong>Practical Application</strong>: In our clinical trial example, Bayesian methods provided a probabilistic interpretation of the supplement’s effect, complementing the Frequentist p-value and CI.</li>
+<li><strong>Choosing an Approach</strong>: Use Frequentist methods for large trials with clear hypotheses (e.g., testing a new diet’s effect on weight loss). Use Bayesian methods when prior knowledge is available or uncertainty quantification is key (e.g., estimating nutrient effects in a small cohort).</li>
+</ul>
+</section>
+<section id="next-steps" class="level3">
+<h3 class="anchored" data-anchor-id="next-steps">Next Steps</h3>
+<ul>
+<li><strong>Explore More Examples</strong>: Apply these methods to other nutrition problems, like dietary intake analysis or metabolomics (e.g., PCA with Bayesian priors).</li>
+<li><strong>Cross-Validation</strong>: In supervised tasks (e.g., RandomForestClassifier), compare Frequentist and Bayesian performance metrics.</li>
+<li><strong>Hierarchical Models</strong>: Use Bayesian methods for hierarchical data in nutrition, such as varying effects of a diet across different age groups.</li>
+</ul>
+<p><em>Keep exploring statistical methods to unlock deeper insights in nutrition and food science! 🥕📉</em></p>
+<hr>
+</section>
+<section id="setup-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="setup-requirements">Setup Requirements</h3>
+<ol type="1">
+<li><p><strong>Install Libraries</strong>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/Documents/data-analysis-toolkit-FNS/venv/bin/activate</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install numpy pandas matplotlib seaborn scipy pymc arviz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Environment</strong>: Python 3.9, compatible with Apple Silicon (MPS).</p></li>
+</ol>
+</section>
+<section id="expected-output" class="level3">
+<h3 class="anchored" data-anchor-id="expected-output">Expected Output</h3>
+<ul>
+<li><p><strong>Box Plot</strong>: A box plot comparing glucose change between control and treatment groups.</p></li>
+<li><p><strong>Frequentist Results</strong> (Console):</p>
+<pre><code>Frequentist T-Test Results:
+T-statistic: 5.12
+P-value: 0.0002
+Mean Difference (Treatment - Control): -0.40 mmol/L
+95% Confidence Interval: [-0.60, -0.20] mmol/L</code></pre></li>
+<li><p><strong>Bayesian Posterior Plot</strong>: A plot of the posterior distribution of the difference in means, with a 94% HDI.</p></li>
+<li><p><strong>Bayesian Summary</strong> (Console):</p>
+<pre><code>Bayesian Posterior Summary:
+            mean   sd  hdi_3%  hdi_97%  ...
+diff_means -0.40 0.09  -0.58   -0.22    ...</code></pre></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/10_mini_projects/10.7_llm.html" class="pagination-link" aria-label="🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notebooks/10_mini_projects/10.9_fortran.html" class="pagination-link" aria-label="Exploring Fortran in Nutrition Science 🧪📊">
+        <span class="nav-page-text"><span class="chapter-title">Exploring Fortran in Nutrition Science 🧪📊</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ggkuhnle/data-analysis-projects/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

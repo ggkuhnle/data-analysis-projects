@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑 – Data Analysis Toolkit for Food and Nutrition Sciences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.html" rel="next">
+<link href="../../notebooks/10_mini_projects/10.6_ai.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/index.html">10 Mini Projects</a></li><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/10.7_llm.html"><span class="chapter-title">🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Data Analysis Toolkit for Food and Nutrition Sciences</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ggkuhnle/data-analysis-projects" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Analysis Toolkit for Food and Nutrition Sciences</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../syllabus.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Syllabus: Data Analysis Toolkit for Food and Nutrition Sciences 🦛</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">01 Infrastructure</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Infrastructure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/0_getting_started.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">👩‍💻 Notebook 0 – Getting Started</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.1_what_is_data_science_env.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 1.1 Introduction to Data Science Environments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.2_python_vs_r.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧮 1.2 Python vs R vs Other Tools for Nutrition Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.3_intro_to_git.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📚 1.3 Introduction to Git 🦛</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.4_quarto_basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📓 1.4 Quarto Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">02 Programming Basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2 – Programming Basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.0_intro_to_programming.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧠 2.0 Introduction to Programming for Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.1_programming_fundamentals.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧠 Programming Fundamentals: The Big Picture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.2_data_types_conversion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧮 2.2 Data Types and Conversion (Revised)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.3_functions_loops.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🚀 2.3 Functions, Loops, and Control Flow in Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.4_data_structures.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 2.4 Data Structures</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.5_input_output.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🖥️ 2.6 Input &amp; Output in Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.6_oop_basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧑‍💻 2.5 Object-Oriented Programming (OOP) Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">03 Data Handling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.0_introduction_to_data_handling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧰 3.0 Introduction to Data‑Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.1_principles_of_tidy_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🦛 3.1 Principles of Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.2_importing_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 3.2 Importing Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.3_data_cleaning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧹 3.3 Data Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.4_reshaping_merging.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🔄 3.4 Data Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.5_feature_engineering_and_calculation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🔄 3.4 Data Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.6_data_aggregation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 3.5 Data Aggregation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">04 Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.1_distributions_visualisation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 4.1 Data Distributions and Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.2_exploratory_data_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 4.2 Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.3_correlation_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 4.3 Correlation Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.4_statistical_testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 4.4 Statistical Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.5_regression_modelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📉 4.5 Regression Modelling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/04_logistic_and_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Regression and Survival Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.7_clinical_trial_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🩺 4.7 Analysing a Simulated Clinical Trial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.8_clinical_trial_analysis_bp.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🩺 4.8 Advanced Clinical Trial Analysis: Pre/Post Blood Pressure Study</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">05 Advanced</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Advanced Topics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.1_bayesian_methods.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 5.1 Bayesian Methods in Nutrition Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.2_workflow_automation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">⚙️ 5.2 Workflow Automation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/advanced_bayesian.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Advanced Bayesian Modelling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.4_databases_sql.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🗄️ 5.4 Databases and SQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.5_dashboards.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 5.5 Creating Dashboards</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">06 Qualitative</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/6.1_intro_qualitative_research.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧾 6.1 Introduction to Qualitative Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/6.2_text_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📝 6.2 Text Analysis for Qualitative Research</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">10 Mini Projects</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10 Mini Projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.1_clinical_trial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 Clinical Trial: Hipponol Intervention Study</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.2_epidemiology_case_study.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Epidemiological Analysis: Cross-Sectional and Prospective Studies in Nutrition 🥗📊</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.3_handling_missing_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Handling Missing Data in Nutrition Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.4_metabolomics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 Multivariate Analysis: Concepts and Applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.5_machine_learning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Machine Learning for Nutrition &amp; Food Science: Cooking Up Insights! 🥗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.6_ai.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Artificial Intelligence for Nutrition &amp; Food Science: Serving Up the Future! 🤖</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.7_llm.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.9_fortran.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploring Fortran in Nutrition Science 🧪📊</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-llm-apis-in-nutrition-food-science" id="toc-introduction-to-llm-apis-in-nutrition-food-science" class="nav-link active" data-scroll-target="#introduction-to-llm-apis-in-nutrition-food-science">1. Introduction to LLM APIs in Nutrition &amp; Food Science 📊</a></li>
+  <li><a href="#overview-of-llms-and-their-apis" id="toc-overview-of-llms-and-their-apis" class="nav-link" data-scroll-target="#overview-of-llms-and-their-apis">2. Overview of LLMs and Their APIs 🧠</a></li>
+  <li><a href="#parsing-food-diaries-with-hugging-face-api" id="toc-parsing-food-diaries-with-hugging-face-api" class="nav-link" data-scroll-target="#parsing-food-diaries-with-hugging-face-api">3. Parsing Food Diaries with Hugging Face API 📝</a>
+  <ul class="collapse">
+  <li><a href="#summarizing-a-food-diary" id="toc-summarizing-a-food-diary" class="nav-link" data-scroll-target="#summarizing-a-food-diary">3.1 Summarizing a Food Diary</a></li>
+  </ul></li>
+  <li><a href="#literature-review-with-hugging-face-api" id="toc-literature-review-with-hugging-face-api" class="nav-link" data-scroll-target="#literature-review-with-hugging-face-api">4. Literature Review with Hugging Face API 📚</a>
+  <ul class="collapse">
+  <li><a href="#summarizing-a-nutrition-study" id="toc-summarizing-a-nutrition-study" class="nav-link" data-scroll-target="#summarizing-a-nutrition-study">4.1 Summarizing a Nutrition Study</a></li>
+  </ul></li>
+  <li><a href="#supply-chain-analysis-with-a-mock-llm-api" id="toc-supply-chain-analysis-with-a-mock-llm-api" class="nav-link" data-scroll-target="#supply-chain-analysis-with-a-mock-llm-api">5. Supply Chain Analysis with a Mock LLM API 🚚</a>
+  <ul class="collapse">
+  <li><a href="#mock-supply-chain-analysis" id="toc-mock-supply-chain-analysis" class="nav-link" data-scroll-target="#mock-supply-chain-analysis">5.1 Mock Supply Chain Analysis</a></li>
+  </ul></li>
+  <li><a href="#sensory-analysis-with-hugging-face-api" id="toc-sensory-analysis-with-hugging-face-api" class="nav-link" data-scroll-target="#sensory-analysis-with-hugging-face-api">6. Sensory Analysis with Hugging Face API 🍫</a>
+  <ul class="collapse">
+  <li><a href="#summarizing-sensory-data" id="toc-summarizing-sensory-data" class="nav-link" data-scroll-target="#summarizing-sensory-data">6.1 Summarizing Sensory Data</a></li>
+  </ul></li>
+  <li><a href="#combining-applications-a-nutrition-food-science-pipeline" id="toc-combining-applications-a-nutrition-food-science-pipeline" class="nav-link" data-scroll-target="#combining-applications-a-nutrition-food-science-pipeline">7. Combining Applications: A Nutrition &amp; Food Science Pipeline 🛠️</a>
+  <ul class="collapse">
+  <li><a href="#building-the-pipeline" id="toc-building-the-pipeline" class="nav-link" data-scroll-target="#building-the-pipeline">7.1 Building the Pipeline</a></li>
+  </ul></li>
+  <li><a href="#summary-your-llm-api-toolkit-for-nutrition-food-science" id="toc-summary-your-llm-api-toolkit-for-nutrition-food-science" class="nav-link" data-scroll-target="#summary-your-llm-api-toolkit-for-nutrition-food-science">8. Summary: Your LLM API Toolkit for Nutrition &amp; Food Science 🧰</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.7_llm.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ggkuhnle/data-analysis-projects/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/index.html">10 Mini Projects</a></li><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/10.7_llm.html"><span class="chapter-title">🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Welcome to this scrumptious Jupyter Notebook on harnessing <strong>Large Language Model (LLM) APIs</strong> for nutrition and food science research! Whether you’re nibbling at home 🍎 or cooking up ideas in a classroom, this guide will whisk you through using APIs from LLMs like <strong>Grok</strong>, <strong>ChatGPT</strong>, <strong>Manus</strong>, and more to tackle tasks like <strong>parsing food diaries</strong>, <strong>reviewing literature</strong>, <strong>analyzing supply chains</strong>, and <strong>sensory analysis</strong>! 🍴</p>
+<p>We’ll use Python with a <strong>free API</strong> (Hugging Face) and explore other LLM APIs, comparing their strengths and weaknesses. Expect code, exercises, and hidden treats (click the “Details” to reveal them)! Let’s dive into the AI kitchen! 🚀</p>
+<section id="introduction-to-llm-apis-in-nutrition-food-science" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-llm-apis-in-nutrition-food-science">1. Introduction to LLM APIs in Nutrition &amp; Food Science 📊</h2>
+<p>Nutrition and food science are like a buffet of data 🍽️—food diaries, research papers, supply chain logs, and sensory descriptions. LLM APIs let us tap into powerful language models to:</p>
+<ul>
+<li><strong>Parse food diaries</strong>: Extract nutrients or dietary patterns.</li>
+<li><strong>Review literature</strong>: Summarize nutrition studies.</li>
+<li><strong>Analyze supply chains</strong>: Optimize logistics or detect issues.</li>
+<li><strong>Perform sensory analysis</strong>: Interpret taste and texture descriptions.</li>
+</ul>
+<p>We’ll use Python with <code>requests</code>, <code>pandas</code>, and a <strong>free Hugging Face API</strong> (plus others if you have access). No master chef skills needed—just curiosity! 😄</p>
+<p><strong>Exercise 1</strong>: Why might LLM APIs be ideal for parsing unstructured nutrition data (e.g., food diaries)? Jot down your thoughts (no code needed).</p>
+<details>
+<summary>
+💡 Hint
+</summary>
+Consider LLMs’ ability to understand context, handle varied text formats, and extract structured information from messy data.
+</details>
+<p>Let’s load the required libraries first.</p>
+<div id="b59d3472" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>run ..<span class="op">/</span>..<span class="op">/</span>bootstrap.py    <span class="co"># installs requirements + editable package</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fns_toolkit <span class="im">as</span> fns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install huggingface_hub</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install transformers</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install torch</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> huggingface_hub</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer, AutoModelForTokenClassification, pipeline</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> f</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy.linalg <span class="im">as</span> la</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoTokenizer, AutoModelForTokenClassification, pipeline</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> textwrap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="overview-of-llms-and-their-apis" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-llms-and-their-apis">2. Overview of LLMs and Their APIs 🧠</h2>
+<p>Here’s a rundown of popular LLMs, their APIs, and their strengths and weaknesses for nutrition and food science tasks. <em>Note</em>: All LLMs may exhibit biases from training data (e.g., cultural or dietary biases), which can affect applications like food diary parsing or sensory analysis.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 15%">
+<col style="width: 23%">
+<col style="width: 17%">
+<col style="width: 15%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>LLM</strong></th>
+<th><strong>Provider</strong></th>
+<th><strong>API Availability</strong></th>
+<th><strong>Free Tier?</strong></th>
+<th><strong>Strengths</strong></th>
+<th><strong>Weaknesses</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Grok</strong></td>
+<td>xAI</td>
+<td>Yes (Grok API)</td>
+<td>Limited (beta for X Premium+ users)</td>
+<td>Real-time X integration, witty responses, strong reasoning</td>
+<td>Limited free access, proprietary, less conversational depth</td>
+</tr>
+<tr class="even">
+<td><strong>ChatGPT</strong></td>
+<td>OpenAI</td>
+<td>Yes (OpenAI API)</td>
+<td>No (paid, starts ~$20/month)</td>
+<td>Conversational fluency, broad NLP tasks (e.g., text summarization)</td>
+<td>No free tier, lacks real-time data</td>
+</tr>
+<tr class="odd">
+<td><strong>Manus</strong></td>
+<td>Manus AI</td>
+<td>Yes (limited beta)</td>
+<td>No (proprietary, waitlist)</td>
+<td>Enterprise automation, multi-model architecture, deep reasoning</td>
+<td>Slow response times, less conversational, academic tone</td>
+</tr>
+<tr class="even">
+<td><strong>Llama</strong></td>
+<td>Meta AI</td>
+<td>No (open-source, not API-hosted)</td>
+<td>Free (local use)</td>
+<td>Open-source, medical/nutrition applications</td>
+<td>High computational needs, no hosted API</td>
+</tr>
+<tr class="odd">
+<td><strong>DeepSeek</strong></td>
+<td>DeepSeek</td>
+<td>Yes (open-source API)</td>
+<td>Yes (free for public use)</td>
+<td>Efficient, open-source, structured problem-solving</td>
+<td>Less conversational, limited multimodal support</td>
+</tr>
+<tr class="even">
+<td><strong>Hugging Face Models</strong></td>
+<td>Hugging Face</td>
+<td>Yes (Inference API)</td>
+<td>Yes (free tier)</td>
+<td>Free, diverse models (e.g., BART for summarization), customizable</td>
+<td>Limited free quota, less advanced than GPT-4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why Hugging Face?</strong> We’ll use Hugging Face’s free Inference API for its accessibility and robust NLP capabilities, ideal for tasks like summarization and text analysis in nutrition research.</p>
+<p><strong>Exercise 2</strong>: Which LLM might be best for real-time supply chain analysis? Why? (No code needed).</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+Grok’s real-time X integration makes it ideal for supply chain tasks needing current data (e.g., logistics updates).
+</details>
+<p><strong>Learn More</strong>: Explore <a href="https://huggingface.co/docs/api-inference">Hugging Face</a>, <a href="https://openai.com/api/">OpenAI</a>, or <a href="https://x.ai/api">xAI’s API</a> for details! 📚</p>
+</section>
+<section id="parsing-food-diaries-with-hugging-face-api" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-food-diaries-with-hugging-face-api">3. Parsing Food Diaries with Hugging Face API 📝</h2>
+<p>Food diaries are unstructured text (e.g., “Ate oatmeal with berries and coffee”). LLMs can extract nutrients or dietary patterns. Let’s use Hugging Face’s free API to summarize a food diary entry.</p>
+<section id="summarizing-a-food-diary" class="level3">
+<h3 class="anchored" data-anchor-id="summarizing-a-food-diary">3.1 Summarizing a Food Diary</h3>
+<p>We’ll use the <code>facebook/bart-large-cnn</code> model to summarize a diary entry. Get a free API key from <a href="https://huggingface.co/">Hugging Face</a>.</p>
+<p><strong>Note</strong>: Replace <code>YOUR_API_KEY</code> with your Hugging Face API key.</p>
+<div id="ac0ead1b" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up Hugging Face API</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>API_URL <span class="op">=</span> <span class="st">"https://api-inference.huggingface.co/models/facebook/bart-large-cnn"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>HF_TOKEN <span class="op">=</span> os.getenv(<span class="st">"HF_TOKEN"</span>)  <span class="co"># Ensure HF_TOKEN is set in your environment</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> HF_TOKEN:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Hugging Face API token not found. Set HF_TOKEN environment variable."</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>headers <span class="op">=</span> {<span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>HF_TOKEN<span class="sc">}</span><span class="ss">"</span>}</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample food diary entry</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>diary_entry <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="st">Breakfast: Oatmeal with blueberries, almond milk, and a drizzle of honey. Coffee with a splash of cream.</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="st">Lunch: Grilled chicken salad with spinach, tomatoes, cucumber, and olive oil dressing. Sparkling water.</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="st">Dinner: Baked salmon, quinoa, steamed broccoli, and a glass of red wine.</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="st">Snack: Greek yogurt with a handful of almonds.</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to summarize text</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_text(text, max_length<span class="op">=</span><span class="dv">100</span>, min_length<span class="op">=</span><span class="dv">30</span>):</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    payload <span class="op">=</span> {<span class="st">"inputs"</span>: text, <span class="st">"parameters"</span>: {<span class="st">"max_length"</span>: max_length, <span class="st">"min_length"</span>: min_length}}</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.post(API_URL, headers<span class="op">=</span>headers, json<span class="op">=</span>payload)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> response.json()[<span class="dv">0</span>][<span class="st">'summary_text'</span>]</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Error: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize the diary</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> summarize_text(diary_entry)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap summary to avoid long lines</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>wrapper <span class="op">=</span> textwrap.TextWrapper(width<span class="op">=</span><span class="dv">80</span>, subsequent_indent<span class="op">=</span><span class="st">"  "</span>)  <span class="co"># Wrap at 80 characters</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>wrapped_summary <span class="op">=</span> wrapper.fill(<span class="ss">f"- </span><span class="sc">{</span>summary<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Format the output for readability</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>original_length <span class="op">=</span> <span class="bu">len</span>(diary_entry.strip())</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>summary_length <span class="op">=</span> <span class="bu">len</span>(summary.strip())</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Create structured output</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span><span class="st">'='</span> <span class="op">*</span> <span class="dv">36</span><span class="sc">}</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="ss">Food Diary Summary</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span><span class="st">'='</span> <span class="op">*</span> <span class="dv">36</span><span class="sc">}</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ss">Model: facebook/bart-large-cnn</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="ss">Original Length: </span><span class="sc">{</span>original_length<span class="sc">}</span><span class="ss"> characters</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ss">Summary Length: </span><span class="sc">{</span>summary_length<span class="sc">}</span><span class="ss"> characters</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="ss">Summary:</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="sc">{</span>wrapped_summary<span class="sc">}</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="ss">🥣</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span><span class="st">'='</span> <span class="op">*</span> <span class="dv">36</span><span class="sc">}</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Print formatted output</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>Hugging Face API</strong>: Uses <code>facebook/bart-large-cnn</code> for summarization, ideal for condensing food diary text. - <strong>requests.post</strong>: Sends the diary entry to the API and retrieves the summary. - <strong>payload</strong>: Controls summary length for concise output.</p>
+<p><strong>Exercise 3</strong>: Modify <code>max_length</code> to 50 in <code>summarize_text</code>. Is the summary more concise? Compare outputs.</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+<p>Change the function call to:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> summarize_text(diary_entry, max_length<span class="op">=</span><span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+A shorter <code>max_length</code> produces a more concise summary, potentially omitting details like specific foods.
+</details>
+<p><strong>Learn More</strong>: Try <a href="https://huggingface.co/models">Hugging Face’s NER models</a> to extract specific nutrients from diaries! 🚀</p>
+<div id="f017c80e" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up NER model for food entity extraction</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ner_model <span class="op">=</span> <span class="st">"Dizex/InstaFoodRoBERTa-NER"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(ner_model)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForTokenClassification.from_pretrained(ner_model)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>ner_pipeline <span class="op">=</span> pipeline(<span class="st">"ner"</span>, model<span class="op">=</span>model, tokenizer<span class="op">=</span>tokenizer, aggregation_strategy<span class="op">=</span><span class="st">"simple"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample food diary entry</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>diary_entry <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">Breakfast: Oatmeal with blueberries, almond milk, and a drizzle of honey. Coffee with a splash of cream.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="st">Lunch: Grilled chicken salad with spinach, tomatoes, cucumber, and olive oil dressing. Sparkling water.</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="st">Dinner: Baked salmon, quinoa, steamed broccoli, and a glass of red wine.</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="st">Snack: Greek yogurt with a handful of almonds.</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to summarize text using Hugging Face Inference API</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> summarize_text(text, max_length<span class="op">=</span><span class="dv">80</span>, min_length<span class="op">=</span><span class="dv">30</span>):</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prepare payload with tightened parameters for shorter summary</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    payload <span class="op">=</span> {</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"inputs"</span>: text,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"parameters"</span>: {</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"max_length"</span>: max_length,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">"min_length"</span>: min_length,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>            <span class="st">"truncation"</span>: <span class="va">True</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Send POST request to the Inference API</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.post(API_URL, headers<span class="op">=</span>headers, json<span class="op">=</span>payload)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check response status</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> response.json()[<span class="dv">0</span>][<span class="st">'summary_text'</span>]</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Error: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss"> - </span><span class="sc">{</span>response<span class="sc">.</span>text<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to extract food entities using NER</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_foods(text):</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize text to avoid spacing issues</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="st">" "</span>.join(text.split())</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run NER pipeline and extract FOOD entities</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    ner_results <span class="op">=</span> ner_pipeline(text)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter valid food entities (exclude single letters or fragments)</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    foods <span class="op">=</span> [result[<span class="st">'word'</span>] <span class="cf">for</span> result <span class="kw">in</span> ner_results <span class="cf">if</span> result[<span class="st">'entity_group'</span>] <span class="op">==</span> <span class="st">'FOOD'</span> <span class="kw">and</span> <span class="bu">len</span>(result[<span class="st">'word'</span>]) <span class="op">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Post-process to merge common multi-word foods</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    merged_foods <span class="op">=</span> []</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> i <span class="op">&lt;</span> <span class="bu">len</span>(foods):</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check for known multi-word foods</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">&lt;</span> <span class="bu">len</span>(foods) <span class="op">-</span> <span class="dv">1</span> <span class="kw">and</span> foods[i].lower() <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> foods[i<span class="op">+</span><span class="dv">1</span>].lower() <span class="kw">in</span> nutrient_map:</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>            merged_foods.append(foods[i] <span class="op">+</span> <span class="st">" "</span> <span class="op">+</span> foods[i<span class="op">+</span><span class="dv">1</span>])</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>            i <span class="op">+=</span> <span class="dv">2</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>            merged_foods.append(foods[i])</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>            i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> merged_foods</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Extended dictionary to map foods to key nutrients (case-insensitive)</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>nutrient_map <span class="op">=</span> {</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="st">"blueberries"</span>: <span class="st">"Antioxidants, Vitamin C, Fiber"</span>,</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="st">"almonds"</span>: <span class="st">"Vitamin E, Magnesium, Healthy Fats"</span>,</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    <span class="st">"salmon"</span>: <span class="st">"Omega-3 Fatty Acids, Vitamin D, Protein"</span>,</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">"spinach"</span>: <span class="st">"Iron, Vitamin K, Folate"</span>,</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    <span class="st">"olive oil"</span>: <span class="st">"Monounsaturated Fats, Vitamin E, Antioxidants"</span>,</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="st">"broccoli"</span>: <span class="st">"Vitamin C, Vitamin K, Fiber"</span>,</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quinoa"</span>: <span class="st">"Protein, Magnesium, Fiber"</span>,</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>    <span class="st">"greek yogurt"</span>: <span class="st">"Protein, Probiotics, Calcium"</span>,</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="st">"oatmeal"</span>: <span class="st">"Fiber, Iron, Magnesium"</span>,</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    <span class="st">"chicken"</span>: <span class="st">"Protein, Vitamin B6, Niacin"</span>,</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tomatoes"</span>: <span class="st">"Vitamin C, Lycopene, Potassium"</span>,</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cucumber"</span>: <span class="st">"Hydration, Vitamin K, Antioxidants"</span>,</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="st">"honey"</span>: <span class="st">"Antioxidants, Natural Sugars"</span>,</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cream"</span>: <span class="st">"Calcium, Vitamin A, Saturated Fats"</span>,</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>    <span class="st">"red wine"</span>: <span class="st">"Resveratrol, Antioxidants"</span>,</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>    <span class="st">"almond milk"</span>: <span class="st">"Calcium, Vitamin E, Low Calories"</span>,</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>    <span class="st">"coffee"</span>: <span class="st">"Caffeine, Antioxidants"</span>,</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sparkling water"</span>: <span class="st">"Hydration, No Calories"</span>,</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    <span class="st">"chicken salad"</span>: <span class="st">"Protein, Vitamins A and C"</span>,</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    <span class="st">"olive oil dressing"</span>: <span class="st">"Monounsaturated Fats, Vitamin E"</span>,</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize the diary</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> summarize_text(diary_entry)</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract food entities</span></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>foods <span class="op">=</span> extract_foods(diary_entry)</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Map foods to nutrients (case-insensitive)</span></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>nutrients <span class="op">=</span> {food: nutrient_map.get(food.lower(), <span class="st">"Unknown nutrients"</span>) <span class="cf">for</span> food <span class="kw">in</span> foods}</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre-compute food/nutrient list with wrapped lines</span></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>wrapper <span class="op">=</span> textwrap.TextWrapper(width<span class="op">=</span><span class="dv">80</span>, subsequent_indent<span class="op">=</span><span class="st">"  "</span>)  <span class="co"># Wrap at 80 characters</span></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>food_nutrient_lines <span class="op">=</span> [wrapper.fill(<span class="ss">f"- </span><span class="sc">{</span>food<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>nutrients[food]<span class="sc">}</span><span class="ss">"</span>) <span class="cf">for</span> food <span class="kw">in</span> <span class="bu">sorted</span>(nutrients)]</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>food_nutrient_text <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(food_nutrient_lines)</span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a><span class="co"># Format the output for readability</span></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>current_time <span class="op">=</span> datetime.now().strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st"> %H:%M:%S"</span>)</span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>original_length <span class="op">=</span> <span class="bu">len</span>(diary_entry.strip())</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>summary_length <span class="op">=</span> <span class="bu">len</span>(summary.strip())</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap summary to avoid long lines</span></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>wrapped_summary <span class="op">=</span> wrapper.fill(<span class="ss">f"- </span><span class="sc">{</span>summary<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span><span class="st">'='</span> <span class="op">*</span> <span class="dv">40</span><span class="sc">}</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="ss">Food Diary Analysis</span></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span><span class="st">'='</span> <span class="op">*</span> <span class="dv">40</span><span class="sc">}</span></span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a><span class="ss">Summarization Model: facebook/bart-large-cnn</span></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a><span class="ss">NER Model: Dizex/InstaFoodRoBERTa-NER</span></span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="ss">Timestamp: </span><span class="sc">{</span>current_time<span class="sc">}</span></span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a><span class="ss">Original Length: </span><span class="sc">{</span>original_length<span class="sc">}</span><span class="ss"> characters</span></span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="ss">Summary Length: </span><span class="sc">{</span>summary_length<span class="sc">}</span><span class="ss"> characters</span></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="ss">Food Count: </span><span class="sc">{</span><span class="bu">len</span>(foods)<span class="sc">}</span><span class="ss"> items</span></span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="ss">Summary:</span></span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>wrapped_summary<span class="sc">}</span></span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a><span class="ss">Extracted Foods and Nutrients:</span></span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>food_nutrient_text<span class="sc">}</span></span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="ss">🥣</span></span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span><span class="st">'='</span> <span class="op">*</span> <span class="dv">40</span><span class="sc">}</span></span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="co"># Print formatted output</span></span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(output)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="literature-review-with-hugging-face-api" class="level2">
+<h2 class="anchored" data-anchor-id="literature-review-with-hugging-face-api">4. Literature Review with Hugging Face API 📚</h2>
+<p>LLM APIs can summarize nutrition research papers for literature reviews. Let’s use the same Hugging Face API to summarize a study abstract.</p>
+<section id="summarizing-a-nutrition-study" class="level3">
+<h3 class="anchored" data-anchor-id="summarizing-a-nutrition-study">4.1 Summarizing a Nutrition Study</h3>
+<p>We’ll summarize a sample abstract to extract key findings.</p>
+<div id="b89094a5" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample nutrition study abstract</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>abstract <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">The Mediterranean diet, characterized by high intake of fruits, vegetables, whole grains, and olive oil, has been associated with reduced cardiovascular risk and improved cognitive function. This study examined the impact of adherence to the Mediterranean diet on heart disease outcomes in 500 participants over five years. Results showed a 30</span><span class="sc">% r</span><span class="st">eduction in cardiovascular events among high-adherence groups compared to low-adherence groups. Challenges include cultural barriers and cost of fresh produce.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize the abstract</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>lit_summary <span class="op">=</span> summarize_text(abstract)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Literature Summary: </span><span class="sc">{</span>lit_summary<span class="sc">}</span><span class="ss"> 📝'</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>summarize_text</strong>: Reuses the Hugging Face API to condense the abstract into key points. - <strong>Output</strong>: Highlights main findings (e.g., cardiovascular benefits) for quick review.</p>
+<p><strong>Exercise 4</strong>: Change <code>min_length</code> to 50 in the <code>summarize_text</code> call for the abstract. Does it include more details? Why?</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+<p>Update the call to:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lit_summary <span class="op">=</span> summarize_text(abstract, max_length<span class="op">=</span><span class="dv">100</span>, min_length<span class="op">=</span><span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+A higher <code>min_length</code> ensures a longer summary, capturing more details like study size or challenges.
+</details>
+<p><strong>Learn More</strong>: For advanced literature reviews, try <a href="https://openai.com/api/">OpenAI’s API</a> for deeper contextual analysis (paid).</p>
+</section>
+</section>
+<section id="supply-chain-analysis-with-a-mock-llm-api" class="level2">
+<h2 class="anchored" data-anchor-id="supply-chain-analysis-with-a-mock-llm-api">5. Supply Chain Analysis with a Mock LLM API 🚚</h2>
+<p>LLM APIs can analyze supply chain logs (e.g., delivery reports) to detect issues or optimize logistics. Since real APIs like OpenAI or xAI are paid, we’ll use a mock API to simulate extracting insights from a supply chain log.</p>
+<section id="mock-supply-chain-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="mock-supply-chain-analysis">5.1 Mock Supply Chain Analysis</h3>
+<p>We’ll simulate an LLM extracting key issues from a supply chain log.</p>
+<div id="563beca5" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mock function to simulate an LLM API for supply chain analysis</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mock_supply_chain_analysis(log_text):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Simulate LLM extracting issues (in reality, use Grok or ChatGPT API)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    issues <span class="op">=</span> [<span class="st">'Delay in delivery'</span>, <span class="st">'Contamination risk'</span>, <span class="st">'Inventory shortage'</span>, <span class="st">'Transport cost overrun'</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    confidence <span class="op">=</span> random.uniform(<span class="fl">0.7</span>, <span class="fl">0.95</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    detected_issue <span class="op">=</span> random.choice(issues)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">'issue'</span>: detected_issue, <span class="st">'confidence'</span>: confidence}</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample supply chain log</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>supply_log <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">Delivery of fresh produce delayed by 2 days due to truck breakdown. Spinach showed signs of wilting upon arrival. Inventory levels for tomatoes are critically low. Fuel costs for transport increased by 15% this month.</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Analyze the log</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> mock_supply_chain_analysis(supply_log)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Supply Chain Issue: </span><span class="sc">{</span>result[<span class="st">"issue"</span>]<span class="sc">}</span><span class="ss"> (Confidence: </span><span class="sc">{</span>result[<span class="st">"confidence"</span>]<span class="sc">:.2f}</span><span class="ss">) 🚛'</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Save result to file</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'supply_chain_result.json'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    json.dump(result, f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>mock_supply_chain_analysis</strong>: Simulates an LLM identifying issues (e.g., delays, contamination) from a log. - <strong>Real Alternative</strong>: Grok’s API with X integration could provide real-time supply chain insights.</p>
+<p><strong>Exercise 5</strong>: Add a new issue (e.g., ‘Supplier miscommunication’) to the <code>issues</code> list in <code>mock_supply_chain_analysis</code>. Test it and check the output.</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+<p>Update the issues list:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>issues <span class="op">=</span> [<span class="st">'Delay in delivery'</span>, <span class="st">'Contamination risk'</span>, <span class="st">'Inventory shortage'</span>, <span class="st">'Transport cost overrun'</span>, <span class="st">'Supplier miscommunication'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+The function now includes the new issue in its random selection.
+</details>
+<p><strong>Learn More</strong>: For real supply chain analysis, explore <a href="https://x.ai/api">xAI’s API</a> for Grok’s real-time capabilities (paid).</p>
+</section>
+</section>
+<section id="sensory-analysis-with-hugging-face-api" class="level2">
+<h2 class="anchored" data-anchor-id="sensory-analysis-with-hugging-face-api">6. Sensory Analysis with Hugging Face API 🍫</h2>
+<p>Sensory analysis involves interpreting taste, texture, or aroma descriptions (e.g., “creamy, nutty chocolate”). LLMs can classify or summarize sensory data. Let’s use Hugging Face to summarize a sensory description.</p>
+<section id="summarizing-sensory-data" class="level3">
+<h3 class="anchored" data-anchor-id="summarizing-sensory-data">6.1 Summarizing Sensory Data</h3>
+<p>We’ll summarize a sensory description of a food product.</p>
+<div id="b0f0b79b" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample sensory description</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sensory_text <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">The dark chocolate bar has a rich, velvety texture with a deep cocoa flavor. It offers subtle hints of roasted nuts and a slight fruity tang. The finish is smooth with a mild bitterness that lingers pleasantly.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize the sensory description</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>sensory_summary <span class="op">=</span> summarize_text(sensory_text)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Sensory Summary: </span><span class="sc">{</span>sensory_summary<span class="sc">}</span><span class="ss"> 🍫'</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Save summary to file</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'sensory_summary.txt'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    f.write(sensory_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>summarize_text</strong>: Uses Hugging Face to condense sensory text into key descriptors (e.g., “rich, nutty”). - <strong>Application</strong>: Useful for product development or consumer feedback analysis.</p>
+<p><strong>Exercise 6</strong>: Try a different sensory description (e.g., for a cheese or beverage). Does the summary capture the main flavors? Why or why not?</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+Create a new <code>sensory_text</code> (e.g., “The cheddar is sharp, creamy, with a nutty aftertaste”). The summary should capture key descriptors if the input is clear, but vague inputs may lead to less precise summaries.
+</details>
+<p><strong>Learn More</strong>: For advanced sensory analysis, try <a href="https://openai.com/api/">ChatGPT’s API</a> for sentiment or emotion detection (paid).</p>
+</section>
+</section>
+<section id="combining-applications-a-nutrition-food-science-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="combining-applications-a-nutrition-food-science-pipeline">7. Combining Applications: A Nutrition &amp; Food Science Pipeline 🛠️</h2>
+<p>Let’s combine our LLM API calls into a pipeline to process a food diary, summarize a study, analyze a supply chain, and evaluate sensory data.</p>
+<section id="building-the-pipeline" class="level3">
+<h3 class="anchored" data-anchor-id="building-the-pipeline">7.1 Building the Pipeline</h3>
+<p>We’ll create a function to run all tasks and save results.</p>
+<div id="c6287e94" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pipeline function</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nutrition_food_science_pipeline(diary, abstract, supply_log, sensory_text):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> {}</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1: Summarize food diary</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    results[<span class="st">'diary_summary'</span>] <span class="op">=</span> summarize_text(diary)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: Summarize literature</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    results[<span class="st">'literature_summary'</span>] <span class="op">=</span> summarize_text(abstract)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 3: Analyze supply chain</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    results[<span class="st">'supply_chain_issue'</span>] <span class="op">=</span> mock_supply_chain_analysis(supply_log)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 4: Summarize sensory data</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    results[<span class="st">'sensory_summary'</span>] <span class="op">=</span> summarize_text(sensory_text)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Run pipeline</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>pipeline_results <span class="op">=</span> nutrition_food_science_pipeline(diary_entry, abstract, supply_log, sensory_text)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Pipeline Results:'</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Food Diary Summary: </span><span class="sc">{</span>pipeline_results[<span class="st">"diary_summary"</span>]<span class="sc">}</span><span class="ss"> 🥣'</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Literature Summary: </span><span class="sc">{</span>pipeline_results[<span class="st">"literature_summary"</span>]<span class="sc">}</span><span class="ss"> 📝'</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Supply Chain Issue: </span><span class="sc">{</span>pipeline_results[<span class="st">"supply_chain_issue"</span>]<span class="sc">}</span><span class="ss"> 🚛'</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Sensory Summary: </span><span class="sc">{</span>pipeline_results[<span class="st">"sensory_summary"</span>]<span class="sc">}</span><span class="ss"> 🍫'</span>)</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Save pipeline results</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'pipeline_results.json'</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    json.dump(pipeline_results, f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>nutrition_food_science_pipeline</strong>: Combines diary parsing, literature summarization, supply chain analysis, and sensory summarization. - <strong>results</strong>: A dictionary storing outputs from each step.</p>
+<p><strong>Exercise 7</strong>: Add a step to the pipeline to count the number of meals in the <code>diary_summary</code> (hint: split by punctuation). Print the count in the results.</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+<p>Add to the pipeline:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>results[<span class="st">'meal_count'</span>] <span class="op">=</span> <span class="bu">len</span>(results[<span class="st">'diary_summary'</span>].split(<span class="st">'.'</span>)) <span class="op">-</span> <span class="dv">1</span>  <span class="co"># Subtract 1 for trailing period</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then print:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Meal Count: </span><span class="sc">{</span>pipeline_results[<span class="st">"meal_count"</span>]<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+This counts sentences in the summary, approximating meal mentions.
+</details>
+</section>
+</section>
+<section id="summary-your-llm-api-toolkit-for-nutrition-food-science" class="level2">
+<h2 class="anchored" data-anchor-id="summary-your-llm-api-toolkit-for-nutrition-food-science">8. Summary: Your LLM API Toolkit for Nutrition &amp; Food Science 🧰</h2>
+<p>Here’s what you’ve mastered:</p>
+<ul>
+<li><strong>Food Diary Parsing</strong> 🥣: Summarize dietary logs with Hugging Face.</li>
+<li><strong>Literature Reviews</strong> 📚: Condense research papers for quick insights.</li>
+<li><strong>Supply Chain Analysis</strong> 🚚: Detect issues in logistics (mock API).</li>
+<li><strong>Sensory Analysis</strong> 🍫: Summarize taste and texture descriptions.</li>
+<li><strong>Pipelines</strong> 🛠️: Combine LLM tasks for efficient workflows.</li>
+</ul>
+<p><strong>Final Exercise</strong>: Find a real nutrition dataset or paper (e.g., from <a href="https://fdc.nal.usda.gov/">USDA FoodData Central</a>) and apply one of these LLM API approaches. Share your findings in a short paragraph!</p>
+<p><strong>What’s Next?</strong> Experiment with paid APIs like <a href="https://x.ai/api">Grok</a> or <a href="https://openai.com/api/">ChatGPT</a> for advanced tasks, or explore open-source models like DeepSeek for cost-free options. Keep tasting the future of AI in food science! 😄</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/10_mini_projects/10.6_ai.html" class="pagination-link" aria-label="🌟 Artificial Intelligence for Nutrition &amp; Food Science: Serving Up the Future! 🤖">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">🌟 Artificial Intelligence for Nutrition &amp; Food Science: Serving Up the Future! 🤖</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.html" class="pagination-link" aria-label="Frequentist vs. Bayesian Methods in Nutrition and Food Science 🥗📊">
+        <span class="nav-page-text"><span class="chapter-title">Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.7_llm.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ggkuhnle/data-analysis-projects/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

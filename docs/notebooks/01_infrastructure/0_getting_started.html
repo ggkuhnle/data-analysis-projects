@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>👩‍💻 Notebook 0 – Getting Started – Data Analysis Toolkit for Food and Nutrition Sciences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notebooks/01_infrastructure/1.1_what_is_data_science_env.html" rel="next">
+<link href="../../notebooks/01_infrastructure/index.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notebooks/01_infrastructure/index.html">01 Infrastructure</a></li><li class="breadcrumb-item"><a href="../../notebooks/01_infrastructure/0_getting_started.html"><span class="chapter-title">👩‍💻 Notebook 0 – Getting Started</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Data Analysis Toolkit for Food and Nutrition Sciences</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ggkuhnle/data-analysis-projects" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Analysis Toolkit for Food and Nutrition Sciences</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../syllabus.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Syllabus: Data Analysis Toolkit for Food and Nutrition Sciences 🦛</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">01 Infrastructure</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Infrastructure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/0_getting_started.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">👩‍💻 Notebook 0 – Getting Started</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.1_what_is_data_science_env.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 1.1 Introduction to Data Science Environments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.2_python_vs_r.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧮 1.2 Python vs R vs Other Tools for Nutrition Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.3_intro_to_git.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📚 1.3 Introduction to Git 🦛</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.4_quarto_basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📓 1.4 Quarto Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">02 Programming Basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2 – Programming Basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.0_intro_to_programming.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧠 2.0 Introduction to Programming for Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.1_programming_fundamentals.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧠 Programming Fundamentals: The Big Picture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.2_data_types_conversion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧮 2.2 Data Types and Conversion (Revised)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.3_functions_loops.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🚀 2.3 Functions, Loops, and Control Flow in Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.4_data_structures.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 2.4 Data Structures</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.5_input_output.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🖥️ 2.6 Input &amp; Output in Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.6_oop_basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧑‍💻 2.5 Object-Oriented Programming (OOP) Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">03 Data Handling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.0_introduction_to_data_handling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧰 3.0 Introduction to Data‑Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.1_principles_of_tidy_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🦛 3.1 Principles of Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.2_importing_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 3.2 Importing Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.3_data_cleaning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧹 3.3 Data Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.4_reshaping_merging.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🔄 3.4 Data Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.5_feature_engineering_and_calculation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🔄 3.4 Data Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.6_data_aggregation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 3.5 Data Aggregation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">04 Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.1_distributions_visualisation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 4.1 Data Distributions and Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.2_exploratory_data_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 4.2 Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.3_correlation_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 4.3 Correlation Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.4_statistical_testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 4.4 Statistical Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.5_regression_modelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📉 4.5 Regression Modelling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/04_logistic_and_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Regression and Survival Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.7_clinical_trial_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🩺 4.7 Analysing a Simulated Clinical Trial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.8_clinical_trial_analysis_bp.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🩺 4.8 Advanced Clinical Trial Analysis: Pre/Post Blood Pressure Study</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">05 Advanced</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Advanced Topics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.1_bayesian_methods.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 5.1 Bayesian Methods in Nutrition Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.2_workflow_automation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">⚙️ 5.2 Workflow Automation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/advanced_bayesian.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Advanced Bayesian Modelling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.4_databases_sql.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🗄️ 5.4 Databases and SQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.5_dashboards.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 5.5 Creating Dashboards</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">06 Qualitative</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/6.1_intro_qualitative_research.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧾 6.1 Introduction to Qualitative Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/6.2_text_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📝 6.2 Text Analysis for Qualitative Research</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">10 Mini Projects</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10 Mini Projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.1_clinical_trial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 Clinical Trial: Hipponol Intervention Study</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.2_epidemiology_case_study.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Epidemiological Analysis: Cross-Sectional and Prospective Studies in Nutrition 🥗📊</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.3_handling_missing_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Handling Missing Data in Nutrition Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.4_metabolomics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 Multivariate Analysis: Concepts and Applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.5_machine_learning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Machine Learning for Nutrition &amp; Food Science: Cooking Up Insights! 🥗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.6_ai.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Artificial Intelligence for Nutrition &amp; Food Science: Serving Up the Future! 🤖</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.7_llm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.9_fortran.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploring Fortran in Nutrition Science 🧪📊</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#objectives" id="toc-objectives" class="nav-link active" data-scroll-target="#objectives">🎯 Objectives</a></li>
+  <li><a href="#what-is-python" id="toc-what-is-python" class="nav-link" data-scroll-target="#what-is-python">🐍 What is Python?</a>
+  <ul class="collapse">
+  <li><a href="#why-is-it-called-python" id="toc-why-is-it-called-python" class="nav-link" data-scroll-target="#why-is-it-called-python">🧠 Why is it called Python?</a></li>
+  <li><a href="#what-can-python-do" id="toc-what-can-python-do" class="nav-link" data-scroll-target="#what-can-python-do">🧰 What can Python do?</a></li>
+  <li><a href="#what-does-python-code-look-like" id="toc-what-does-python-code-look-like" class="nav-link" data-scroll-target="#what-does-python-code-look-like">🔄 What does Python code look like?</a></li>
+  <li><a href="#want-to-explore-more" id="toc-want-to-explore-more" class="nav-link" data-scroll-target="#want-to-explore-more">📎 Want to explore more?</a></li>
+  <li><a href="#running-python-your-options" id="toc-running-python-your-options" class="nav-link" data-scroll-target="#running-python-your-options">🌍 Running Python: Your Options</a>
+  <ul class="collapse">
+  <li><a href="#local-installation" id="toc-local-installation" class="nav-link" data-scroll-target="#local-installation">🖥️ 1. <strong>Local installation</strong></a></li>
+  <li><a href="#google-colab-recommended-for-beginners" id="toc-google-colab-recommended-for-beginners" class="nav-link" data-scroll-target="#google-colab-recommended-for-beginners">☁️ 2. <strong>Google Colab (Recommended for beginners)</strong></a></li>
+  </ul></li>
+  <li><a href="#what-is-a-python-environment" id="toc-what-is-a-python-environment" class="nav-link" data-scroll-target="#what-is-a-python-environment">🔍 What is a Python “environment”?</a></li>
+  <li><a href="#loading-data-different-ways-to-do-it" id="toc-loading-data-different-ways-to-do-it" class="nav-link" data-scroll-target="#loading-data-different-ways-to-do-it">📂 Loading Data: Different Ways to Do It</a>
+  <ul class="collapse">
+  <li><a href="#option-1-load-from-the-internet-recommended" id="toc-option-1-load-from-the-internet-recommended" class="nav-link" data-scroll-target="#option-1-load-from-the-internet-recommended">🧳 Option 1: Load from the Internet (Recommended)</a></li>
+  <li><a href="#option-2-upload-manually" id="toc-option-2-upload-manually" class="nav-link" data-scroll-target="#option-2-upload-manually">📁 Option 2: Upload Manually</a></li>
+  </ul></li>
+  <li><a href="#installing-and-using-python-packages" id="toc-installing-and-using-python-packages" class="nav-link" data-scroll-target="#installing-and-using-python-packages">📦 Installing and Using Python Packages</a>
+  <ul class="collapse">
+  <li><a href="#what-is-a-package" id="toc-what-is-a-package" class="nav-link" data-scroll-target="#what-is-a-package">🛠️ What is a package?</a></li>
+  <li><a href="#in-this-notebook-well-install-and-use" id="toc-in-this-notebook-well-install-and-use" class="nav-link" data-scroll-target="#in-this-notebook-well-install-and-use">📦 In this notebook, we’ll install and use:</a></li>
+  </ul></li>
+  <li><a href="#test-your-setup" id="toc-test-your-setup" class="nav-link" data-scroll-target="#test-your-setup">✅ Test Your Setup</a>
+  <ul class="collapse">
+  <li><a href="#what-will-this-code-do" id="toc-what-will-this-code-do" class="nav-link" data-scroll-target="#what-will-this-code-do">📚 What will this code do?</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">✅ Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next">🚀 What’s Next?</a></li>
+  <li><a href="#helpful-resources" id="toc-helpful-resources" class="nav-link" data-scroll-target="#helpful-resources">📚 Helpful Resources</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/ggkuhnle/data-analysis-projects/blob/main/notebooks/01_infrastructure/0_getting_started.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ggkuhnle/data-analysis-projects/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notebooks/01_infrastructure/index.html">01 Infrastructure</a></li><li class="breadcrumb-item"><a href="../../notebooks/01_infrastructure/0_getting_started.html"><span class="chapter-title">👩‍💻 Notebook 0 – Getting Started</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">👩‍💻 Notebook 0 – Getting Started</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Welcome to the <strong>Data Analysis Toolkit for Food and Nutrition Sciences</strong>!<br>
+Before we dive into exciting topics like nutrient analysis and clinical trials, it’s essential to set up a working environment you can rely on.</p>
+<hr>
+<section id="objectives" class="level2">
+<h2 class="anchored" data-anchor-id="objectives">🎯 Objectives</h2>
+<p>By the end of this notebook, you will:</p>
+<ul>
+<li>Understand the different ways you can run Python (locally or online)</li>
+<li>Set up and verify your Python environment</li>
+<li>Install the required libraries</li>
+<li>Test everything with a simple example</li>
+</ul>
+</section>
+<section id="what-is-python" class="level1">
+<h1>🐍 What is Python?</h1>
+<p>Python is a <strong>programming language</strong> — a way of giving instructions to a computer.<br>
+It’s widely used in data science, web development, automation, and more.</p>
+<p>In this course, we use Python to: - Read and clean nutrition datasets - Calculate statistics and visualise trends - Build simple models and make predictions</p>
+<p>Python is known for being: - <strong>Readable</strong> 📝 – Code looks a lot like English - <strong>Flexible</strong> 🔧 – You can use it for almost anything - <strong>Popular</strong> 🌍 – There’s a huge community and lots of free resources</p>
+<hr>
+<details>
+<summary>
+📘 Click to expand: More about Python (for curious minds)
+</summary>
+<section id="why-is-it-called-python" class="level3">
+<h3 class="anchored" data-anchor-id="why-is-it-called-python">🧠 Why is it called Python?</h3>
+<p>Python is named after the comedy group <em>Monty Python</em>, not the snake.<br>
+You’ll often see silly or creative examples in the Python community – it’s part of the charm!</p>
+</section>
+<section id="what-can-python-do" class="level3">
+<h3 class="anchored" data-anchor-id="what-can-python-do">🧰 What can Python do?</h3>
+<p>Beyond data analysis, Python can also: - Power websites (e.g.&nbsp;Instagram, Reddit) - Control robots and IoT devices - Train machine learning models - Automate repetitive tasks (e.g.&nbsp;renaming files)</p>
+</section>
+<section id="what-does-python-code-look-like" class="level3">
+<h3 class="anchored" data-anchor-id="what-does-python-code-look-like">🔄 What does Python code look like?</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This is Python code!</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> <span class="st">"hippo"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Hello, </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="want-to-explore-more" class="level3">
+<h3 class="anchored" data-anchor-id="want-to-explore-more">📎 Want to explore more?</h3>
+<ul>
+<li><a href="https://www.python.org/about/gettingstarted/">Python for Beginners (python.org)</a></li>
+<li><a href="https://realpython.com/what-is-python/">What is Python? (realpython.com)</a></li>
+<li><a href="https://colab.research.google.com/github/jakevdp/PythonDataScienceHandbook/blob/master/notebooks/00.00-Preface.ipynb">Python Crash Course (Google Colab)</a></li>
+</ul>
+</section></details>
+</section>
+<section id="running-python-your-options" class="level2">
+<h2 class="anchored" data-anchor-id="running-python-your-options">🌍 Running Python: Your Options</h2>
+<p>There are two common ways to run Python for data analysis:</p>
+<section id="local-installation" class="level3">
+<h3 class="anchored" data-anchor-id="local-installation">🖥️ 1. <strong>Local installation</strong></h3>
+<p>You install Python, Jupyter, and other libraries directly on your computer. This gives you full control and works well for advanced users.</p>
+</section>
+<section id="google-colab-recommended-for-beginners" class="level3">
+<h3 class="anchored" data-anchor-id="google-colab-recommended-for-beginners">☁️ 2. <strong>Google Colab (Recommended for beginners)</strong></h3>
+<p>This free, web-based platform runs Python in the cloud — no installation required.</p>
+<ul>
+<li>It’s ideal for beginners or anyone working on shared machines (e.g.&nbsp;university PCs).</li>
+<li>All you need is a Google account.</li>
+</ul>
+<p>We’ll design this toolkit to work <strong>seamlessly in Google Colab</strong>, but you can also download and run it locally if you prefer.</p>
+</section>
+</section>
+<section id="what-is-a-python-environment" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-python-environment">🔍 What is a Python “environment”?</h2>
+<p>A Python environment is a collection of installed tools and packages. Think of it as your lab bench:</p>
+<ul>
+<li>Python is the bench itself.</li>
+<li>Packages like <code>pandas</code>, <code>numpy</code>, and <code>matplotlib</code> are your tools.</li>
+<li>You can create custom environments to keep tools separate for different projects.</li>
+</ul>
+<p>Colab already provides a pre-configured environment — we’ll just add a few extra tools.</p>
+<details>
+<summary>
+🦛
+</summary>
+Just like a hippo needs the right waterhole to cool off, you need the right environment to analyse your data comfortably. Let’s get you set up!
+</details>
+</section>
+<section id="loading-data-different-ways-to-do-it" class="level2">
+<h2 class="anchored" data-anchor-id="loading-data-different-ways-to-do-it">📂 Loading Data: Different Ways to Do It</h2>
+<p>Before we begin analysing data, we need to <strong>load it into our Python environment</strong>.</p>
+<p>There are a few common ways to do this in Colab or Jupyter:</p>
+<section id="option-1-load-from-the-internet-recommended" class="level3">
+<h3 class="anchored" data-anchor-id="option-1-load-from-the-internet-recommended">🧳 Option 1: Load from the Internet (Recommended)</h3>
+<p>If your data is stored in a GitHub repository (like this project), you can automatically download and use it in Google Colab.<br>
+This is great because:</p>
+<ul>
+<li>You don’t need to upload files manually</li>
+<li>Everyone in your group sees the same structure</li>
+</ul>
+<p>We’ll start by trying to <strong>clone the whole GitHub repository</strong>, just like downloading a suitcase full of datasets and notebooks.</p>
+</section>
+<section id="option-2-upload-manually" class="level3">
+<h3 class="anchored" data-anchor-id="option-2-upload-manually">📁 Option 2: Upload Manually</h3>
+<p>If cloning fails or you’re using your own file, you can upload it manually from your computer.<br>
+This is helpful if:</p>
+<ul>
+<li>You’re working with private data</li>
+<li>You’re just testing out a quick idea</li>
+</ul>
+<details>
+<summary>
+🦛
+</summary>
+<p>Think of it like this:</p>
+<ul>
+<li>The GitHub repository is your <strong>shared hippo pantry</strong></li>
+<li>Uploading a file manually is like <strong>bringing your own snacks</strong></li>
+</ul>
+</details>
+<p>We’ll now run a code cell that first <strong>tries the automatic method</strong>, and falls back to manual upload if needed.<br>
+Don’t worry — it explains everything along the way!</p>
+<div id="colab_setup" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>run ..<span class="op">/</span>..<span class="op">/</span>bootstrap.py    <span class="co"># installs requirements + editable package</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fns_toolkit <span class="im">as</span> fns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>🔧 Installing requirements…
+Requirement already satisfied: anyio==4.9.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 1)) (4.9.0)
+Requirement already satisfied: appnope==0.1.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 2)) (0.1.4)
+Requirement already satisfied: argon2-cffi==23.1.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 3)) (23.1.0)
+Requirement already satisfied: argon2-cffi-bindings==21.2.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 4)) (21.2.0)
+Requirement already satisfied: arrow==1.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 5)) (1.3.0)
+Requirement already satisfied: arviz==0.16.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 6)) (0.16.1)
+Requirement already satisfied: asttokens==3.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 7)) (3.0.0)
+Requirement already satisfied: async-lru==2.0.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 8)) (2.0.5)
+Requirement already satisfied: attrs==25.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 9)) (25.3.0)
+Requirement already satisfied: autograd==1.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 10)) (1.7.0)
+Requirement already satisfied: autograd-gamma==0.5.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 11)) (0.5.0)
+Requirement already satisfied: babel==2.17.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 12)) (2.17.0)
+Requirement already satisfied: beautifulsoup4==4.13.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 13)) (4.13.3)
+Requirement already satisfied: bleach==6.2.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 14)) (6.2.0)
+Requirement already satisfied: cachetools==5.5.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 15)) (5.5.2)
+Requirement already satisfied: certifi==2025.1.31 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 16)) (2025.1.31)
+Requirement already satisfied: cffi==1.17.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 17)) (1.17.1)
+Requirement already satisfied: charset-normalizer==3.4.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 18)) (3.4.1)
+Requirement already satisfied: cloudpickle==3.1.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 19)) (3.1.1)
+Requirement already satisfied: comm==0.2.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 20)) (0.2.2)
+Requirement already satisfied: cons==0.4.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 21)) (0.4.6)
+Requirement already satisfied: contourpy==1.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 22)) (1.3.0)
+Requirement already satisfied: cycler==0.12.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 23)) (0.12.1)
+Requirement already satisfied: debugpy==1.8.13 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 24)) (1.8.13)
+Requirement already satisfied: decorator==5.2.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 25)) (5.2.1)
+Requirement already satisfied: defusedxml==0.7.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 26)) (0.7.1)
+Requirement already satisfied: et_xmlfile==2.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 27)) (2.0.0)
+Requirement already satisfied: etuples==0.3.9 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 28)) (0.3.9)
+Requirement already satisfied: exceptiongroup==1.2.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 29)) (1.2.2)
+Requirement already satisfied: executing==2.2.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 30)) (2.2.0)
+Requirement already satisfied: fastjsonschema==2.21.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 31)) (2.21.1)
+Requirement already satisfied: fastprogress==1.0.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 32)) (1.0.3)
+Requirement already satisfied: filelock==3.18.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 33)) (3.18.0)
+Requirement already satisfied: fonttools==4.57.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 34)) (4.57.0)
+Requirement already satisfied: formulaic==1.1.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 35)) (1.1.1)
+Requirement already satisfied: fqdn==1.5.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 36)) (1.5.1)
+Requirement already satisfied: h11==0.14.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 37)) (0.14.0)
+Requirement already satisfied: h5netcdf==1.6.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 38)) (1.6.1)
+Requirement already satisfied: h5py==3.13.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 39)) (3.13.0)
+Requirement already satisfied: httpcore==1.0.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 40)) (1.0.7)
+Requirement already satisfied: httpx==0.28.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 41)) (0.28.1)
+Requirement already satisfied: idna==3.10 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 42)) (3.10)
+Requirement already satisfied: importlib_metadata==8.6.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 43)) (8.6.1)
+Requirement already satisfied: importlib_resources==6.5.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 44)) (6.5.2)
+Requirement already satisfied: interface-meta==1.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 45)) (1.3.0)
+Requirement already satisfied: ipykernel==6.29.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 46)) (6.29.5)
+Requirement already satisfied: ipython==8.18.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 47)) (8.18.1)
+Requirement already satisfied: ipywidgets==8.1.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 48)) (8.1.6)
+Requirement already satisfied: isoduration==20.11.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 49)) (20.11.0)
+Requirement already satisfied: jedi==0.19.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 50)) (0.19.2)
+Requirement already satisfied: Jinja2==3.1.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 51)) (3.1.6)
+Requirement already satisfied: json5==0.12.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 52)) (0.12.0)
+Requirement already satisfied: jsonpointer==3.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 53)) (3.0.0)
+Requirement already satisfied: jsonschema==4.23.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 54)) (4.23.0)
+Requirement already satisfied: jsonschema-specifications==2024.10.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 55)) (2024.10.1)
+Requirement already satisfied: jupyter==1.1.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 56)) (1.1.1)
+Requirement already satisfied: jupyter-console==6.6.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 57)) (6.6.3)
+Requirement already satisfied: jupyter-events==0.12.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 58)) (0.12.0)
+Requirement already satisfied: jupyter-lsp==2.2.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 59)) (2.2.5)
+Requirement already satisfied: jupyter_client==8.6.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 60)) (8.6.3)
+Requirement already satisfied: jupyter_core==5.7.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 61)) (5.7.2)
+Requirement already satisfied: jupyter_server==2.15.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 62)) (2.15.0)
+Requirement already satisfied: jupyter_server_terminals==0.5.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 63)) (0.5.3)
+Requirement already satisfied: jupyterlab==4.4.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 64)) (4.4.0)
+Requirement already satisfied: jupyterlab_pygments==0.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 65)) (0.3.0)
+Requirement already satisfied: jupyterlab_server==2.27.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 66)) (2.27.3)
+Requirement already satisfied: jupyterlab_widgets==3.0.14 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 67)) (3.0.14)
+Requirement already satisfied: kiwisolver==1.4.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 68)) (1.4.7)
+Requirement already satisfied: lifelines==0.30.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 69)) (0.30.0)
+Requirement already satisfied: logical-unification==0.4.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 70)) (0.4.6)
+Requirement already satisfied: MarkupSafe==3.0.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 71)) (3.0.2)
+Requirement already satisfied: matplotlib==3.9.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 72)) (3.9.4)
+Requirement already satisfied: matplotlib-inline==0.1.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 73)) (0.1.7)
+Requirement already satisfied: miniKanren==1.0.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 74)) (1.0.3)
+Requirement already satisfied: mistune==3.1.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 75)) (3.1.3)
+Requirement already satisfied: multipledispatch==1.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 76)) (1.0.0)
+Requirement already satisfied: nbclient==0.10.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 77)) (0.10.2)
+Requirement already satisfied: nbconvert==7.16.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 78)) (7.16.6)
+Requirement already satisfied: nbformat==5.10.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 79)) (5.10.4)
+Requirement already satisfied: nest-asyncio==1.6.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 80)) (1.6.0)
+Requirement already satisfied: notebook==7.4.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 81)) (7.4.0)
+Requirement already satisfied: notebook_shim==0.2.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 82)) (0.2.4)
+Requirement already satisfied: numpy==1.26.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 83)) (1.26.4)
+Requirement already satisfied: openpyxl==3.1.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 84)) (3.1.5)
+Requirement already satisfied: overrides==7.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 85)) (7.7.0)
+Requirement already satisfied: packaging==24.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 86)) (24.2)
+Requirement already satisfied: pandas==2.2.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 87)) (2.2.3)
+Requirement already satisfied: pandocfilters==1.5.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 88)) (1.5.1)
+Requirement already satisfied: parso==0.8.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 89)) (0.8.4)
+Requirement already satisfied: patsy==1.0.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 90)) (1.0.1)
+Requirement already satisfied: pexpect==4.9.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 91)) (4.9.0)
+Requirement already satisfied: pillow==11.1.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 92)) (11.1.0)
+Requirement already satisfied: platformdirs==4.3.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 93)) (4.3.7)
+Requirement already satisfied: prometheus_client==0.21.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 94)) (0.21.1)
+Requirement already satisfied: prompt_toolkit==3.0.50 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 95)) (3.0.50)
+Requirement already satisfied: psutil==7.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 96)) (7.0.0)
+Requirement already satisfied: ptyprocess==0.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 97)) (0.7.0)
+Requirement already satisfied: pure_eval==0.2.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 98)) (0.2.3)
+Requirement already satisfied: pycparser==2.22 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 99)) (2.22)
+Requirement already satisfied: Pygments==2.19.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 100)) (2.19.1)
+Requirement already satisfied: pymc==5.9.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 101)) (5.9.0)
+Requirement already satisfied: pyparsing==3.2.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 102)) (3.2.3)
+Requirement already satisfied: pytensor==2.17.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 103)) (2.17.4)
+Requirement already satisfied: python-dateutil==2.9.0.post0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 104)) (2.9.0.post0)
+Requirement already satisfied: python-json-logger==3.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 105)) (3.3.0)
+Requirement already satisfied: pytz==2025.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 106)) (2025.2)
+Requirement already satisfied: PyYAML==6.0.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 107)) (6.0.2)
+Requirement already satisfied: pyzmq==26.4.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 108)) (26.4.0)
+Requirement already satisfied: referencing==0.36.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 109)) (0.36.2)
+Requirement already satisfied: requests==2.32.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 110)) (2.32.3)
+Requirement already satisfied: rfc3339-validator==0.1.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 111)) (0.1.4)
+Requirement already satisfied: rfc3986-validator==0.1.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 112)) (0.1.1)
+Requirement already satisfied: rpds-py==0.24.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 113)) (0.24.0)
+Requirement already satisfied: scipy==1.11.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 114)) (1.11.3)
+Requirement already satisfied: seaborn==0.13.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 115)) (0.13.2)
+Requirement already satisfied: Send2Trash==1.8.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 116)) (1.8.3)
+Requirement already satisfied: six==1.17.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 117)) (1.17.0)
+Requirement already satisfied: sniffio==1.3.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 118)) (1.3.1)
+Requirement already satisfied: soupsieve==2.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 119)) (2.6)
+Requirement already satisfied: stack-data==0.6.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 120)) (0.6.3)
+Requirement already satisfied: statsmodels==0.14.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 121)) (0.14.4)
+Requirement already satisfied: tableone==0.9.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 122)) (0.9.4)
+Requirement already satisfied: tabulate==0.9.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 123)) (0.9.0)
+Requirement already satisfied: terminado==0.18.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 124)) (0.18.1)
+Requirement already satisfied: tinycss2==1.4.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 125)) (1.4.0)
+Requirement already satisfied: tomli==2.2.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 126)) (2.2.1)
+Requirement already satisfied: toolz==1.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 127)) (1.0.0)
+Requirement already satisfied: tornado==6.4.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 128)) (6.4.2)
+Requirement already satisfied: traitlets==5.14.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 129)) (5.14.3)
+Requirement already satisfied: types-python-dateutil==2.9.0.20241206 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 130)) (2.9.0.20241206)
+Requirement already satisfied: typing_extensions==4.13.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 131)) (4.13.1)
+Requirement already satisfied: tzdata==2025.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 132)) (2025.2)
+Requirement already satisfied: uri-template==1.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 133)) (1.3.0)
+Requirement already satisfied: urllib3==2.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 134)) (2.3.0)
+Requirement already satisfied: wcwidth==0.2.13 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 135)) (0.2.13)
+Requirement already satisfied: webcolors==24.11.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 136)) (24.11.1)
+Requirement already satisfied: webencodings==0.5.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 137)) (0.5.1)
+Requirement already satisfied: websocket-client==1.8.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 138)) (1.8.0)
+Requirement already satisfied: widgetsnbextension==4.0.14 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 139)) (4.0.14)
+Requirement already satisfied: wrapt==1.17.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 140)) (1.17.2)
+Requirement already satisfied: xarray==2024.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 141)) (2024.7.0)
+Requirement already satisfied: xarray-einstats==0.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 142)) (0.7.0)
+Requirement already satisfied: zipp==3.21.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from -r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 143)) (3.21.0)
+Requirement already satisfied: setuptools&gt;=60.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from arviz==0.16.1-&gt;-r /Users/gunter/Documents/data-analysis-toolkit-FNS/requirements.txt (line 6)) (79.0.1)
+🔧 Installing toolkit editable…
+Obtaining file:///Users/gunter/Documents/data-analysis-toolkit-FNS
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Requirement already satisfied: anyio==4.9.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.9.0)
+Requirement already satisfied: appnope==0.1.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.1.4)
+Requirement already satisfied: argon2-cffi==23.1.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (23.1.0)
+Requirement already satisfied: argon2-cffi-bindings==21.2.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (21.2.0)
+Requirement already satisfied: arrow==1.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.3.0)
+Requirement already satisfied: arviz==0.16.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.16.1)
+Requirement already satisfied: asttokens==3.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.0.0)
+Requirement already satisfied: async-lru==2.0.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.0.5)
+Requirement already satisfied: attrs==25.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (25.3.0)
+Requirement already satisfied: autograd==1.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.7.0)
+Requirement already satisfied: autograd-gamma==0.5.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.5.0)
+Requirement already satisfied: babel==2.17.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.17.0)
+Requirement already satisfied: beautifulsoup4==4.13.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.13.3)
+Requirement already satisfied: bleach==6.2.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (6.2.0)
+Requirement already satisfied: cachetools==5.5.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (5.5.2)
+Requirement already satisfied: certifi==2025.1.31 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2025.1.31)
+Requirement already satisfied: cffi==1.17.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.17.1)
+Requirement already satisfied: charset-normalizer==3.4.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.4.1)
+Requirement already satisfied: cloudpickle==3.1.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.1.1)
+Requirement already satisfied: comm==0.2.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.2.2)
+Requirement already satisfied: cons==0.4.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.4.6)
+Requirement already satisfied: contourpy==1.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.3.0)
+Requirement already satisfied: cycler==0.12.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.12.1)
+Requirement already satisfied: debugpy==1.8.13 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.8.13)
+Requirement already satisfied: decorator==5.2.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (5.2.1)
+Requirement already satisfied: defusedxml==0.7.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.7.1)
+Requirement already satisfied: et_xmlfile==2.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.0.0)
+Requirement already satisfied: etuples==0.3.9 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.3.9)
+Requirement already satisfied: exceptiongroup==1.2.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.2.2)
+Requirement already satisfied: executing==2.2.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.2.0)
+Requirement already satisfied: fastjsonschema==2.21.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.21.1)
+Requirement already satisfied: fastprogress==1.0.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.0.3)
+Requirement already satisfied: filelock==3.18.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.18.0)
+Requirement already satisfied: fonttools==4.57.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.57.0)
+Requirement already satisfied: formulaic==1.1.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.1.1)
+Requirement already satisfied: fqdn==1.5.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.5.1)
+Requirement already satisfied: h11==0.14.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.14.0)
+Requirement already satisfied: h5netcdf==1.6.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.6.1)
+Requirement already satisfied: h5py==3.13.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.13.0)
+Requirement already satisfied: httpcore==1.0.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.0.7)
+Requirement already satisfied: httpx==0.28.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.28.1)
+Requirement already satisfied: idna==3.10 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.10)
+Requirement already satisfied: importlib_metadata==8.6.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (8.6.1)
+Requirement already satisfied: importlib_resources==6.5.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (6.5.2)
+Requirement already satisfied: interface-meta==1.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.3.0)
+Requirement already satisfied: ipykernel==6.29.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (6.29.5)
+Requirement already satisfied: ipython==8.18.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (8.18.1)
+Requirement already satisfied: ipywidgets==8.1.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (8.1.6)
+Requirement already satisfied: isoduration==20.11.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (20.11.0)
+Requirement already satisfied: jedi==0.19.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.19.2)
+Requirement already satisfied: Jinja2==3.1.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.1.6)
+Requirement already satisfied: json5==0.12.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.12.0)
+Requirement already satisfied: jsonpointer==3.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.0.0)
+Requirement already satisfied: jsonschema==4.23.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.23.0)
+Requirement already satisfied: jsonschema-specifications==2024.10.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2024.10.1)
+Requirement already satisfied: jupyter==1.1.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.1.1)
+Requirement already satisfied: jupyter-console==6.6.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (6.6.3)
+Requirement already satisfied: jupyter-events==0.12.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.12.0)
+Requirement already satisfied: jupyter-lsp==2.2.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.2.5)
+Requirement already satisfied: jupyter_client==8.6.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (8.6.3)
+Requirement already satisfied: jupyter_core==5.7.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (5.7.2)
+Requirement already satisfied: jupyter_server==2.15.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.15.0)
+Requirement already satisfied: jupyter_server_terminals==0.5.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.5.3)
+Requirement already satisfied: jupyterlab==4.4.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.4.0)
+Requirement already satisfied: jupyterlab_pygments==0.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.3.0)
+Requirement already satisfied: jupyterlab_server==2.27.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.27.3)
+Requirement already satisfied: jupyterlab_widgets==3.0.14 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.0.14)
+Requirement already satisfied: kiwisolver==1.4.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.4.7)
+Requirement already satisfied: lifelines==0.30.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.30.0)
+Requirement already satisfied: logical-unification==0.4.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.4.6)
+Requirement already satisfied: MarkupSafe==3.0.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.0.2)
+Requirement already satisfied: matplotlib==3.9.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.9.4)
+Requirement already satisfied: matplotlib-inline==0.1.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.1.7)
+Requirement already satisfied: miniKanren==1.0.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.0.3)
+Requirement already satisfied: mistune==3.1.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.1.3)
+Requirement already satisfied: multipledispatch==1.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.0.0)
+Requirement already satisfied: nbclient==0.10.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.10.2)
+Requirement already satisfied: nbconvert==7.16.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (7.16.6)
+Requirement already satisfied: nbformat==5.10.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (5.10.4)
+Requirement already satisfied: nest-asyncio==1.6.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.6.0)
+Requirement already satisfied: notebook==7.4.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (7.4.0)
+Requirement already satisfied: notebook_shim==0.2.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.2.4)
+Requirement already satisfied: numpy==1.26.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.26.4)
+Requirement already satisfied: openpyxl==3.1.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.1.5)
+Requirement already satisfied: overrides==7.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (7.7.0)
+Requirement already satisfied: packaging==24.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (24.2)
+Requirement already satisfied: pandas==2.2.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.2.3)
+Requirement already satisfied: pandocfilters==1.5.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.5.1)
+Requirement already satisfied: parso==0.8.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.8.4)
+Requirement already satisfied: patsy==1.0.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.0.1)
+Requirement already satisfied: pexpect==4.9.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.9.0)
+Requirement already satisfied: pillow==11.1.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (11.1.0)
+Requirement already satisfied: platformdirs==4.3.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.3.7)
+Requirement already satisfied: prometheus_client==0.21.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.21.1)
+Requirement already satisfied: prompt_toolkit==3.0.50 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.0.50)
+Requirement already satisfied: psutil==7.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (7.0.0)
+Requirement already satisfied: ptyprocess==0.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.7.0)
+Requirement already satisfied: pure_eval==0.2.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.2.3)
+Requirement already satisfied: pycparser==2.22 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.22)
+Requirement already satisfied: Pygments==2.19.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.19.1)
+Requirement already satisfied: pymc==5.9.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (5.9.0)
+Requirement already satisfied: pyparsing==3.2.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.2.3)
+Requirement already satisfied: pytensor==2.17.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.17.4)
+Requirement already satisfied: python-dateutil==2.9.0.post0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.9.0.post0)
+Requirement already satisfied: python-json-logger==3.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.3.0)
+Requirement already satisfied: pytz==2025.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2025.2)
+Requirement already satisfied: PyYAML==6.0.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (6.0.2)
+Requirement already satisfied: pyzmq==26.4.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (26.4.0)
+Requirement already satisfied: referencing==0.36.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.36.2)
+Requirement already satisfied: requests==2.32.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.32.3)
+Requirement already satisfied: rfc3339-validator==0.1.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.1.4)
+Requirement already satisfied: rfc3986-validator==0.1.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.1.1)
+Requirement already satisfied: rpds-py==0.24.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.24.0)
+Requirement already satisfied: scipy==1.11.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.11.3)
+Requirement already satisfied: seaborn==0.13.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.13.2)
+Requirement already satisfied: Send2Trash==1.8.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.8.3)
+Requirement already satisfied: six==1.17.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.17.0)
+Requirement already satisfied: sniffio==1.3.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.3.1)
+Requirement already satisfied: soupsieve==2.6 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.6)
+Requirement already satisfied: stack-data==0.6.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.6.3)
+Requirement already satisfied: statsmodels==0.14.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.14.4)
+Requirement already satisfied: tableone==0.9.4 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.9.4)
+Requirement already satisfied: tabulate==0.9.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.9.0)
+Requirement already satisfied: terminado==0.18.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.18.1)
+Requirement already satisfied: tinycss2==1.4.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.4.0)
+Requirement already satisfied: tomli==2.2.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.2.1)
+Requirement already satisfied: toolz==1.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.0.0)
+Requirement already satisfied: tornado==6.4.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (6.4.2)
+Requirement already satisfied: traitlets==5.14.3 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (5.14.3)
+Requirement already satisfied: types-python-dateutil==2.9.0.20241206 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.9.0.20241206)
+Requirement already satisfied: typing_extensions==4.13.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.13.1)
+Requirement already satisfied: tzdata==2025.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2025.2)
+Requirement already satisfied: uri-template==1.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.3.0)
+Requirement already satisfied: urllib3==2.3.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2.3.0)
+Requirement already satisfied: wcwidth==0.2.13 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.2.13)
+Requirement already satisfied: webcolors==24.11.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (24.11.1)
+Requirement already satisfied: webencodings==0.5.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.5.1)
+Requirement already satisfied: websocket-client==1.8.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.8.0)
+Requirement already satisfied: widgetsnbextension==4.0.14 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (4.0.14)
+Requirement already satisfied: wrapt==1.17.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (1.17.2)
+Requirement already satisfied: xarray==2024.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (2024.7.0)
+Requirement already satisfied: xarray-einstats==0.7.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (0.7.0)
+Requirement already satisfied: zipp==3.21.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from data-analysis-toolkit-fns==2.0.0) (3.21.0)
+Requirement already satisfied: setuptools&gt;=60.0.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from arviz==0.16.1-&gt;data-analysis-toolkit-fns==2.0.0) (79.0.1)
+Building wheels for collected packages: data-analysis-toolkit-fns
+  Building editable for data-analysis-toolkit-fns (pyproject.toml): started
+  Building editable for data-analysis-toolkit-fns (pyproject.toml): finished with status 'done'
+  Created wheel for data-analysis-toolkit-fns: filename=data_analysis_toolkit_fns-2.0.0-0.editable-py3-none-any.whl size=6134 sha256=e6f7582bed6685dc425a7bd62f4e38e0fba383877033c13dcd565dedc82f50c4
+  Stored in directory: /private/var/folders/jr/p60s3gd574d_f62sc7_0bzfm0000gq/T/pip-ephem-wheel-cache-bj30ofov/wheels/d9/61/00/78f2734b520b566ba6cc685a244c16337951b4a6f9f27b2c3d
+Successfully built data-analysis-toolkit-fns
+Installing collected packages: data-analysis-toolkit-fns
+  Attempting uninstall: data-analysis-toolkit-fns
+    Found existing installation: data-analysis-toolkit-fns 2.0.0
+    Uninstalling data-analysis-toolkit-fns-2.0.0:
+      Successfully uninstalled data-analysis-toolkit-fns-2.0.0
+Successfully installed data-analysis-toolkit-fns-2.0.0
+✅ Environment ready!</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="installing-and-using-python-packages" class="level2">
+<h2 class="anchored" data-anchor-id="installing-and-using-python-packages">📦 Installing and Using Python Packages</h2>
+<p>Python is powerful, but it doesn’t come with everything built-in.<br>
+That’s where <strong>packages</strong> come in — they’re like apps you install to give Python superpowers!</p>
+<hr>
+<section id="what-is-a-package" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-a-package">🛠️ What is a package?</h3>
+<p>A package is a collection of code written by others that you can reuse in your own projects.</p>
+<p>Think of them as:</p>
+<ul>
+<li>🧰 Specialised tools you add to your data analysis workbench</li>
+<li>📚 Cheat codes that help you do complex things with just a few lines</li>
+</ul>
+<hr>
+</section>
+<section id="in-this-notebook-well-install-and-use" class="level3">
+<h3 class="anchored" data-anchor-id="in-this-notebook-well-install-and-use">📦 In this notebook, we’ll install and use:</h3>
+<ul>
+<li><strong><code>pandas</code></strong> – Makes working with data tables easy, like using a spreadsheet in Python</li>
+<li><strong><code>numpy</code></strong> – Adds powerful maths and statistics tools (great for calculations!)</li>
+<li><strong><code>matplotlib</code></strong> – Lets you create simple graphs and plots</li>
+</ul>
+<p>We’ll use <code>%pip install</code> to make sure these are available in your current environment.<br>
+(In Google Colab, <code>%pip</code> works just like the normal terminal command <code>pip</code> but runs inside the notebook.)</p>
+<hr>
+<details>
+<summary>
+🦛
+</summary>
+<em>Even hippos appreciate the right tools for the job — let’s load ours!</em>
+</details>
+<div id="setup" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install core packages</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy matplotlib  <span class="co"># For Colab users</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Your data analysis environment is ready!'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Requirement already satisfied: pandas in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (2.2.3)
+Requirement already satisfied: numpy in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (1.26.4)
+Requirement already satisfied: matplotlib in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (3.9.4)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from pandas) (2025.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from pandas) (2025.2)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from matplotlib) (1.3.0)
+Requirement already satisfied: cycler&gt;=0.10 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from matplotlib) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from matplotlib) (4.57.0)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from matplotlib) (1.4.7)
+Requirement already satisfied: packaging&gt;=20.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from matplotlib) (24.2)
+Requirement already satisfied: pillow&gt;=8 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from matplotlib) (11.1.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from matplotlib) (3.2.3)
+Requirement already satisfied: importlib-resources&gt;=3.2.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from matplotlib) (6.5.2)
+Requirement already satisfied: zipp&gt;=3.1.0 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from importlib-resources&gt;=3.2.0-&gt;matplotlib) (3.21.0)
+Requirement already satisfied: six&gt;=1.5 in /Users/gunter/Documents/data-analysis-toolkit-FNS/venv/lib/python3.9/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas) (1.17.0)
+Note: you may need to restart the kernel to use updated packages.
+Your data analysis environment is ready!</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="test-your-setup" class="level2">
+<h2 class="anchored" data-anchor-id="test-your-setup">✅ Test Your Setup</h2>
+<p>Let’s check that:</p>
+<ul>
+<li>Your Python environment works</li>
+<li>Required packages are installed</li>
+<li>You can read a file and make a plot</li>
+</ul>
+<p>We’ll use a small dataset called <code>hippo_diets.csv</code>, which contains sample records from a fictional hippo nutrition study. 🦛</p>
+<hr>
+<section id="what-will-this-code-do" class="level3">
+<h3 class="anchored" data-anchor-id="what-will-this-code-do">📚 What will this code do?</h3>
+<ol type="1">
+<li><p><strong>Read a CSV file</strong><br>
+We use <code>pd.read_csv()</code> to load the dataset into a <code>DataFrame</code> — a special table-like structure in Python that’s great for analysis.</p></li>
+<li><p><strong>Print the first row</strong><br>
+This lets us quickly check that the data loaded correctly.</p></li>
+<li><p><strong>Make a scatter plot</strong><br>
+We’ll plot <code>Calories</code> vs <code>Protein</code> to get a feel for the data.</p></li>
+</ol>
+<div id="test_load" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fns_toolkit <span class="im">import</span> get_dataset</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> get_dataset(<span class="st">'hippo_diets.csv'</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head(<span class="dv">1</span>))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.scatter(df[<span class="st">'Calories'</span>], df[<span class="st">'Protein'</span>])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Calories'</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Protein (g)'</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Sample Hippo Diet Data'</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ID  Calories  Protein        Date
+0  H1      2525     77.3  2024-01-01</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="0_getting_started_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">✅ Conclusion</h2>
+<p>🎉 <strong>Success!</strong> You’ve verified that your Python environment is working properly:</p>
+<ul>
+<li>✅ You’ve installed key packages<br>
+</li>
+<li>✅ Loaded your first dataset<br>
+</li>
+<li>✅ Created a simple visualisation</li>
+</ul>
+<p>You’re now fully set up and ready to begin exploring data in the exciting world of food and nutrition science. 🦛</p>
+<hr>
+<section id="whats-next" class="level3">
+<h3 class="anchored" data-anchor-id="whats-next">🚀 What’s Next?</h3>
+<p>Head to <strong>Notebook 1.1</strong> to begin your journey into data science environments — you’ll learn how to think like a data scientist and explore how we actually work with data.</p>
+<hr>
+</section>
+<section id="helpful-resources" class="level3">
+<h3 class="anchored" data-anchor-id="helpful-resources">📚 Helpful Resources</h3>
+<ul>
+<li>🔧 <a href="https://www.anaconda.com/products/distribution">Install Anaconda (for local setup)</a><br>
+</li>
+<li>☁️ <a href="https://colab.research.google.com/">Google Colab Documentation</a><br>
+</li>
+<li>📦 <a href="https://github.com/ggkuhnle/data-analysis-toolkit-FNS">Course Repository on GitHub</a></li>
+</ul>
+
+
+</section>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/01_infrastructure/index.html" class="pagination-link" aria-label="Infrastructure">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Infrastructure</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notebooks/01_infrastructure/1.1_what_is_data_science_env.html" class="pagination-link" aria-label="📊 1.1 Introduction to Data Science Environments">
+        <span class="nav-page-text"><span class="chapter-title">📊 1.1 Introduction to Data Science Environments</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/ggkuhnle/data-analysis-projects/blob/main/notebooks/01_infrastructure/0_getting_started.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ggkuhnle/data-analysis-projects/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

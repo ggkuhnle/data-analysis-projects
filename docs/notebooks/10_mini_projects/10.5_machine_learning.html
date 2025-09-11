@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>🌟 Machine Learning for Nutrition &amp; Food Science: Cooking Up Insights! 🥗 – Data Analysis Toolkit for Food and Nutrition Sciences</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notebooks/10_mini_projects/10.6_ai.html" rel="next">
+<link href="../../notebooks/10_mini_projects/10.4_metabolomics.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/index.html">10 Mini Projects</a></li><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/10.5_machine_learning.html"><span class="chapter-title">🌟 Machine Learning for Nutrition &amp; Food Science: Cooking Up Insights! 🥗</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Data Analysis Toolkit for Food and Nutrition Sciences</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ggkuhnle/data-analysis-projects" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Analysis Toolkit for Food and Nutrition Sciences</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../syllabus.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Syllabus: Data Analysis Toolkit for Food and Nutrition Sciences 🦛</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">01 Infrastructure</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Infrastructure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/0_getting_started.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">👩‍💻 Notebook 0 – Getting Started</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.1_what_is_data_science_env.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 1.1 Introduction to Data Science Environments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.2_python_vs_r.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧮 1.2 Python vs R vs Other Tools for Nutrition Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.3_intro_to_git.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📚 1.3 Introduction to Git 🦛</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/01_infrastructure/1.4_quarto_basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📓 1.4 Quarto Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">02 Programming Basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2 – Programming Basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.0_intro_to_programming.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧠 2.0 Introduction to Programming for Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.1_programming_fundamentals.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧠 Programming Fundamentals: The Big Picture</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.2_data_types_conversion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧮 2.2 Data Types and Conversion (Revised)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.3_functions_loops.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🚀 2.3 Functions, Loops, and Control Flow in Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.4_data_structures.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 2.4 Data Structures</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.5_input_output.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🖥️ 2.6 Input &amp; Output in Python</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/02_programming_basics/2.6_oop_basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧑‍💻 2.5 Object-Oriented Programming (OOP) Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">03 Data Handling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.0_introduction_to_data_handling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧰 3.0 Introduction to Data‑Handling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.1_principles_of_tidy_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🦛 3.1 Principles of Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.2_importing_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 3.2 Importing Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.3_data_cleaning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧹 3.3 Data Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.4_reshaping_merging.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🔄 3.4 Data Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.5_feature_engineering_and_calculation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🔄 3.4 Data Transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/03_data_handling/3.6_data_aggregation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 3.5 Data Aggregation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">04 Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.1_distributions_visualisation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 4.1 Data Distributions and Visualisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.2_exploratory_data_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 4.2 Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.3_correlation_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 4.3 Correlation Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.4_statistical_testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 4.4 Statistical Testing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.5_regression_modelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📉 4.5 Regression Modelling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/04_logistic_and_survival.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Regression and Survival Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.7_clinical_trial_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🩺 4.7 Analysing a Simulated Clinical Trial</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/04_data_analysis/4.8_clinical_trial_analysis_bp.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🩺 4.8 Advanced Clinical Trial Analysis: Pre/Post Blood Pressure Study</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">05 Advanced</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Advanced Topics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.1_bayesian_methods.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📈 5.1 Bayesian Methods in Nutrition Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.2_workflow_automation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">⚙️ 5.2 Workflow Automation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/advanced_bayesian.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Advanced Bayesian Modelling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.4_databases_sql.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🗄️ 5.4 Databases and SQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/05_advanced/5.5_dashboards.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📊 5.5 Creating Dashboards</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">06 Qualitative</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/6.1_intro_qualitative_research.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧾 6.1 Introduction to Qualitative Research</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/06_qualitative/6.2_text_analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">📝 6.2 Text Analysis for Qualitative Research</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">10 Mini Projects</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10 Mini Projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.1_clinical_trial.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 Clinical Trial: Hipponol Intervention Study</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.2_epidemiology_case_study.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Epidemiological Analysis: Cross-Sectional and Prospective Studies in Nutrition 🥗📊</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.3_handling_missing_data.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Handling Missing Data in Nutrition Science</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.4_metabolomics.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🧪 Multivariate Analysis: Concepts and Applications</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.5_machine_learning.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">🌟 Machine Learning for Nutrition &amp; Food Science: Cooking Up Insights! 🥗</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.6_ai.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Artificial Intelligence for Nutrition &amp; Food Science: Serving Up the Future! 🤖</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.7_llm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">🌟 Using LLM APIs for Nutrition &amp; Food Science: A Tasty AI Adventure! 🥑</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Frequentist vs.&nbsp;Bayesian Methods in Nutrition and Food Science 🥗📊</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/10_mini_projects/10.9_fortran.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploring Fortran in Nutrition Science 🧪📊</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction-to-machine-learning-in-nutrition-food-science" id="toc-introduction-to-machine-learning-in-nutrition-food-science" class="nav-link active" data-scroll-target="#introduction-to-machine-learning-in-nutrition-food-science">1. Introduction to Machine Learning in Nutrition &amp; Food Science 📊</a></li>
+  <li><a href="#logistic-regression-classifying-diets" id="toc-logistic-regression-classifying-diets" class="nav-link" data-scroll-target="#logistic-regression-classifying-diets">2. Logistic Regression: Classifying Diets 🍎</a>
+  <ul class="collapse">
+  <li><a href="#logistic-regression-in-action" id="toc-logistic-regression-in-action" class="nav-link" data-scroll-target="#logistic-regression-in-action">2.1 Logistic Regression in Action</a></li>
+  </ul></li>
+  <li><a href="#random-forest-identifying-key-nutrients" id="toc-random-forest-identifying-key-nutrients" class="nav-link" data-scroll-target="#random-forest-identifying-key-nutrients">3. Random Forest: Identifying Key Nutrients 🌳</a>
+  <ul class="collapse">
+  <li><a href="#random-forest-in-action" id="toc-random-forest-in-action" class="nav-link" data-scroll-target="#random-forest-in-action">3.1 Random Forest in Action</a></li>
+  </ul></li>
+  <li><a href="#support-vector-machines-svm-classifying-food-quality" id="toc-support-vector-machines-svm-classifying-food-quality" class="nav-link" data-scroll-target="#support-vector-machines-svm-classifying-food-quality">4. Support Vector Machines (SVM): Classifying Food Quality ⚔️</a>
+  <ul class="collapse">
+  <li><a href="#svm-in-action" id="toc-svm-in-action" class="nav-link" data-scroll-target="#svm-in-action">4.1 SVM in Action</a></li>
+  </ul></li>
+  <li><a href="#regression-with-gradient-boosting-predicting-nutrient-content" id="toc-regression-with-gradient-boosting-predicting-nutrient-content" class="nav-link" data-scroll-target="#regression-with-gradient-boosting-predicting-nutrient-content">5. Regression with Gradient Boosting: Predicting Nutrient Content 📈</a>
+  <ul class="collapse">
+  <li><a href="#gradient-boosting-in-action" id="toc-gradient-boosting-in-action" class="nav-link" data-scroll-target="#gradient-boosting-in-action">5.1 Gradient Boosting in Action</a></li>
+  </ul></li>
+  <li><a href="#feature-selection-finding-key-nutritional-factors" id="toc-feature-selection-finding-key-nutritional-factors" class="nav-link" data-scroll-target="#feature-selection-finding-key-nutritional-factors">6. Feature Selection: Finding Key Nutritional Factors ⭐</a>
+  <ul class="collapse">
+  <li><a href="#rfe-with-random-forest" id="toc-rfe-with-random-forest" class="nav-link" data-scroll-target="#rfe-with-random-forest">6.1 RFE with Random Forest</a></li>
+  </ul></li>
+  <li><a href="#summary-your-ml-toolkit-for-nutrition-food-science" id="toc-summary-your-ml-toolkit-for-nutrition-food-science" class="nav-link" data-scroll-target="#summary-your-ml-toolkit-for-nutrition-food-science">7. Summary: Your ML Toolkit for Nutrition &amp; Food Science 🧰</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.5_machine_learning.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ggkuhnle/data-analysis-projects/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/index.html">10 Mini Projects</a></li><li class="breadcrumb-item"><a href="../../notebooks/10_mini_projects/10.5_machine_learning.html"><span class="chapter-title">🌟 Machine Learning for Nutrition &amp; Food Science: Cooking Up Insights! 🥗</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">🌟 Machine Learning for Nutrition &amp; Food Science: Cooking Up Insights! 🥗</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Welcome to this tasty Jupyter Notebook on <strong>machine learning (ML)</strong> for nutrition and food science! Whether you’re snacking at home 🍎 or stirring ideas in a classroom, this guide will take you on a flavorful journey through ML techniques to analyze nutrition and food data. We’ll explore <strong>classification</strong> (e.g., healthy vs.&nbsp;unhealthy diets), <strong>regression</strong> (e.g., predicting nutrient content), <strong>feature selection</strong> (e.g., identifying key nutrients), and <strong>model evaluation</strong>! 🍴</p>
+<p>Expect hands-on code, fun exercises, and hidden treats (click the “Details” to reveal them)! Let’s dig in! 🚀</p>
+<section id="introduction-to-machine-learning-in-nutrition-food-science" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-machine-learning-in-nutrition-food-science">1. Introduction to Machine Learning in Nutrition &amp; Food Science 📊</h2>
+<p>Nutrition and food science data are like a recipe book 📖—full of ingredients (nutrients), dishes (diets), and quality checks (food safety). Machine learning helps us:</p>
+<ul>
+<li><strong>Classify</strong> diets or foods (e.g., healthy vs.&nbsp;unhealthy).</li>
+<li><strong>Predict</strong> nutritional values (e.g., calories or protein content).</li>
+<li><strong>Identify</strong> key factors (e.g., nutrients driving health outcomes).</li>
+</ul>
+<p>We’ll use Python with <code>scikit-learn</code>, <code>pandas</code>, and <code>matplotlib</code> to build ML models. No culinary degree needed—just curiosity! 😄</p>
+<p><strong>Exercise 1</strong>: Why is ML useful for nutrition and food science compared to traditional statistical methods? Jot down your thoughts (no code needed).</p>
+<details>
+<summary>
+💡 Hint
+</summary>
+Consider how ML handles complex datasets, non-linear relationships, and interactions between nutrients or food components.
+</details>
+<p>Let’s start with loading the necessary libraries:</p>
+<div id="a99d2a40" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>run ..<span class="op">/</span>..<span class="op">/</span>bootstrap.py    <span class="co"># installs requirements + editable package</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fns_toolkit <span class="im">as</span> fns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, confusion_matrix</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingRegressor</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_selection <span class="im">import</span> RFE</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="logistic-regression-classifying-diets" class="level2">
+<h2 class="anchored" data-anchor-id="logistic-regression-classifying-diets">2. Logistic Regression: Classifying Diets 🍎</h2>
+<p>Logistic regression is a classic ML method for binary classification (e.g., healthy vs.&nbsp;unhealthy diets). It’s simple yet powerful for nutrition data!</p>
+<section id="logistic-regression-in-action" class="level3">
+<h3 class="anchored" data-anchor-id="logistic-regression-in-action">2.1 Logistic Regression in Action</h3>
+<p>Let’s create a synthetic nutrition dataset (e.g., nutrient profiles) and classify diets as healthy or unhealthy.</p>
+<div id="11358506" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate synthetic nutrition dataset (60 samples, 10 nutrients/features)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">11088</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Calories'</span>: np.random.normal(<span class="dv">500</span>, <span class="dv">100</span>, <span class="dv">60</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Protein_g'</span>: np.random.normal(<span class="dv">30</span>, <span class="dv">5</span>, <span class="dv">60</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Carbs_g'</span>: np.random.normal(<span class="dv">60</span>, <span class="dv">10</span>, <span class="dv">60</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Fat_g'</span>: np.random.normal(<span class="dv">20</span>, <span class="dv">5</span>, <span class="dv">60</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Fiber_g'</span>: np.random.normal(<span class="dv">10</span>, <span class="dv">2</span>, <span class="dv">60</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Sugar_g'</span>: np.random.normal(<span class="dv">15</span>, <span class="dv">5</span>, <span class="dv">60</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Sodium_mg'</span>: np.random.normal(<span class="dv">800</span>, <span class="dv">200</span>, <span class="dv">60</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Vitamin_C_mg'</span>: np.random.normal(<span class="dv">50</span>, <span class="dv">10</span>, <span class="dv">60</span>),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Calcium_mg'</span>: np.random.normal(<span class="dv">300</span>, <span class="dv">50</span>, <span class="dv">60</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Iron_mg'</span>: np.random.normal(<span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">60</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> np.random.choice([<span class="dv">0</span>, <span class="dv">1</span>], size<span class="op">=</span><span class="dv">60</span>)  <span class="co"># 0 = unhealthy, 1 = healthy</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardize the data</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>data_scaled <span class="op">=</span> scaler.fit_transform(data)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Split into training and testing sets</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(data_scaled, labels, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Train logistic regression</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>log_reg.fit(X_train, y_train)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict and evaluate</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> log_reg.predict(X_test)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Logistic Regression Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.2f}</span><span class="ss"> 🎉'</span>)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot confusion matrix</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>, cbar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix for Diet Classification 🥗'</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>StandardScaler</strong>: Ensures nutrients (e.g., calories, protein) are on the same scale. - <strong>LogisticRegression</strong>: Predicts diet class (healthy/unhealthy) using nutrient profiles. - <strong>Confusion Matrix</strong>: Shows true positives, false positives, etc.</p>
+<p><strong>Exercise 2</strong>: Add a penalty parameter (<code>C=0.1</code>) to the <code>LogisticRegression</code> model to increase regularization. Does the accuracy change? Why?</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+<p>Change the model line to:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegression(C<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+Smaller <code>C</code> increases regularization, reducing overfitting but potentially lowering accuracy if the model is too constrained.
+</details>
+<p><strong>Learn More</strong>: Check out <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">scikit-learn’s Logistic Regression</a> for more details! 📚</p>
+</section>
+</section>
+<section id="random-forest-identifying-key-nutrients" class="level2">
+<h2 class="anchored" data-anchor-id="random-forest-identifying-key-nutrients">3. Random Forest: Identifying Key Nutrients 🌳</h2>
+<p>Random Forest is like a team of decision trees that classifies diets or ranks nutrients by importance. It’s great for pinpointing key dietary factors!</p>
+<section id="random-forest-in-action" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-in-action">3.1 Random Forest in Action</h3>
+<p>Let’s use a Random Forest to classify diets and identify important nutrients.</p>
+<div id="78e5dbf0" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Train Random Forest</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>rf <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>rf.fit(X_train, y_train)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict and evaluate</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>y_pred_rf <span class="op">=</span> rf.predict(X_test)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>accuracy_rf <span class="op">=</span> accuracy_score(y_test, y_pred_rf)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Random Forest Accuracy: </span><span class="sc">{</span>accuracy_rf<span class="sc">:.2f}</span><span class="ss"> 🌟'</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Feature importance (important nutrients)</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>importance <span class="op">=</span> rf.feature_importances_</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.bar(data.columns, importance, color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Nutrient Importance for Diet Classification 🥕'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Nutrient'</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Importance'</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'rf_importance.png'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>RandomForestClassifier</strong>: Combines multiple decision trees for robust predictions. - <strong>feature_importances_</strong>: Ranks nutrients by their contribution to diet classification.</p>
+<p><strong>Exercise 3</strong>: Increase <code>n_estimators</code> to 200. Does the accuracy improve? Are the top nutrients the same?</p>
+<details>
+<summary>
+💡 Hint
+</summary>
+More trees reduce variance but may not significantly change feature rankings. Compare the accuracy and plot!
+</details>
+<p><strong>Learn More</strong>: Explore <a href="https://scikit-learn.org/stable/modules/ensemble.html#forests-of-randomized-trees">Random Forests in scikit-learn</a> for more ML fun! 🚀</p>
+</section>
+</section>
+<section id="support-vector-machines-svm-classifying-food-quality" class="level2">
+<h2 class="anchored" data-anchor-id="support-vector-machines-svm-classifying-food-quality">4. Support Vector Machines (SVM): Classifying Food Quality ⚔️</h2>
+<p>SVMs find the best boundary to separate classes, ideal for tasks like classifying food quality (e.g., fresh vs.&nbsp;spoiled) based on nutritional or sensory data.</p>
+<section id="svm-in-action" class="level3">
+<h3 class="anchored" data-anchor-id="svm-in-action">4.1 SVM in Action</h3>
+<p>Let’s classify foods as fresh or spoiled using an SVM with a linear kernel.</p>
+<div id="2cce0c92" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Train SVM (using same dataset, now for food quality)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>svm <span class="op">=</span> SVC(kernel<span class="op">=</span><span class="st">'linear'</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>svm.fit(X_train, y_train)  <span class="co"># Labels: 0 = spoiled, 1 = fresh</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict and evaluate</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>y_pred_svm <span class="op">=</span> svm.predict(X_test)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>accuracy_svm <span class="op">=</span> accuracy_score(y_test, y_pred_svm)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'SVM Accuracy: </span><span class="sc">{</span>accuracy_svm<span class="sc">:.2f}</span><span class="ss"> 🛡️'</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot confusion matrix</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>cm_svm <span class="op">=</span> confusion_matrix(y_test, y_pred_svm)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm_svm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Greens'</span>, cbar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Confusion Matrix for Food Quality Classification 🍊'</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Predicted'</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True'</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'svm_cm.png'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>SVC</strong>: Support Vector Classifier with a linear kernel. - <strong>Hyperplane</strong>: Maximizes the margin between fresh and spoiled classes.</p>
+<p><strong>Exercise 4</strong>: Try an RBF kernel (<code>kernel='rbf'</code>) in the SVM. Does the accuracy improve? Why might this happen?</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+<p>Change the SVM line to:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>svm <span class="op">=</span> SVC(kernel<span class="op">=</span><span class="st">'rbf'</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+The RBF kernel captures non-linear patterns, which may improve accuracy if the data has complex relationships.
+</details>
+<p><strong>Learn More</strong>: Dive into <a href="https://scikit-learn.org/stable/modules/svm.html">SVMs in scikit-learn</a> for more insights! 🧠</p>
+</section>
+</section>
+<section id="regression-with-gradient-boosting-predicting-nutrient-content" class="level2">
+<h2 class="anchored" data-anchor-id="regression-with-gradient-boosting-predicting-nutrient-content">5. Regression with Gradient Boosting: Predicting Nutrient Content 📈</h2>
+<p>Sometimes we need to predict continuous outcomes, like the calorie content of a meal. Gradient Boosting is a powerful ML method for regression tasks.</p>
+<section id="gradient-boosting-in-action" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-boosting-in-action">5.1 Gradient Boosting in Action</h3>
+<p>Let’s predict calorie content using Gradient Boosting.</p>
+<div id="6d8e77c4" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate synthetic calorie outcome</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>outcome <span class="op">=</span> data[<span class="st">'Calories'</span>] <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">60</span>)  <span class="co"># Correlated with calories</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Use other nutrients as features</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>features <span class="op">=</span> data.drop(columns<span class="op">=</span>[<span class="st">'Calories'</span>])</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>features_scaled <span class="op">=</span> scaler.fit_transform(features)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Split data</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>X_train_reg, X_test_reg, y_train_reg, y_test_reg <span class="op">=</span> train_test_split(features_scaled, outcome, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Train Gradient Boosting</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>gbr <span class="op">=</span> GradientBoostingRegressor(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>gbr.fit(X_train_reg, y_train_reg)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict and evaluate</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>y_pred_gbr <span class="op">=</span> gbr.predict(X_test_reg)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> mean_squared_error(y_test_reg, y_pred_gbr)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Gradient Boosting MSE: </span><span class="sc">{</span>mse<span class="sc">:.2f}</span><span class="ss"> 📉'</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot predictions vs true values</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>plt.scatter(y_test_reg, y_pred_gbr, c<span class="op">=</span><span class="st">'purple'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>plt.plot([y_test_reg.<span class="bu">min</span>(), y_test_reg.<span class="bu">max</span>()], [y_test_reg.<span class="bu">min</span>(), y_test_reg.<span class="bu">max</span>()], <span class="st">'r--'</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'True Calories (kcal)'</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Predicted Calories (kcal)'</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Gradient Boosting Predictions for Calories 🥐'</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'gbr_predictions.png'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>GradientBoostingRegressor</strong>: Builds trees sequentially, correcting errors of previous trees. - <strong>MSE</strong>: Measures prediction error (lower is better).</p>
+<p><strong>Exercise 5</strong>: Increase <code>n_estimators</code> to 200 in the Gradient Boosting model. Does the MSE decrease? Why?</p>
+<details>
+<summary>
+💡 Hint
+</summary>
+More trees improve fit but risk overfitting. Check if the MSE stabilizes or worsens!
+</details>
+<p><strong>Learn More</strong>: Explore <a href="https://scikit-learn.org/stable/modules/ensemble.html#gradient-boosting">Gradient Boosting in scikit-learn</a> for more details! 🌟</p>
+</section>
+</section>
+<section id="feature-selection-finding-key-nutritional-factors" class="level2">
+<h2 class="anchored" data-anchor-id="feature-selection-finding-key-nutritional-factors">6. Feature Selection: Finding Key Nutritional Factors ⭐</h2>
+<p>Nutrition datasets often have many features. Feature selection helps us pick the most important nutrients (e.g., for health outcomes) using Recursive Feature Elimination (RFE).</p>
+<section id="rfe-with-random-forest" class="level3">
+<h3 class="anchored" data-anchor-id="rfe-with-random-forest">6.1 RFE with Random Forest</h3>
+<p>Let’s use RFE to select the top 5 nutrients for diet classification.</p>
+<div id="6a64f2b6" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply RFE with Random Forest</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>rfe <span class="op">=</span> RFE(estimator<span class="op">=</span>RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>), n_features_to_select<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>rfe.fit(X_train, y_train)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get selected features</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>selected_features <span class="op">=</span> data.columns[rfe.support_]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Top 5 Nutrients:'</span>, selected_features.tolist(), <span class="st">'🎯'</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Train Random Forest on selected features</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>X_train_selected <span class="op">=</span> X_train[:, rfe.support_]</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>X_test_selected <span class="op">=</span> X_test[:, rfe.support_]</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>rf_selected <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>rf_selected.fit(X_train_selected, y_train)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>y_pred_selected <span class="op">=</span> rf_selected.predict(X_test_selected)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>accuracy_selected <span class="op">=</span> accuracy_score(y_test, y_pred_selected)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Accuracy with Selected Features: </span><span class="sc">{</span>accuracy_selected<span class="sc">:.2f}</span><span class="ss"> 🚀'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Explanation</strong>: - <strong>RFE</strong>: Recursively eliminates less important nutrients. - <strong>selected_features</strong>: The top 5 nutrients for diet classification.</p>
+<p><strong>Exercise 6</strong>: Change <code>n_features_to_select</code> to 3. Does the accuracy drop? Why might this happen?</p>
+<details>
+<summary>
+💡 Solution
+</summary>
+Fewer features may reduce model performance if critical information is lost. Compare the accuracy and consider the trade-off!
+</details>
+<p><strong>Learn More</strong>: Check out <a href="https://scikit-learn.org/stable/modules/feature_selection.html">Feature Selection in scikit-learn</a> for more techniques! 🧠</p>
+</section>
+</section>
+<section id="summary-your-ml-toolkit-for-nutrition-food-science" class="level2">
+<h2 class="anchored" data-anchor-id="summary-your-ml-toolkit-for-nutrition-food-science">7. Summary: Your ML Toolkit for Nutrition &amp; Food Science 🧰</h2>
+<p>Here’s what you’ve cooked up:</p>
+<ul>
+<li><strong>Logistic Regression</strong> 📊: Simple classification of diets.</li>
+<li><strong>Random Forest</strong> 🌳: Robust classification and nutrient ranking.</li>
+<li><strong>SVM</strong> ⚔️: Powerful for food quality classification.</li>
+<li><strong>Gradient Boosting</strong> 📈: Accurate prediction of nutrient content.</li>
+<li><strong>Feature Selection</strong> ⭐: Identifies key nutritional factors.</li>
+</ul>
+<p><strong>Final Exercise</strong>: Download a real nutrition dataset (e.g., from <a href="https://fdc.nal.usda.gov/">USDA FoodData Central</a>) and apply one of these ML methods. Write a short paragraph summarizing your results!</p>
+<p><strong>What’s Next?</strong> Try advanced ML techniques like neural networks or combine ML with PCA for nutrition data. Keep exploring, and happy analyzing! 😄</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/10_mini_projects/10.4_metabolomics.html" class="pagination-link" aria-label="🧪 Multivariate Analysis: Concepts and Applications">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">🧪 Multivariate Analysis: Concepts and Applications</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notebooks/10_mini_projects/10.6_ai.html" class="pagination-link" aria-label="🌟 Artificial Intelligence for Nutrition &amp; Food Science: Serving Up the Future! 🤖">
+        <span class="nav-page-text"><span class="chapter-title">🌟 Artificial Intelligence for Nutrition &amp; Food Science: Serving Up the Future! 🤖</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.5_machine_learning.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/ggkuhnle/data-analysis-projects/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
