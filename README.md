@@ -2,7 +2,7 @@
 
 Welcome to the **Data Analysis Toolkit for Food and Nutrition Sciences**! This repository provides a collection of Jupyter notebooks designed to support students, researchers, and enthusiasts in exploring data analysis techniques for nutrition studies. With a hippo-themed flair (🦛), the toolkit covers topics from basic programming to advanced statistical methods, using datasets inspired by nutrition research.
 
-Visit the toolkit online at: [https://ggkuhnle.github.io/data-analysis-toolkit-FNS/](https://ggkuhnle.github.io/data-analysis-toolkit-FNS/)
+Visit the toolkit online at: [https://ggkuhnle.github.io/data-analysis-projects/](https://ggkuhnle.github.io/data-analysis-projects/)
 
 ## 📊 How to Use the Toolkit
 
@@ -15,7 +15,7 @@ Google Colab allows you to run the notebooks in the cloud without installing any
 #### Steps to Use in Colab
 
 1. **Visit the Toolkit Website** (~1 minute):
-   - Open [https://ggkuhnle.github.io/data-analysis-toolkit-FNS/](https://ggkuhnle.github.io/data-analysis-toolkit-FNS/) in your browser.
+   - Open [https://ggkuhnle.github.io/data-analysis-projects/](https://ggkuhnle.github.io/data-analysis-projects/) in your browser.
    - Navigate to the module you’re interested in (e.g., `04_data_analysis`).
 
 2. **Open a Notebook in Colab** (~1 minute):
@@ -63,11 +63,11 @@ If you prefer to run the notebooks on your own machine, you can set up a local e
    - Open a terminal or command prompt.
    - Clone the repository to your machine:
      ```
-     git clone https://github.com/ggkuhnle/data-analysis-toolkit-FNS.git
+     git clone https://github.com/ggkuhnle/data-analysis-projects.git
      ```
    - Navigate to the repository directory:
      ```
-     cd data-analysis-toolkit-FNS
+     cd data-analysis-projects
      ```
 
 2. **Set Up a Python Environment** (~5 minutes):
