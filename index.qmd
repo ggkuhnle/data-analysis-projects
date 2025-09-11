@@ -10,8 +10,7 @@ Welcome to the **Data Analysis Toolkit for Food and Nutrition Sciences**, a comp
 
 - **View the Site**: Browse tutorials at [https://ggkuhnle.github.io/data-analysis-projects/](https://ggkuhnle.github.io/data-analysis-projects/).
 - **Run in Colab**: Use the "Open in Colab" badges below to run notebooks in the cloud.
-- **Syllabus**: See the full course outline at [syllabus.html](syllabus.html).
-- **GitHub**: Clone or fork the repo at [github.com/ggkuhnle/data-analysis-toolkit-FNS](https://github.com/ggkuhnle/data-analysis-projects).
+- **GitHub**: Clone or fork the repo at [github.com/ggkuhnle/data-analysis-projects](https://github.com/ggkuhnle/data-analysis-projects).
 
 ## Modules 📚
 
