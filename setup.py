@@ -39,7 +39,7 @@ from setuptools import setup, find_packages  # noqa: E402
 README = (ROOT / "README.md").read_text()
 
 setup(
-    name="data-analysis-toolkit-fns",
+    name="data-analysis-projects",
     version="0.1.0",
     description="Teaching toolkit for Food & Nutrition Science data analysis",
     long_description=README,

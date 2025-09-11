@@ -10,23 +10,23 @@ This module guides you through setting up the tools needed for data analysis in 
 
 - **Getting Started**  
   Introduction to the toolkit and environment setup.  
-  [View HTML](0_getting_started.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/01_infrastructure/0_getting_started.ipynb)
+  [View HTML](0_getting_started.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/01_infrastructure/0_getting_started.ipynb)
 
 - **What is Data Science Environment**  
   Explore data science environments for nutrition research.  
-  [View HTML](1.1_what_is_data_science_env.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/01_infrastructure/1.1_what_is_data_science_env.ipynb)
+  [View HTML](1.1_what_is_data_science_env.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/01_infrastructure/1.1_what_is_data_science_env.ipynb)
 
 - **Python vs R**  
   Compare Python and R for data analysis.  
-  [View HTML](1.2_python_vs_r.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/01_infrastructure/1.2_python_vs_r.ipynb)
+  [View HTML](1.2_python_vs_r.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/01_infrastructure/1.2_python_vs_r.ipynb)
 
 - **Introduction to Git**  
   Learn Git for version control.  
-  [View HTML](1.3_intro_to_git.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/01_infrastructure/1.3_intro_to_git.ipynb)
+  [View HTML](1.3_intro_to_git.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/01_infrastructure/1.3_intro_to_git.ipynb)
 
 - **Quarto Basics**  
   Set up Quarto for rendering tutorials.  
-  [View HTML](1.4_quarto_basics.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/01_infrastructure/1.4_quarto_basics.ipynb)
+  [View HTML](1.4_quarto_basics.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/01_infrastructure/1.4_quarto_basics.ipynb)
 
 ## Datasets
 

@@ -10,23 +10,23 @@ This module covers advanced data analysis techniques for nutrition research, usi
 
 - **Bayesian Methods**  
   Introduction to Bayesian methods for nutrition data.  
-  [View HTML](5.1_bayesian_methods.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/05_advanced/5.1_bayesian_methods.ipynb)
+  [View HTML](5.1_bayesian_methods.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/05_advanced/5.1_bayesian_methods.ipynb)
 
 - **Workflow Automation**  
   Automate data analysis workflows.  
-  [View HTML](5.2_workflow_automation.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/05_advanced/5.2_workflow_automation.ipynb)
+  [View HTML](5.2_workflow_automation.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/05_advanced/5.2_workflow_automation.ipynb)
 
 - **Advanced Bayesian Modelling**  
   Apply advanced Bayesian methods.  
-  [View HTML](5.3_adcanced_bayesian.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/05_advanced/5.3_adcanced_bayesian.ipynb)
+  [View HTML](5.3_adcanced_bayesian.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/05_advanced/5.3_adcanced_bayesian.ipynb)
 
 - **Databases and SQL**  
   Use SQL for querying nutrition datasets.  
-  [View HTML](5.4_databases_sql.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/05_advanced/5.4_databases_sql.ipynb)
+  [View HTML](5.4_databases_sql.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/05_advanced/5.4_databases_sql.ipynb)
 
 - **Dashboards**  
   Build interactive dashboards for data exploration.  
-  [View HTML](5.5_dashboards.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/05_advanced/5.5_dashboards.ipynb)
+  [View HTML](5.5_dashboards.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/05_advanced/5.5_dashboards.ipynb)
 
 ## Datasets
 

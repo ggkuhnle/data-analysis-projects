@@ -10,23 +10,23 @@ This module teaches techniques for importing, cleaning, and transforming nutriti
 
 - **What is Data**  
   Understand data types and structures.  
-  [View HTML](3.1_what_is_data.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/03_data_handling/3.1_what_is_data.ipynb)
+  [View HTML](3.1_what_is_data.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/03_data_handling/3.1_what_is_data.ipynb)
 
 - **Importing Data**  
   Import datasets into Python.  
-  [View HTML](3.2_importing_data.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/03_data_handling/3.2_importing_data.ipynb)
+  [View HTML](3.2_importing_data.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/03_data_handling/3.2_importing_data.ipynb)
 
 - **Data Cleaning**  
   Clean and preprocess data.  
-  [View HTML](3.3_data_cleaning.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/03_data_handling/3.3_data_cleaning.ipynb)
+  [View HTML](3.3_data_cleaning.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/03_data_handling/3.3_data_cleaning.ipynb)
 
 - **Data Transformation**  
   Transform data with pandas.  
-  [View HTML](3.4_data_transformation.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/03_data_handling/3.4_data_transformation.ipynb)
+  [View HTML](3.4_data_transformation.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/03_data_handling/3.4_data_transformation.ipynb)
 
 - **Data Aggregation**  
   Aggregate data for analysis.  
-  [View HTML](3.5_data_aggregation.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/03_data_handling/3.5_data_aggregation.ipynb)
+  [View HTML](3.5_data_aggregation.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/03_data_handling/3.5_data_aggregation.ipynb)
 
 ## Datasets
 

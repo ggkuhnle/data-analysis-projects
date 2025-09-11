@@ -49,7 +49,7 @@ Explore the six modules, each with notebooks you can view as HTML or run in Cola
 - **Clone the Repo**:
   ```bash
   git clone https://github.com/ggkuhnle/data-analysis-projects.git
-  cd data-analysis-toolkit-FNS
+  cd data-analysis-projects
   ```
 - **Set Up Locally**:
   ```bash

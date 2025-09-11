@@ -8,28 +8,28 @@ format: html
 This module contains applied mini-projects that consolidate learning from the earlier sections:
 
 - Clinical Trial Analysis  
-  [View HTML](10.1_clinical_trial.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.1_clinical_trial.ipynb)
+  [View HTML](10.1_clinical_trial.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.1_clinical_trial.ipynb)
 
 - Epidemiology Case Study  
-  [View HTML](10.2_epidemiology_case_study.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.2_epidemiology_case_study.ipynb)
+  [View HTML](10.2_epidemiology_case_study.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.2_epidemiology_case_study.ipynb)
 
 - Handling Missing Data  
-  [View HTML](10.3_handling_missing_data.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.3_handling_missing_data.ipynb)
+  [View HTML](10.3_handling_missing_data.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.3_handling_missing_data.ipynb)
 
 - Metabolomics Analysis  
-  [View HTML](10.4_metabolomics.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.4_metabolomics.ipynb)
+  [View HTML](10.4_metabolomics.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.4_metabolomics.ipynb)
 
 - Machine Learning Applications  
-  [View HTML](10.5_machine_learning.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.5_machine_learning.ipynb)
+  [View HTML](10.5_machine_learning.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.5_machine_learning.ipynb)
 
 - AI in Nutrition Science  
-  [View HTML](10.6_ai.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.6_ai.ipynb)
+  [View HTML](10.6_ai.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.6_ai.ipynb)
 
 - Large Language Models (LLM)  
-  [View HTML](10.7_llm.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.7_llm.ipynb)
+  [View HTML](10.7_llm.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.7_llm.ipynb)
 
 - Bayesian vs. Frequentist Methods  
-  [View HTML](10.8_Bayesian_vs_Frequentist.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.ipynb)
+  [View HTML](10.8_Bayesian_vs_Frequentist.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.ipynb)
 
 - Fortran in Nutrition Science  
-  [View HTML](10.9_fortran_nutrition.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/10_mini_projects/10.9_fortran_nutrition.ipynb)
+  [View HTML](10.9_fortran_nutrition.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/10_mini_projects/10.9_fortran_nutrition.ipynb)

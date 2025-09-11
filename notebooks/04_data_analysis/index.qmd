@@ -10,31 +10,31 @@ This module introduces techniques for exploring and analysing nutrition data, fr
 
 - **Distributions and Visualisation**  
   Explore data distributions and create visualisations.  
-  [View HTML](4.1_distributions_visualisation.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/04_data_analysis/4.1_distributions_visualisation.ipynb)
+  [View HTML](4.1_distributions_visualisation.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/04_data_analysis/4.1_distributions_visualisation.ipynb)
 
 - **Exploratory Data Analysis**  
   Perform EDA to uncover patterns in nutrition data.  
-  [View HTML](4.2_exploratory_data_analysis.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/04_data_analysis/4.2_exploratory_data_analysis.ipynb)
+  [View HTML](4.2_exploratory_data_analysis.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/04_data_analysis/4.2_exploratory_data_analysis.ipynb)
 
 - **Correlation Analysis**  
   Analyse relationships between variables.  
-  [View HTML](4.3_correlation_analysis.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/04_data_analysis/4.3_correlation_analysis.ipynb)
+  [View HTML](4.3_correlation_analysis.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/04_data_analysis/4.3_correlation_analysis.ipynb)
 
 - **Statistical Testing**  
   Conduct hypothesis tests for nutrition studies.  
-  [View HTML](4.4_statistical_testing.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/04_data_analysis/4.4_statistical_testing.ipynb)
+  [View HTML](4.4_statistical_testing.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/04_data_analysis/4.4_statistical_testing.ipynb)
 
 - **Regression Modelling**  
   Build and interpret regression models for vitamin D data.  
-  [View HTML](4.5_regression_modelling.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/04_data_analysis/4.5_regression_modelling.ipynb)
+  [View HTML](4.5_regression_modelling.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/04_data_analysis/4.5_regression_modelling.ipynb)
 
 - **Logistic Regression and Survival Analysis**  
   Apply logistic regression and survival analysis to vitamin D trial outcomes.  
-  [View HTML](4.6_logistic_and_survival.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/04_data_analysis/4.6_logistic_and_survival.ipynb)
+  [View HTML](4.6_logistic_and_survival.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/04_data_analysis/4.6_logistic_and_survival.ipynb)
 
 - **Clinical Trial Analysis**  
   Analyse a simulated clinical trial with effect size estimation.  
-  [View HTML](4.7_clinical_trial_analysis.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/04_data_analysis/4.7_clinical_trial_analysis.ipynb)
+  [View HTML](4.7_clinical_trial_analysis.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/04_data_analysis/4.7_clinical_trial_analysis.ipynb)
 
 ## Datasets
 

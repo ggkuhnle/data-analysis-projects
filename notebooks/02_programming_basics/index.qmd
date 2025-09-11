@@ -10,27 +10,27 @@ This module covers the fundamentals of Python programming for nutrition data ana
 
 - **Introduction to Programming**  
   Learn about the basics of programming.  
-  [View HTML](2.0_intro_to_programming.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/02_programming_basics/2.0_intro_to_programming.ipynb)
+  [View HTML](2.0_intro_to_programming.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/02_programming_basics/2.0_intro_to_programming.ipynb)
 
 - **Programming fundamentals**  
   Learn Python syntax, variables, and comments.  
-  [View HTML](2.1_programming_fundamentals.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/02_programming_basics/2.1_programming_fundamentals.ipynb)
+  [View HTML](2.1_programming_fundamentals.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/02_programming_basics/2.1_programming_fundamentals.ipynb)
 
 - **Data Types and Conversion**  
   Explore Python data types and type conversion.  
-  [View HTML](2.2_data_types_conversion.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/02_programming_basics/2.2_data_types_conversion.ipynb)
+  [View HTML](2.2_data_types_conversion.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/02_programming_basics/2.2_data_types_conversion.ipynb)
 
 - **Functions and Loops**  
   Write functions and use loops in Python.  
-  [View HTML](2.3_functions_loops.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/02_programming_basics/2.3_functions_loops.ipynb)
+  [View HTML](2.3_functions_loops.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/02_programming_basics/2.3_functions_loops.ipynb)
 
 - **Data Structures**  
   Work with lists, dictionaries, and sets.  
-  [View HTML](2.4_data_structures.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/02_programming_basics/2.4_data_structures.ipynb)
+  [View HTML](2.4_data_structures.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/02_programming_basics/2.4_data_structures.ipynb)
 
 - **Object-Oriented Programming Basics**  
   Introduction to OOP in Python.  
-  [View HTML](2.5_oop_basics.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-toolkit-FNS/blob/main/notebooks/02_programming_basics/2.5_oop_basics.ipynb)
+  [View HTML](2.5_oop_basics.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/02_programming_basics/2.5_oop_basics.ipynb)
 
 ## Datasets
 
