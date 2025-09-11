@@ -122,8 +122,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="objectives" class="level2">
 <h2 class="anchored" data-anchor-id="objectives">🎯 Objectives</h2>
 <p>By the end of this notebook you should be able to: - Import data from <strong>CSV</strong> and <strong>Excel</strong> files using pandas. - Recognise other common formats: TSV, JSON, databases, APIs. - Verify the data after import (shapes, column names, head of table). - Apply these skills to <code>hippo_nutrients.csv</code>.</p>
-<div id="colab_setup" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manuallyimport osfrom google.colab import filesMODULE = '03_data_handling'DATASET = 'hippo_nutrients.csv'BASE_PATH = '/content/data-analysis-projects'MODULE_PATH = os.path.join(BASE_PATH, 'notebooks', MODULE)DATASET_PATH = os.path.join('data', DATASET)try:    if not os.path.exists(BASE_PATH):        !git clone https://github.com/ggkuhnle/data-analysis-projects.git    os.chdir(MODULE_PATH)    assert os.path.exists(DATASET_PATH)    print(f'Dataset found: {DATASET_PATH} ✅')except Exception as e:    print(f'Automatic clone failed: {e}')    os.makedirs('data', exist_ok=True)    uploaded = files.upload()    if DATASET in uploaded:        with open(DATASET_PATH, 'wb') as f:            f.write(uploaded[DATASET])        print(f'Successfully uploaded {DATASET} ✅')    else:        raise FileNotFoundError(f'Upload failed. Please ensure you uploaded {DATASET}.')%pip install pandas openpyxl sqlalchemy -qimport pandas as pd, numpy as npprint('Environment ready.')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="69aa884b" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'03_data_handling'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'hippo_nutrients.csv'</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(<span class="st">'data'</span>, DATASET)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(BASE_PATH):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> os.path.exists(DATASET_PATH)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Automatic clone failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please ensure you uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Install additional libraries.</p>
+<div id="9c8dda61" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas openpyxl sqlalchemy <span class="op">-</span>q</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="importing-csv-files" class="level2">
@@ -131,43 +165,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>CSV (Comma Separated Values) is the most common format in nutrition research. It is plain text, easy to share, and can be opened in Excel or any text editor.</p>
 <p>Let’s load <code>hippo_nutrients.csv</code>.</p>
 <div id="csv_load" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df_csv <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_nutrients.csv'</span>)<span class="bu">print</span>(<span class="ss">f'Shape: </span><span class="sc">{</span>df_csv<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)<span class="bu">print</span>(<span class="ss">f'Columns: </span><span class="sc">{</span>df_csv<span class="sc">.</span>columns<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">'</span>)display(df_csv.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df_csv <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_nutrients.csv'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Shape: </span><span class="sc">{</span>df_csv<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Columns: </span><span class="sc">{</span>df_csv<span class="sc">.</span>columns<span class="sc">.</span>tolist()<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>display(df_csv.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="importing-excel-files" class="level2">
 <h2 class="anchored" data-anchor-id="importing-excel-files">📑 Importing Excel Files</h2>
 <p>Excel is common in labs and public health datasets. You may encounter files with <strong>multiple sheets</strong>, formatting quirks, or missing values.</p>
 <p>Example (requires <code>openpyxl</code>):</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># %pip install openpyxl  # uncomment if needed in Colab</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># df_excel = pd.read_excel('data/hippo_nutrients.xlsx', sheet_name='Sheet1')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># %pip install openpyxl  # uncomment if needed in Colab</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># df_excel = pd.read_excel('data/hippo_nutrients.xlsx', sheet_name='Sheet1')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For this demo we’ll reuse the CSV DataFrame but pretend it came from Excel.</p>
 <div id="excel_load" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_excel <span class="op">=</span> df_csv.copy()<span class="bu">print</span>(<span class="ss">f'Excel shape: </span><span class="sc">{</span>df_excel<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)display(df_excel.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_excel <span class="op">=</span> df_csv.copy()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Excel shape: </span><span class="sc">{</span>df_excel<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>display(df_excel.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="other-common-data-sources" class="level2">
 <h2 class="anchored" data-anchor-id="other-common-data-sources">🔗 Other Common Data Sources</h2>
 <section id="tsv-tab-separated-values" class="level3">
 <h3 class="anchored" data-anchor-id="tsv-tab-separated-values">TSV (Tab-Separated Values)</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_tsv <span class="op">=</span> pd.read_csv(<span class="st">'data/example.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_tsv <span class="op">=</span> pd.read_csv(<span class="st">'data/example.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="json-e.g.-from-apis" class="level3">
 <h3 class="anchored" data-anchor-id="json-e.g.-from-apis">JSON (e.g.&nbsp;from APIs)</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_json <span class="op">=</span> pd.read_json(<span class="st">'data/example.json'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df_json <span class="op">=</span> pd.read_json(<span class="st">'data/example.json'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="sql-databases-clinical-or-survey-data" class="level3">
 <h3 class="anchored" data-anchor-id="sql-databases-clinical-or-survey-data">SQL Databases (clinical or survey data)</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(<span class="st">'sqlite:///data/nutrition.db'</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df_sql <span class="op">=</span> pd.read_sql(<span class="st">'SELECT * FROM hippo_nutrients'</span>, engine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(<span class="st">'sqlite:///data/nutrition.db'</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df_sql <span class="op">=</span> pd.read_sql(<span class="st">'SELECT * FROM hippo_nutrients'</span>, engine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="web-apis-advanced" class="level3">
 <h3 class="anchored" data-anchor-id="web-apis-advanced">Web APIs (advanced)</h3>
 <p>Many nutrition datasets are accessible via APIs. Example:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://api.example.com/nutrients'</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> requests.get(url).json()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>df_api <span class="op">=</span> pd.DataFrame(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'https://api.example.com/nutrients'</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> requests.get(url).json()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>df_api <span class="op">=</span> pd.DataFrame(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>👉 You don’t need to master all these at once, but it’s important to know they exist!</p>
 </section>
 </section>
