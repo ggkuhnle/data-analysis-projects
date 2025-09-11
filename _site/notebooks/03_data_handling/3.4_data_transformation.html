@@ -79,9 +79,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#filtering-data" id="toc-filtering-data" class="nav-link active" data-scroll-target="#filtering-data">Filtering Data</a></li>
-  <li><a href="#grouping-data" id="toc-grouping-data" class="nav-link" data-scroll-target="#grouping-data">Grouping Data</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#objectives" id="toc-objectives" class="nav-link active" data-scroll-target="#objectives">🎯 Objectives</a></li>
+  <li><a href="#context" id="toc-context" class="nav-link" data-scroll-target="#context">📌 Context</a></li>
+  <li><a href="#load-and-inspect" id="toc-load-and-inspect" class="nav-link" data-scroll-target="#load-and-inspect">1) Load and Inspect</a></li>
+  <li><a href="#filtering-rows-and-selecting-columns" id="toc-filtering-rows-and-selecting-columns" class="nav-link" data-scroll-target="#filtering-rows-and-selecting-columns">2) Filtering Rows and Selecting Columns</a></li>
+  <li><a href="#grouping-and-aggregation" id="toc-grouping-and-aggregation" class="nav-link" data-scroll-target="#grouping-and-aggregation">3) Grouping and Aggregation</a>
+  <ul class="collapse">
+  <li><a href="#common-patterns" id="toc-common-patterns" class="nav-link" data-scroll-target="#common-patterns">Common patterns</a></li>
+  </ul></li>
+  <li><a href="#reshaping-between-wide-and-long" id="toc-reshaping-between-wide-and-long" class="nav-link" data-scroll-target="#reshaping-between-wide-and-long">4) Reshaping Between Wide and Long</a>
+  <ul class="collapse">
+  <li><a href="#long-tidy-one-row-per-observation" id="toc-long-tidy-one-row-per-observation" class="nav-link" data-scroll-target="#long-tidy-one-row-per-observation">Long (tidy) → one row per observation</a></li>
+  <li><a href="#wide-columns-are-variables-e.g.-one-column-per-nutrient" id="toc-wide-columns-are-variables-e.g.-one-column-per-nutrient" class="nav-link" data-scroll-target="#wide-columns-are-variables-e.g.-one-column-per-nutrient">Wide → columns are variables (e.g., one column per nutrient)</a></li>
+  <li><a href="#long-wide-pivot-wider" id="toc-long-wide-pivot-wider" class="nav-link" data-scroll-target="#long-wide-pivot-wider">4.1 Long → Wide (pivot wider)</a></li>
+  <li><a href="#wide-long-melt" id="toc-wide-long-melt" class="nav-link" data-scroll-target="#wide-long-melt">4.2 Wide → Long (melt)</a></li>
+  </ul></li>
+  <li><a href="#pivot-tables-for-comparisons" id="toc-pivot-tables-for-comparisons" class="nav-link" data-scroll-target="#pivot-tables-for-comparisons">5) Pivot Tables for Comparisons</a></li>
+  <li><a href="#derived-variables-and-numeric-transformations" id="toc-derived-variables-and-numeric-transformations" class="nav-link" data-scroll-target="#derived-variables-and-numeric-transformations">6) Derived Variables and Numeric Transformations</a>
+  <ul class="collapse">
+  <li><a href="#log-transform" id="toc-log-transform" class="nav-link" data-scroll-target="#log-transform">6.1 Log transform</a></li>
+  <li><a href="#z-score-standardisation" id="toc-z-score-standardisation" class="nav-link" data-scroll-target="#z-score-standardisation">6.2 z-score standardisation</a></li>
+  <li><a href="#minmax-scaling-01" id="toc-minmax-scaling-01" class="nav-link" data-scroll-target="#minmax-scaling-01">6.3 Min–max scaling (0–1)</a></li>
+  <li><a href="#group-wise-transforms" id="toc-group-wise-transforms" class="nav-link" data-scroll-target="#group-wise-transforms">6.4 Group-wise transforms</a></li>
+  </ul></li>
+  <li><a href="#bonus-time-based-and-rolling-transforms" id="toc-bonus-time-based-and-rolling-transforms" class="nav-link" data-scroll-target="#bonus-time-based-and-rolling-transforms">7) (Bonus) Time-based and Rolling Transforms</a></li>
+  <li><a href="#exercise-1-grouped-summary" id="toc-exercise-1-grouped-summary" class="nav-link" data-scroll-target="#exercise-1-grouped-summary">🧪 Exercise 1 — Grouped Summary</a></li>
+  <li><a href="#exercise-2-wide-long" id="toc-exercise-2-wide-long" class="nav-link" data-scroll-target="#exercise-2-wide-long">🧪 Exercise 2 — Wide ↔︎ Long</a></li>
+  <li><a href="#exercise-3-transformations-for-modelling" id="toc-exercise-3-transformations-for-modelling" class="nav-link" data-scroll-target="#exercise-3-transformations-for-modelling">🧪 Exercise 3 — Transformations for Modelling</a></li>
+  <li><a href="#conclusion-next-steps" id="toc-conclusion-next-steps" class="nav-link" data-scroll-target="#conclusion-next-steps">✅ Conclusion &amp; Next Steps</a></li>
   </ul>
 </nav>
 </div>
@@ -106,159 +131,166 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This notebook explores data transformation techniques to prepare nutrition datasets for analysis.</p>
-<p><strong>Objectives</strong>: - Filter and group data for insights. - Pivot data for alternative views. - Transform <code>hippo_nutrients.csv</code> for analysis.</p>
-<p><strong>Context</strong>: Transformation enables meaningful insights from nutrition data, like comparing nutrient intakes across groups.</p>
+<p>In this notebook you’ll learn how to <strong>transform</strong> data so it’s easy to analyse and model. We’ll work with <code>hippo_nutrients.csv</code> and cover filtering, grouping, reshaping (wide/long), pivoting, and numeric transformations such as <strong>log</strong> and <strong>z-score</strong> standardisation.</p>
+<section id="objectives" class="level2">
+<h2 class="anchored" data-anchor-id="objectives">🎯 Objectives</h2>
+<ul>
+<li>Filter rows and select columns with expressive, reproducible code.</li>
+<li>Group and aggregate (mean, median, multiple aggregations).</li>
+<li>Reshape between <strong>wide</strong> and <strong>long</strong> formats (melt / pivot).</li>
+<li>Pivot-tabulate values for quick comparisons.</li>
+<li>Create derived variables and apply <strong>log</strong>, <strong>z-score</strong>, <strong>min–max</strong> scaling.</li>
+<li>(Bonus) Group-wise standardisation and rolling transforms over time.</li>
+</ul>
+</section>
+<section id="context" class="level2">
+<h2 class="anchored" data-anchor-id="context">📌 Context</h2>
+<p>Transformation is the ladder from raw data to insight. In nutrition datasets, you’ll often transform by <strong>group</strong> (e.g., nutrient, sex, year) and reshape between <strong>wide</strong> (one row per ID with many columns) and <strong>long</strong> (one row per measurement).</p>
+<blockquote class="blockquote">
+<p><strong>Wide vs Long</strong> - <strong>Wide</strong>: Each variable has its own column (e.g., <code>Iron</code>, <code>Calcium</code>, <code>Vitamin_D</code> columns). Good for human reading, some stats. - <strong>Long (tidy)</strong>: One row per observation; variables encoded in <em>columns</em>, not headers (e.g., a <code>Nutrient</code> column and a <code>Value</code> column). Preferred for plotting, grouping, modelling.</p>
+</blockquote>
 <details>
 <summary>
 Fun Fact
 </summary>
-Transforming data is like a hippo rearranging its snacks—same stuff, better view! 🦛
+Transforming data is like a hippo rearranging its snacks — same nutrients, better view! 🦛
 </details>
 <div id="colab_setup" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the module and dataset for this notebook</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'03_data_handling'</span>  <span class="co"># e.g., '01_infrastructure'</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'hippo_nutrients.csv'</span>  <span class="co"># e.g., 'hippo_diets.csv'</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(<span class="st">'data'</span>, DATASET)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Attempt to clone the repository (automatic method)</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you encounter a cloning error (e.g., 'fatal: destination path already exists'),</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       reset the runtime (Runtime &gt; Restart runtime) and run this cell again.</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Attempting to clone repository...'</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(BASE_PATH):</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Repository already exists, skipping clone.'</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Debug: Print directory structure</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Listing repository contents:'</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Listing notebooks directory contents:'</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}<span class="op">/</span>notebooks</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the module directory exists</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(MODULE_PATH):</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Module directory </span><span class="sc">{</span>MODULE_PATH<span class="sc">}</span><span class="ss"> not found. Check the repository structure.'</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set working directory to the notebook's folder</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verify dataset is accessible</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(DATASET_PATH):</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Error: Dataset </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> not found after cloning.'</span>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cloning failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Falling back to manual upload option...'</span>)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: Manual upload option</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Please upload </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> manually.'</span>)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'1. Click the "Choose Files" button below.'</span>)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'2. Select </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> from your local machine.'</span>)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'3. Ensure the file is placed in notebooks/</span><span class="sc">{</span>MODULE<span class="sc">}</span><span class="ss">/data/'</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the data directory if it doesn't exist</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prompt user to upload the dataset</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the dataset was uploaded</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please ensure you uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for this notebook</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="setup" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas  <span class="co"># Ensures compatibility in Colab</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd  <span class="co"># For data manipulation</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Data transformation environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Data transformation environment ready.</code></pre>
-</div>
-</div>
-<p>## Data Preparation</p>
-<p>Load <code>hippo_nutrients.csv</code> and inspect its structure.</p>
-<div id="load" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_nutrients.csv'</span>)  <span class="co"># Path relative to notebook</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head(<span class="dv">2</span>))  <span class="co"># Display first two rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   ID Nutrient  Year  Value  Age Sex
-0  H1     Iron  2024    8.2   25   F
-1  H1     Iron  2025    8.5   26   F</code></pre>
-</div>
-</div>
-<section id="filtering-data" class="level2">
-<h2 class="anchored" data-anchor-id="filtering-data">Filtering Data</h2>
-<p>Filter for female hippos and Iron intakes.</p>
-<div id="filter" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for female hippos and Iron</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_female_iron <span class="op">=</span> df[(df[<span class="st">'Sex'</span>] <span class="op">==</span> <span class="st">'F'</span>) <span class="op">&amp;</span> (df[<span class="st">'Nutrient'</span>] <span class="op">==</span> <span class="st">'Iron'</span>)]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_female_iron.head(<span class="dv">2</span>))  <span class="co"># Display filtered data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   ID Nutrient  Year  Value  Age Sex
-0  H1     Iron  2024    8.2   25   F
-1  H1     Iron  2025    8.5   26   F</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manuallyimport osfrom google.colab import filesMODULE = '03_data_handling'DATASET = 'hippo_nutrients.csv'BASE_PATH = '/content/data-analysis-projects'MODULE_PATH = os.path.join(BASE_PATH, 'notebooks', MODULE)DATASET_PATH = os.path.join('data', DATASET)try:    print('Attempting to clone repository...')    if not os.path.exists(BASE_PATH):        !git clone https://github.com/ggkuhnle/data-analysis-projects.git    print('Setting working directory...')    os.chdir(MODULE_PATH)    if os.path.exists(DATASET_PATH):        print(f'Dataset found: {DATASET_PATH} ✅')    else:        raise FileNotFoundError('Dataset missing after clone.')except Exception as e:    print(f'Cloning failed: {e}')    print('Falling back to manual upload...')    os.makedirs('data', exist_ok=True)    uploaded = files.upload()    if DATASET in uploaded:        with open(DATASET_PATH, 'wb') as f:            f.write(uploaded[DATASET])        print(f'Successfully uploaded {DATASET} ✅')    else:        raise FileNotFoundError(f'Upload failed. Please upload {DATASET}.')%pip install -q pandas numpyimport pandas as pd, numpy as nppd.set_option('display.max_columns', 30)print('Python environment ready.')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="grouping-data" class="level2">
-<h2 class="anchored" data-anchor-id="grouping-data">Grouping Data</h2>
-<p>Group by <code>Nutrient</code> and calculate mean <code>Value</code>.</p>
-<div id="group" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group by nutrient and compute mean</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mean_values <span class="op">=</span> df.groupby(<span class="st">'Nutrient'</span>)[<span class="st">'Value'</span>].mean()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mean_values)  <span class="co"># Display mean values</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Nutrient
-Calcium     1150.0
-Iron           8.0
-Vitamin_D     10.5
-Name: Value, dtype: float64</code></pre>
+<section id="load-and-inspect" class="level2">
+<h2 class="anchored" data-anchor-id="load-and-inspect">1) Load and Inspect</h2>
+<p>Let’s load <code>hippo_nutrients.csv</code> and inspect the first rows and data types.</p>
+<div id="load" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_nutrients.csv'</span>)<span class="bu">print</span>(<span class="st">'Shape:'</span>, df.shape)<span class="bu">print</span>(<span class="st">'Dtypes:</span><span class="ch">\n</span><span class="st">'</span>, df.dtypes)display(df.head(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>## Pivoting Data</p>
-<p>Pivot the data to show <code>Value</code> by <code>Nutrient</code> and <code>Year</code>.</p>
-<div id="pivot" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pivot data</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df_pivot <span class="op">=</span> df.pivot_table(values<span class="op">=</span><span class="st">'Value'</span>, index<span class="op">=</span><span class="st">'Nutrient'</span>, columns<span class="op">=</span><span class="st">'Year'</span>, aggfunc<span class="op">=</span><span class="st">'mean'</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_pivot)  <span class="co"># Display pivoted data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Year      2024  2025
-Nutrient            
-Calcium   1150  1140
-Iron         8     8
-Vitamin_D   10    11</code></pre>
-</div>
-</div>
-<p>## Exercise 1: Transform Data</p>
-<p>Filter for Vitamin_D data in 2024, group by <code>Sex</code>, and compute median <code>Value</code>. Document your code.</p>
-<p><strong>Guidance</strong>: Use <code>df[(df['Nutrient'] == 'Vitamin_D') &amp; (df['Year'] == 2024)]</code> and <code>groupby('Sex')['Value'].median()</code>.</p>
-<p><strong>Answer</strong>:</p>
-<p>My transformation code is…</p>
 </section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>You’ve learned to transform nutrition data through filtering, grouping, and pivoting.</p>
-<p><strong>Next Steps</strong>: Explore data aggregation in 3.5.</p>
-<p><strong>Resources</strong>: - <a href="https://pandas.pydata.org/docs/user_guide/groupby.html">Pandas GroupBy</a> - <a href="https://pandas.pydata.org/docs/user_guide/reshaping.html">Pandas Pivot</a> - Repository: <a href="https://github.com/ggkuhnle/data-analysis-projects">github.com/ggkuhnle/data-analysis-projects</a></p>
+<section id="filtering-rows-and-selecting-columns" class="level2">
+<h2 class="anchored" data-anchor-id="filtering-rows-and-selecting-columns">2) Filtering Rows and Selecting Columns</h2>
+<p>Use <strong>boolean masks</strong> to keep the rows you want, and bracket notation to select columns. This is the bread-and-butter of transformation.</p>
+<div id="filter_select_code" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: female hippos, Iron only, years ≥ 2024mask = (df['Sex'] == 'F') &amp; (df['Nutrient'] == 'Iron') &amp; (df['Year'] &gt;= 2024)cols = ['ID', 'Year', 'Nutrient', 'Value', 'Age', 'Sex']df_female_iron = df.loc[mask, cols].sort_values(['ID', 'Year']).reset_index(drop=True)display(df_female_iron.head(5))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="grouping-and-aggregation" class="level2">
+<h2 class="anchored" data-anchor-id="grouping-and-aggregation">3) Grouping and Aggregation</h2>
+<p>Summarise data by groups (e.g., nutrient, sex, or year). You can apply single or multiple aggregations.</p>
+<section id="common-patterns" class="level3">
+<h3 class="anchored" data-anchor-id="common-patterns">Common patterns</h3>
+<ul>
+<li><code>df.groupby('Nutrient')['Value'].mean()</code></li>
+<li><code>df.groupby(['Nutrient','Sex']).agg({'Value': ['mean','median','count']})</code></li>
+</ul>
+<div id="groupby_code" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean Value by Nutrientmean_by_nutrient = df.groupby('Nutrient')['Value'].mean().sort_values(ascending=False)display(mean_by_nutrient)# Multiple aggregations by Nutrient and Sexagg_ns = (    df.groupby(['Nutrient','Sex'])      .agg(Mean_Value=('Value','mean'),           Median_Value=('Value','median'),           N=('Value','size'))      .reset_index())display(agg_ns.head(8))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="reshaping-between-wide-and-long" class="level2">
+<h2 class="anchored" data-anchor-id="reshaping-between-wide-and-long">4) Reshaping Between Wide and Long</h2>
+<p>Many real datasets arrive in <strong>wide</strong> form; most analyses and plots like <strong>long</strong> (tidy) form.</p>
+<section id="long-tidy-one-row-per-observation" class="level3">
+<h3 class="anchored" data-anchor-id="long-tidy-one-row-per-observation">Long (tidy) → one row per observation</h3>
+<ul>
+<li>Columns: <code>ID</code>, <code>Year</code>, <code>Age</code>, <code>Sex</code>, <code>Nutrient</code>, <code>Value</code></li>
+</ul>
+</section>
+<section id="wide-columns-are-variables-e.g.-one-column-per-nutrient" class="level3">
+<h3 class="anchored" data-anchor-id="wide-columns-are-variables-e.g.-one-column-per-nutrient">Wide → columns are variables (e.g., one column per nutrient)</h3>
+<ul>
+<li>Columns: <code>ID</code>, <code>Year</code>, <code>Age</code>, <code>Sex</code>, <code>Iron</code>, <code>Calcium</code>, <code>Vitamin_D</code>, …</li>
+</ul>
+</section>
+<section id="long-wide-pivot-wider" class="level3">
+<h3 class="anchored" data-anchor-id="long-wide-pivot-wider">4.1 Long → Wide (pivot wider)</h3>
+<p>Use <code>pivot_table</code> with <code>index</code> = identifier columns and <code>columns</code> = the variable you want as new columns (<code>Nutrient</code>). Values come from <code>Value</code>.</p>
+<ul>
+<li>Pros: human-readable, one row per subject-year.</li>
+<li>Cons: harder to group/plot by Nutrient unless you re-melt later.</li>
+</ul>
+<div id="pivot_wider" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>id_cols <span class="op">=</span> [<span class="st">'ID'</span>,<span class="st">'Year'</span>,<span class="st">'Age'</span>,<span class="st">'Sex'</span>]wide <span class="op">=</span> df.pivot_table(index<span class="op">=</span>id_cols, columns<span class="op">=</span><span class="st">'Nutrient'</span>, values<span class="op">=</span><span class="st">'Value'</span>, aggfunc<span class="op">=</span><span class="st">'mean'</span>)wide <span class="op">=</span> wide.reset_index()  <span class="co"># move index back to columnsdisplay(wide.head(5))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="wide-long-melt" class="level3">
+<h3 class="anchored" data-anchor-id="wide-long-melt">4.2 Wide → Long (melt)</h3>
+<p>Use <code>melt</code> to gather nutrient columns back into two columns: <code>Nutrient</code> (variable name) and <code>Value</code> (measurement). This is the canonical <em>tidy</em> structure for plotting, modelling, and faceting.</p>
+<div id="melt_long" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>value_vars <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> wide.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> id_cols]  <span class="co"># all nutrient columnslong_again = wide.melt(id_vars=id_cols, value_vars=value_vars,                      var_name='Nutrient', value_name='Value')display(long_again.head(6))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="pivot-tables-for-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="pivot-tables-for-comparisons">5) Pivot Tables for Comparisons</h2>
+<p>Quickly cross-tabulate means by two dimensions (e.g., <code>Nutrient</code> × <code>Year</code>).</p>
+<div id="pivot_table_code" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pt <span class="op">=</span> df.pivot_table(values<span class="op">=</span><span class="st">'Value'</span>, index<span class="op">=</span><span class="st">'Nutrient'</span>, columns<span class="op">=</span><span class="st">'Year'</span>, aggfunc<span class="op">=</span><span class="st">'mean'</span>)display(pt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="derived-variables-and-numeric-transformations" class="level2">
+<h2 class="anchored" data-anchor-id="derived-variables-and-numeric-transformations">6) Derived Variables and Numeric Transformations</h2>
+<p>Real analyses often need <strong>transformed</strong> variables to meet model assumptions or to compare across scales.</p>
+<section id="log-transform" class="level3">
+<h3 class="anchored" data-anchor-id="log-transform">6.1 Log transform</h3>
+<p>Use when data are <strong>right-skewed</strong> (e.g., highly variable intakes). Add a small <code>ε</code> to avoid <code>log(0)</code>.</p>
+</section>
+<section id="z-score-standardisation" class="level3">
+<h3 class="anchored" data-anchor-id="z-score-standardisation">6.2 z-score standardisation</h3>
+<p>Convert values to standard units: <code>(x - mean) / std</code>. Helpful when combining variables on different scales.</p>
+</section>
+<section id="minmax-scaling-01" class="level3">
+<h3 class="anchored" data-anchor-id="minmax-scaling-01">6.3 Min–max scaling (0–1)</h3>
+<p>Maps the minimum to 0 and maximum to 1. Useful for comparability in dashboards.</p>
+</section>
+<section id="group-wise-transforms" class="level3">
+<h3 class="anchored" data-anchor-id="group-wise-transforms">6.4 Group-wise transforms</h3>
+<p>Standardise <strong>within</strong> groups (e.g., within each <code>Nutrient</code>) so each nutrient’s distribution is centred and scaled separately.</p>
+<div id="numeric_transforms" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_trans <span class="op">=</span> df.copy()<span class="co"># 6.1 Log transform: add epsilon to avoid log(0) if presenteps = 1e-6df_trans['Value_log'] = np.log(df_trans['Value'] + eps)# 6.2 Global z-scoremu = df_trans['Value'].mean()sd = df_trans['Value'].std(ddof=0)df_trans['Value_z'] = (df_trans['Value'] - mu) / (sd if sd else 1.0)# 6.3 Min–max scalingvmin, vmax = df_trans['Value'].min(), df_trans['Value'].max()rng = vmax - vmin if vmax &gt; vmin else 1.0df_trans['Value_minmax'] = (df_trans['Value'] - vmin) / rng# 6.4 Group-wise z-score by Nutrientdf_trans['Value_z_by_nutrient'] = (    df_trans.groupby('Nutrient')['Value']           .transform(lambda s: (s - s.mean()) / (s.std(ddof=0) if s.std(ddof=0) else 1.0)))display(df_trans.head(8))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="bonus-time-based-and-rolling-transforms" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-time-based-and-rolling-transforms">7) (Bonus) Time-based and Rolling Transforms</h2>
+<p>For longitudinal data (e.g., the same <code>ID</code> measured across <code>Year</code>), we can compute rolling means or deltas. This is illustrative if your dataset has multiple years per ID.</p>
+<div id="rolling_code" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_roll <span class="op">=</span> (    df.sort_values([<span class="st">'ID'</span>,<span class="st">'Nutrient'</span>,<span class="st">'Year'</span>])      .groupby([<span class="st">'ID'</span>,<span class="st">'Nutrient'</span>], as_index<span class="op">=</span><span class="va">False</span>)      .<span class="bu">apply</span>(<span class="kw">lambda</span> g: g.assign(          Value_roll_mean<span class="op">=</span>g[<span class="st">'Value'</span>].rolling(window<span class="op">=</span><span class="dv">2</span>, min_periods<span class="op">=</span><span class="dv">1</span>).mean(),          Value_delta<span class="op">=</span>g[<span class="st">'Value'</span>].diff()      )))display(df_roll.head(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercise-1-grouped-summary" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1-grouped-summary">🧪 Exercise 1 — Grouped Summary</h2>
+<p>Filter to <code>Nutrient == 'Vitamin_D'</code>, then compute <strong>median</strong> <code>Value</code> by <code>Sex</code> and <code>Year</code>. Present the result sorted by <code>Year</code> and then <code>Sex</code>.</p>
+<p><strong>Hints</strong>: - Filter: <code>df[df['Nutrient'] == 'Vitamin_D']</code> - Group and aggregate: <code>.groupby(['Sex','Year'])['Value'].median().reset_index()</code> - Sort: <code>.sort_values(['Year','Sex'])</code></p>
+<div id="exercise_1_answer_here" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercise-2-wide-long" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2-wide-long">🧪 Exercise 2 — Wide ↔︎ Long</h2>
+<ol type="1">
+<li>Create a <strong>wide</strong> table with index <code>[ID, Year]</code> and columns as nutrients (values = mean <code>Value</code>).<br>
+</li>
+<li>Convert that wide table <strong>back to long</strong> using <code>melt</code> with <code>Nutrient</code> and <code>Value</code> columns.</li>
+</ol>
+<p><strong>Hints</strong>: - <code>pivot_table(index=['ID','Year'], columns='Nutrient', values='Value', aggfunc='mean')</code> - <code>melt(id_vars=['ID','Year'], var_name='Nutrient', value_name='Value')</code></p>
+<div id="exercise_2_answer_here" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercise-3-transformations-for-modelling" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3-transformations-for-modelling">🧪 Exercise 3 — Transformations for Modelling</h2>
+<p>Create a dataframe with these new columns on the <strong>Iron</strong> subset only: - <code>Value_log_iron</code> — log-transformed value with epsilon. - <code>Value_z_iron_by_sex</code> — z-score <strong>within Sex</strong>. - <code>Value_minmax_iron_by_year</code> — min–max scaling <strong>within Year</strong>.</p>
+<p><strong>Hints</strong>: - Filter: <code>(df['Nutrient'] == 'Iron')</code> - Group-wise transforms with <code>.groupby(...).transform(...)</code></p>
+<div id="exercise_3_answer_here" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="conclusion-next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-next-steps">✅ Conclusion &amp; Next Steps</h2>
+<p>You’ve practised the core transformation tools: - Filtering and selecting for clear subsets. - Grouping and aggregating for summaries. - Reshaping between <strong>wide</strong> and <strong>long</strong> for tidy analysis. - Pivot tables for quick comparisons. - Numeric transformations: <strong>log</strong>, <strong>z-score</strong>, <strong>min–max</strong>, and <strong>group-wise</strong> standardisation.</p>
+<p>👉 Next: <strong>3.5 Data Aggregation</strong> — robust summaries, grouped statistics, and combining pipelines for analysis-ready datasets.</p>
+<p><strong>Resources</strong>: - Pandas GroupBy: https://pandas.pydata.org/docs/user_guide/groupby.html - Reshaping (melt/pivot): https://pandas.pydata.org/docs/user_guide/reshaping.html - Working with dtypes: https://pandas.pydata.org/docs/user_guide/basics.html#basics-dtypes</p>
 </section>
 
 </main>
