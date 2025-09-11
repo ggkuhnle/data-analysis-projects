@@ -4,14 +4,14 @@ title: "Data Analysis Toolkit for Food and Nutrition Sciences"
 
 # Data Analysis Toolkit for Food and Nutrition Sciences 🦛
 
-Welcome to the **Data Analysis Toolkit for Food and Nutrition Sciences**, a comprehensive resource for MSc students mastering data analysis in nutrition research. This toolkit features 27 Jupyter notebooks across six modules, rendered as interactive HTML tutorials using Quarto and hosted on GitHub Pages. Run the notebooks in Google Colab with one click or explore the rendered tutorials below. With hippo-themed datasets (🦛), it covers Python basics, data handling, statistical analysis, advanced methods, and qualitative research.
+Welcome to the **Data Analysis Toolkit for Food and Nutrition Sciences**, a comprehensive resource for project students mastering data analysis in nutrition research. This toolkit features a number Jupyter notebooks across six modules (and some examples), rendered as interactive HTML tutorials using Quarto and hosted on GitHub Pages. Run the notebooks in Google Colab with one click or explore the rendered tutorials below. WIt covers Python basics, data handling, statistical analysis, advanced methods, and qualitative research.
 
 ## Quick Start 🚀
 
-- **View the Site**: Browse tutorials at [https://ggkuhnle.github.io/data-analysis-toolkit-FNS/](https://ggkuhnle.github.io/data-analysis-toolkit-FNS/).
+- **View the Site**: Browse tutorials at [https://ggkuhnle.github.io/data-analysis-projects/](https://ggkuhnle.github.io/data-analysis-projects/).
 - **Run in Colab**: Use the "Open in Colab" badges below to run notebooks in the cloud.
 - **Syllabus**: See the full course outline at [syllabus.html](syllabus.html).
-- **GitHub**: Clone or fork the repo at [github.com/ggkuhnle/data-analysis-toolkit-FNS](https://github.com/ggkuhnle/data-analysis-toolkit-FNS).
+- **GitHub**: Clone or fork the repo at [github.com/ggkuhnle/data-analysis-toolkit-FNS](https://github.com/ggkuhnle/data-analysis-projects).
 
 ## Modules 📚
 
@@ -49,7 +49,7 @@ Explore the six modules, each with notebooks you can view as HTML or run in Cola
 
 - **Clone the Repo**:
   ```bash
-  git clone https://github.com/ggkuhnle/data-analysis-toolkit-FNS.git
+  git clone https://github.com/ggkuhnle/data-analysis-projects.git
   cd data-analysis-toolkit-FNS
   ```
 - **Set Up Locally**:
