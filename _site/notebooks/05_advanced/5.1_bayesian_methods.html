@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>📈 5.1 Bayesian Methods in Nutrition Research</title>
+<title>🧠 5.1 Bayesian Methods in Nutrition Research</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,11 +79,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#load-and-explore-data" id="toc-load-and-explore-data" class="nav-link active" data-scroll-target="#load-and-explore-data">📊 Load and Explore Data</a></li>
-  <li><a href="#bayesian-model" id="toc-bayesian-model" class="nav-link" data-scroll-target="#bayesian-model">🧠 Bayesian Model</a></li>
-  <li><a href="#posterior-analysis" id="toc-posterior-analysis" class="nav-link" data-scroll-target="#posterior-analysis">📉 Posterior Analysis</a></li>
+  <li><a href="#load-explore" id="toc-load-explore" class="nav-link active" data-scroll-target="#load-explore">📥 Load &amp; Explore</a></li>
+  <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification">🧩 Model Specification</a></li>
+  <li><a href="#diagnostics-summaries" id="toc-diagnostics-summaries" class="nav-link" data-scroll-target="#diagnostics-summaries">🔍 Diagnostics &amp; Summaries</a></li>
+  <li><a href="#posterior-difference-treatment-control" id="toc-posterior-difference-treatment-control" class="nav-link" data-scroll-target="#posterior-difference-treatment-control">🔗 Posterior Difference (Treatment − Control)</a></li>
+  <li><a href="#posterior-predictive-checks-ppc" id="toc-posterior-predictive-checks-ppc" class="nav-link" data-scroll-target="#posterior-predictive-checks-ppc">📦 Posterior Predictive Checks (PPC)</a></li>
+  <li><a href="#interpretation-tips" id="toc-interpretation-tips" class="nav-link" data-scroll-target="#interpretation-tips">📝 Interpretation Tips</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">🧪 Exercises</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#wrap-up" id="toc-wrap-up" class="nav-link" data-scroll-target="#wrap-up">✅ Wrap-up</a></li>
   </ul>
 </nav>
 </div>
@@ -91,7 +94,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">📈 5.1 Bayesian Methods in Nutrition Research</h1>
+<h1 class="title">🧠 5.1 Bayesian Methods in Nutrition Research</h1>
 </div>
 
 
@@ -108,178 +111,156 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This notebook introduces Bayesian methods for nutrition data analysis, focusing on comparing two groups (e.g., Female vs.&nbsp;Male) using PyMC. Bayesian statistics allow us to model uncertainty and update our beliefs with data—perfect for nutrition studies where variability is common!</p>
-<p><strong>Objectives</strong>: - Learn the basics of Bayesian inference. - Apply Bayesian methods to compare nutrient intake between groups. - Visualise posterior distributions using ArviZ.</p>
-<p><strong>Context</strong>: In nutrition research, we often compare groups (e.g., vitamin levels in females vs.&nbsp;males). Bayesian methods provide a flexible framework to estimate parameters and quantify uncertainty.</p>
+<p>This notebook introduces Bayesian methods for nutrition data analysis using <strong>PyMC</strong> and <strong>ArviZ</strong>. We’ll compare two groups (Control vs Treatment) in a vitamin D trial to estimate group means, their difference, and the uncertainty around them.</p>
+<p><strong>You will:</strong> - Fit a simple two-group Bayesian model to <code>Vitamin_D</code>. - Examine diagnostics (trace plots, R-hat, ESS). - Quantify the posterior difference between groups. - Perform posterior predictive checks (PPC).</p>
 <details>
 <summary>
-Fun Fact
+Why Bayesian?
 </summary>
-Bayesian methods are like a hippo updating its diet plan—starting with a guess (prior) and refining it with new data (posterior)! 🦛
+Bayesian analysis combines prior information (priors) with data (likelihood) to produce a distribution of plausible parameter values (posterior). This is helpful in nutrition research where uncertainty and variation are the norm.
 </details>
-<div id="colab_setup" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
+<div id="colab_setup" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: clone repo and locate data</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the module and dataset for this notebook</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'05_advanced'</span>  <span class="co"># e.g., '01_infrastructure'</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'large_food_log.csv'</span>  <span class="co"># e.g., 'hippo_diets.csv'</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(<span class="st">'data'</span>, DATASET)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Attempt to clone the repository (automatic method)</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you encounter a cloning error (e.g., 'fatal: destination path already exists'),</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       reset the runtime (Runtime &gt; Restart runtime) and run this cell again.</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Attempting to clone repository...'</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(BASE_PATH):</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Repository already exists, skipping clone.'</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'04_data_analysis'</span>            <span class="co"># where vitamin_trial.csv lives in this course</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'vitamin_trial.csv'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(<span class="st">'data'</span>, DATASET)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Attempting to clone repository...'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(BASE_PATH):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Setting working directory...'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(DATASET_PATH):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Debug: Print directory structure</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Listing repository contents:'</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Listing notebooks directory contents:'</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}<span class="op">/</span>notebooks</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the module directory exists</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(MODULE_PATH):</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Module directory </span><span class="sc">{</span>MODULE_PATH<span class="sc">}</span><span class="ss"> not found. Check the repository structure.'</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set working directory to the notebook's folder</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verify dataset is accessible</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(DATASET_PATH):</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Error: Dataset </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> not found after cloning.'</span>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cloning failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Falling back to manual upload option...'</span>)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: Manual upload option</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Please upload </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> manually.'</span>)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'1. Click the "Choose Files" button below.'</span>)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'2. Select </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> from your local machine.'</span>)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'3. Ensure the file is placed in notebooks/</span><span class="sc">{</span>MODULE<span class="sc">}</span><span class="ss">/data/'</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the data directory if it doesn't exist</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prompt user to upload the dataset</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the dataset was uploaded</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please ensure you uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for this notebook</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">'Dataset missing after clone.'</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cloning failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Falling back to manual upload...'</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please upload </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="load-and-explore-data" class="level2">
-<h2 class="anchored" data-anchor-id="load-and-explore-data">📊 Load and Explore Data</h2>
-<p>We’ll use <code>vitamin_trial.csv</code> to compare vitamin levels between females and males. The dataset includes: - <code>vitamin_level</code>: The measured vitamin level (e.g., Vitamin D in ng/mL). - <code>sex</code>: Group indicator (0 for Female, 1 for Male).</p>
-<div id="load_data" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import libraries for data handling</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the dataset</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">'data/vitamin_trial.csv'</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract vitamin levels and group indicators</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data[<span class="st">'vitamin_level'</span>].values  <span class="co"># Response variable</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>group <span class="op">=</span> data[<span class="st">'sex'</span>].values        <span class="co"># 0 for Female, 1 for Male</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Quick summary</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Mean vitamin levels:'</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Female: </span><span class="sc">{</span>np<span class="sc">.</span>mean(y[group <span class="op">==</span> <span class="dv">0</span>])<span class="sc">:.1f}</span><span class="ss">'</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Male: </span><span class="sc">{</span>np<span class="sc">.</span>mean(y[group <span class="op">==</span> <span class="dv">1</span>])<span class="sc">:.1f}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="install_libs" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q pandas numpy pymc arviz matplotlib</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, numpy <span class="im">as</span> np, pymc <span class="im">as</span> pm, arviz <span class="im">as</span> az, matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>az.rcParams[<span class="st">'plot.matplotlib.show'</span>] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Bayesian environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="load-explore" class="level2">
+<h2 class="anchored" data-anchor-id="load-explore">📥 Load &amp; Explore</h2>
+<p>We use <code>vitamin_trial.csv</code> which (in this course) contains at least: - <code>Vitamin_D</code>: numeric outcome (e.g., µg) - <code>Group</code>: categorical (<code>Control</code> / <code>Treatment</code>)</p>
+<p>We’ll compare group means for <code>Vitamin_D</code>.</p>
+<div id="load_df" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/vitamin_trial.csv'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Shape:'</span>, df.shape)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>display(df.head())</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> {<span class="st">'Vitamin_D'</span>,<span class="st">'Group'</span>}.issubset(df.columns), <span class="st">'Expected columns Vitamin_D and Group are missing.'</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">Means by Group:'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>display(df.groupby(<span class="st">'Group'</span>, observed<span class="op">=</span><span class="va">True</span>)[<span class="st">'Vitamin_D'</span>].mean().<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="bayesian-model" class="level2">
-<h2 class="anchored" data-anchor-id="bayesian-model">🧠 Bayesian Model</h2>
-<p>We’ll model the vitamin levels as normally distributed with different means for each group:</p>
+<section id="model-specification" class="level2">
+<h2 class="anchored" data-anchor-id="model-specification">🧩 Model Specification</h2>
+<p>We model <strong>Vitamin_D ~ Normal( μ[group], σ )</strong> with group-specific means and a shared σ.</p>
+<p><strong>Priors (weakly-informative):</strong> - μ[group] ~ Normal(0, 10) - σ ~ HalfNormal(10)</p>
+<p>These are intentionally broad; adapt to your domain knowledge as needed.</p>
+<div id="pymc_model" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">'Vitamin_D'</span>].to_numpy()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>grp <span class="op">=</span> df[<span class="st">'Group'</span>].<span class="bu">map</span>({<span class="st">'Control'</span>:<span class="dv">0</span>, <span class="st">'Treatment'</span>:<span class="dv">1</span>}).to_numpy()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>, shape<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pm.HalfNormal(<span class="st">'sigma'</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    y_obs <span class="op">=</span> pm.Normal(<span class="st">'y_obs'</span>, mu<span class="op">=</span>mu[grp], sigma<span class="op">=</span>sigma, observed<span class="op">=</span>y)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample posterior</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    idata <span class="op">=</span> pm.sample(<span class="dv">1500</span>, tune<span class="op">=</span><span class="dv">1500</span>, target_accept<span class="op">=</span><span class="fl">0.9</span>, random_seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Posterior predictive for PPC</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    ppc <span class="op">=</span> pm.sample_posterior_predictive(idata, random_seed<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="diagnostics-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="diagnostics-summaries">🔍 Diagnostics &amp; Summaries</h2>
+<p>Check MCMC diagnostics (R-hat, ESS) and inspect trace plots to ensure good mixing.</p>
+<div id="diag_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(az.summary(idata, var_names<span class="op">=</span>[<span class="st">'mu'</span>,<span class="st">'sigma'</span>], round_to<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idata, var_names<span class="op">=</span>[<span class="st">'mu'</span>,<span class="st">'sigma'</span>])<span class="op">;</span> plt.show()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior for group means</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>az.plot_posterior(idata, var_names<span class="op">=</span>[<span class="st">'mu'</span>])<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="posterior-difference-treatment-control" class="level2">
+<h2 class="anchored" data-anchor-id="posterior-difference-treatment-control">🔗 Posterior Difference (Treatment − Control)</h2>
+<p>We compute the posterior for Δ = μ[Treatment] − μ[Control] and the probability that Δ &gt; 0.</p>
+<div id="difference_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mu_post <span class="op">=</span> idata.posterior[<span class="st">'mu'</span>]  <span class="co"># (chain, draw, 2)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> (mu_post.sel(mu_dim_0<span class="op">=</span><span class="dv">1</span>) <span class="op">-</span> mu_post.sel(mu_dim_0<span class="op">=</span><span class="dv">0</span>)).values.flatten()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>az.plot_posterior(diff, ref_val<span class="op">=</span><span class="dv">0</span>)<span class="op">;</span> plt.title(<span class="st">'Posterior: Δ mean (Treatment - Control)'</span>)<span class="op">;</span> plt.show()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(Δ&gt;0) = </span><span class="sc">{</span>(diff<span class="op">&gt;</span><span class="dv">0</span>)<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="posterior-predictive-checks-ppc" class="level2">
+<h2 class="anchored" data-anchor-id="posterior-predictive-checks-ppc">📦 Posterior Predictive Checks (PPC)</h2>
+<p>Compare simulated data from the posterior with observed data to assess model fit.</p>
+<div id="ppc_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Robust conversion to InferenceData for PPC plot (handles PyMC return variations)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># PyMC &gt;= 5 often returns InferenceData directly</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    idata_ppc <span class="op">=</span> ppc</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If not InferenceData, this will raise</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=</span> idata_ppc.posterior_predictive</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Dict-like fallback</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    idata_ppc <span class="op">=</span> az.from_dict(posterior_predictive<span class="op">=</span>{<span class="st">'y_obs'</span>: ppc[<span class="st">'y_obs'</span>]}, observed_data<span class="op">=</span>{<span class="st">'y_obs'</span>: y})</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(idata_ppc)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="interpretation-tips" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation-tips">📝 Interpretation Tips</h2>
 <ul>
-<li><strong>Priors</strong>:
-<ul>
-<li><code>mu[0]</code>: Mean vitamin level for Females ~ Normal(0, 10)</li>
-<li><code>mu[1]</code>: Mean vitamin level for Males ~ Normal(0, 10)</li>
-<li><code>sigma</code>: Standard deviation ~ HalfNormal(1)</li>
-</ul></li>
-<li><strong>Likelihood</strong>:
-<ul>
-<li><code>vitamin_level</code> ~ Normal(mu[group], sigma)</li>
-</ul></li>
+<li><strong>Posterior means (μ)</strong>: central tendency for each group.</li>
+<li><strong>Δ posterior</strong>: if most mass &gt; 0, Treatment likely increases Vitamin_D relative to Control.</li>
+<li><strong>PPC</strong>: large misfit suggests revisiting the likelihood (e.g., heavier tails), adding predictors, or transforming the outcome.</li>
 </ul>
-<div id="bayesian_model" class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Bayesian libraries</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Check PyMC version for compatibility</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'PyMC version: </span><span class="sc">{</span>pm<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the Bayesian model</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model:</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Priors for the means of Female (group 0) and Male (group 1)</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>, shape<span class="op">=</span><span class="dv">2</span>)  <span class="co"># Mean for each group</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prior for standard deviation</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pm.HalfNormal(<span class="st">'sigma'</span>, sigma<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Likelihood: vitamin levels are normally distributed</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    y_obs <span class="op">=</span> pm.Normal(<span class="st">'y_obs'</span>, mu<span class="op">=</span>mu[group], sigma<span class="op">=</span>sigma, observed<span class="op">=</span>y)</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sample from the posterior</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    trace <span class="op">=</span> pm.sample(<span class="dv">1000</span>, tune<span class="op">=</span><span class="dv">1000</span>, return_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="posterior-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="posterior-analysis">📉 Posterior Analysis</h2>
-<p>Let’s calculate the posterior means for each group and visualise the posterior distributions of <code>mu</code>.</p>
-<div id="posterior" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate posterior means for Female and Male</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mu_posterior <span class="op">=</span> trace.posterior[<span class="st">'mu'</span>].mean(dim<span class="op">=</span>[<span class="st">'chain'</span>, <span class="st">'draw'</span>])</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Posterior means: Female=</span><span class="sc">{</span><span class="bu">round</span>(<span class="bu">float</span>(mu_posterior[<span class="dv">0</span>]), <span class="dv">1</span>)<span class="sc">}</span><span class="ss">, Male=</span><span class="sc">{</span><span class="bu">round</span>(<span class="bu">float</span>(mu_posterior[<span class="dv">1</span>]), <span class="dv">1</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise posterior distributions</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>az.plot_posterior(trace, var_names<span class="op">=</span>[<span class="st">'mu'</span>])  <span class="co"># Plot histograms of mu</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.show()  <span class="co"># Display plot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<details>
+<summary>
+Further reading
+</summary>
+<ul>
+<li>PyMC: https://www.pymc.io/</li>
+<li>ArviZ: https://arviz-devs.github.io/arviz/</li>
+<li>Prior choice: think in outcome units (e.g., µg) and expected variability.</li>
+</ul>
+</details>
 </section>
 <section id="exercises" class="level2">
 <h2 class="anchored" data-anchor-id="exercises">🧪 Exercises</h2>
 <ol type="1">
-<li><p><strong>Change the Prior</strong>: Modify the prior for <code>mu</code> to <code>Normal(5, 5)</code> and re-run the analysis. How do the posterior means change? Write your observations in a Markdown cell.</p></li>
-<li><p><strong>Add a Parameter</strong>: Extend the model to include a different <code>sigma</code> for each group (e.g., <code>sigma = pm.HalfNormal('sigma', sigma=1, shape=2)</code>). Re-run the sampling and plot the posteriors for both <code>mu</code> and <code>sigma</code>.</p></li>
-<li><p><strong>Compare Groups</strong>: Calculate the posterior difference between <code>mu[1]</code> (Male) and <code>mu[0]</code> (Female) and plot its distribution using <code>az.plot_posterior</code>.</p></li>
+<li><p><strong>Change the prior</strong> for <code>mu</code> to <code>Normal(10, 5)</code> and <code>sigma</code> to <code>HalfNormal(5)</code>. Does the posterior difference meaningfully change?</p></li>
+<li><p><strong>Add a predictor</strong>: include <code>Time</code> if available (create a simple linear model: <code>Vitamin_D ~ Normal( α[group] + β·Time, σ )</code>).</p></li>
+<li><p><strong>Heavier tails</strong>: re-fit with a Student-t likelihood (e.g., <code>pm.StudentT</code>) and compare PPCs.</p></li>
 </ol>
-<p><strong>Guidance</strong>: Use the code above as a starting point. Experiment with priors and parameters to see how they affect the results!</p>
-<p><strong>Your Answers</strong>:</p>
-<p><strong>Exercise 1: Change the Prior</strong><br>
-[Write your observations here]</p>
-<p><strong>Exercise 2: Add a Parameter</strong><br>
-[Write your code and results here]</p>
-<p><strong>Exercise 3: Compare Groups</strong><br>
-[Write your code and results here]</p>
+<p>💡 <em>Write a short markdown interpretation for each experiment.</em></p>
 </section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>You’ve applied Bayesian methods to compare vitamin levels between females and males, calculating posterior means and visualising distributions. Bayesian approaches are powerful for nutrition research, allowing you to incorporate prior knowledge and quantify uncertainty.</p>
-<p><strong>Next Steps</strong>: Explore workflow automation in <code>5.2_workflow_automation.ipynb</code>.</p>
-<p><strong>Resources</strong>: - <a href="https://www.pymc.io/">PyMC Documentation</a> - <a href="https://arviz-devs.github.io/arviz/">ArviZ Documentation</a> - Repository: <a href="https://github.com/ggkuhnle/data-analysis-projects">github.com/ggkuhnle/data-analysis-projects</a></p>
+<section id="wrap-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrap-up">✅ Wrap-up</h2>
+<p>You fitted a two-group Bayesian model, checked diagnostics, quantified the posterior difference, and validated fit with PPC. This workflow generalises to many nutrition questions: comparing interventions, stratifying by subgroups, or extending to multivariable models.</p>
 </section>
 
 </main>

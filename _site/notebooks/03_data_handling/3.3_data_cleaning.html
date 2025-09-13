@@ -137,7 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Idempotence</strong>: Running the cleaning script twice should not change results further.</li>
 <li><strong>Document decisions</strong>: Note assumptions (e.g., iron in mg/day), thresholds (plausibility bounds), and imputations used.</li>
 </ol>
-<div id="70fde1d6" class="cell">
+<div id="70fde1d6" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="load-and-profile" class="level2">
 <h2 class="anchored" data-anchor-id="load-and-profile">1) Load and Profile</h2>
 <p>We start by loading the data and building a quick profile: shapes, dtypes, head/tail, and simple summaries. Profiling guides all subsequent cleaning steps.</p>
-<div id="profile" class="cell">
+<div id="profile" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_nutrients.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw.copy()  <span class="co"># work on a copy; keep raw intact</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -192,7 +192,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="missing-values-inspect-before-you-impute">2) Missing Values — Inspect before you impute</h2>
 <p>Missing data can be <strong>MCAR</strong> (completely at random), <strong>MAR</strong> (at random given observed variables), or <strong>MNAR</strong> (not at random). Your strategy depends on the context.</p>
 <p>Typical steps: - Identify missingness overall and by variable. - Check missingness patterns by groups (e.g., by Nutrient, Year, Sex). - Decide: drop, impute (mean/median/group-wise), or model-based methods (later modules).</p>
-<div id="missing_counts" class="cell">
+<div id="missing_counts" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Missing counts per column:'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.isna().<span class="bu">sum</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>IDs/keys</strong>: missing IDs are usually fatal — investigate or drop those rows with a note.</li>
 </ul>
 <p>Below we demonstrate <strong>group-wise median imputation</strong> for <code>Value</code> and keep everything else untouched (for transparency).</p>
-<div id="impute_value" class="cell">
+<div id="impute_value" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'Value'</span> <span class="kw">in</span> df.columns <span class="kw">and</span> <span class="st">'Nutrient'</span> <span class="kw">in</span> df.columns:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Value_imputed'</span>] <span class="op">=</span> df[<span class="st">'Value'</span>]  <span class="co"># keep original and add an imputed version</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Value_imputed_flag'</span>] <span class="op">=</span> df[<span class="st">'Value'</span>].isna()  <span class="co"># track which were imputed</span></span>
@@ -236,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="example-decimal-commas-german-style-decimal-points">Example: Decimal commas (German-style) → decimal points</h3>
 <p>If values arrive as strings with commas (e.g., <code>'8,5'</code>), convert them safely using <code>str.replace</code> + <code>pd.to_numeric</code>.</p>
 <p><strong>Note</strong>: Do not blanket-replace commas if the column also uses commas as thousands separators. Decide the rule from the data context.</p>
-<div id="decimal_commas_code" class="cell">
+<div id="decimal_commas_code" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Demo column with mixed formats (create if not present)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'Value_raw'</span> <span class="kw">not</span> <span class="kw">in</span> df.columns:</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Value_raw'</span>] <span class="op">=</span> df[<span class="st">'Value'</span>].astype(<span class="bu">str</span>)</span>
@@ -260,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="example-percent-strings-numeric-fractions-or-percents">Example: Percent strings → numeric fractions or percents</h3>
 <p>Decide on a convention: - Store <strong>fractions</strong> (0–1), or - Store <strong>percentage points</strong> (0–100).</p>
 <p>Below, we convert <code>'12%'</code> → <code>12.0</code> (percentage points). Adjust as needed.</p>
-<div id="percentages_code" class="cell">
+<div id="percentages_code" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>demo <span class="op">=</span> pd.Series([<span class="st">'12%'</span>, <span class="st">' 7.5 %'</span>, <span class="st">'0.5%'</span>, <span class="va">None</span>, <span class="st">'n/a'</span>])</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pct <span class="op">=</span> (demo.astype(<span class="bu">str</span>).<span class="bu">str</span>.strip()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>              .<span class="bu">str</span>.replace(<span class="st">'%'</span>,<span class="st">''</span>, regex<span class="op">=</span><span class="va">False</span>)</span>
@@ -277,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>DE style: <code>1.234,5</code> → remove dots, replace comma with dot → <code>1234.5</code>.</li>
 </ul>
 <p>Whenever possible, confirm the <strong>intended locale</strong> and <strong>units</strong> from metadata.</p>
-<div id="thousands_code" class="cell">
+<div id="thousands_code" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>us <span class="op">=</span> pd.Series([<span class="st">'1,234.5'</span>, <span class="st">'2,000'</span>, <span class="st">'10,050.75'</span>])</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>us_clean <span class="op">=</span> pd.to_numeric(us.<span class="bu">str</span>.replace(<span class="st">','</span>, <span class="st">''</span>, regex<span class="op">=</span><span class="va">False</span>), errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -291,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="example-canonical-categories-e.g.-sex" class="level3">
 <h3 class="anchored" data-anchor-id="example-canonical-categories-e.g.-sex">Example: Canonical categories (e.g., Sex)</h3>
 <p>Standardise category labels and document the mapping. Keep original in case you need to audit later.</p>
-<div id="categoricals_code" class="cell">
+<div id="categoricals_code" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'Sex'</span> <span class="kw">in</span> df.columns:</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Sex_raw'</span>] <span class="op">=</span> df[<span class="st">'Sex'</span>].astype(<span class="bu">str</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    sex_map <span class="op">=</span> {</span>
@@ -314,7 +314,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Near-duplicates</strong>: Slightly different strings or values (e.g., whitespace, casing, rounding). Often require domain judgment.</li>
 </ul>
 <p>Strategy: 1) Count exact duplicates. 2) Define a <strong>key</strong> and check for multiple rows per key. 3) Decide how to resolve (e.g., prefer non-missing, average within key, keep latest record, or flag for manual review).</p>
-<div id="duplicates_exact" class="cell">
+<div id="duplicates_exact" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.1 Exact duplicates (full-row)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>exact_dupes <span class="op">=</span> df.duplicated(keep<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Exact duplicate rows (including originals):'</span>, <span class="bu">int</span>(exact_dupes.<span class="bu">sum</span>()))</span>
@@ -323,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># If you decide to drop exact duplicates:</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>df_no_exact_dupes <span class="op">=</span> df.drop_duplicates().copy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="duplicates_key" class="cell">
+<div id="duplicates_key" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4.2 Key-based duplicates</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>key <span class="op">=</span> [<span class="st">'ID'</span>,<span class="st">'Nutrient'</span>,<span class="st">'Year'</span>]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">all</span>(k <span class="kw">in</span> df.columns <span class="cf">for</span> k <span class="kw">in</span> key):</span>
@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="validate-with-simple-rules">5) Validate with Simple Rules</h2>
 <p>Codify assumptions as checks. Fail <strong>loudly</strong> when rules are broken: - <strong>Type checks</strong>: numeric columns should be numeric. - <strong>Range checks</strong>: plausible ranges (e.g., iron intake in mg/day is rarely negative or 10,000). - <strong>Membership checks</strong>: categories in known sets.</p>
 <p>These checks turn silent data issues into visible test failures.</p>
-<div id="run_checks" class="cell">
+<div id="run_checks" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>problems <span class="op">=</span> []</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Type checks</span></span>
@@ -394,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="save-the-cleaned-dataset-optional" class="level2">
 <h2 class="anchored" data-anchor-id="save-the-cleaned-dataset-optional">6) Save the Cleaned Dataset (Optional)</h2>
 <p>Export a clean, analysis-ready table. Keep both <strong>raw</strong> and <strong>clean</strong> versions under version control, and record cleaning decisions in <code>README</code> or the notebook header.</p>
-<div id="save_clean" class="cell">
+<div id="save_clean" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose the resolved DataFrame if you performed key-based resolution; otherwise use df</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>clean <span class="op">=</span> df.copy()</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>clean_path <span class="op">=</span> <span class="st">'data/hippo_nutrients_clean.csv'</span></span>

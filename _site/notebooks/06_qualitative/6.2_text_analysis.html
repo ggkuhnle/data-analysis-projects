@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>text_analysis</title>
+<title>📝 6.2 Text Analysis for Qualitative Research</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,219 +79,127 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#text-analysis-for-qualitative-research" id="toc-text-analysis-for-qualitative-research" class="nav-link active" data-scroll-target="#text-analysis-for-qualitative-research">📝 6.2 Text Analysis for Qualitative Research</a></li>
-  <li><a href="#text-analysis-for-qualitative-research-1" id="toc-text-analysis-for-qualitative-research-1" class="nav-link" data-scroll-target="#text-analysis-for-qualitative-research-1">📝 6.2 Text Analysis for Qualitative Research</a>
-  <ul class="collapse">
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
-  <li><a href="#text-preprocessing" id="toc-text-preprocessing" class="nav-link" data-scroll-target="#text-preprocessing">Text Preprocessing</a></li>
-  <li><a href="#word-frequency-analysis" id="toc-word-frequency-analysis" class="nav-link" data-scroll-target="#word-frequency-analysis">Word Frequency Analysis</a></li>
-  <li><a href="#exercise-analyze-adjectives" id="toc-exercise-analyze-adjectives" class="nav-link" data-scroll-target="#exercise-analyze-adjectives">Exercise: Analyze Adjectives</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  </ul></li>
+  <li><a href="#objectives" id="toc-objectives" class="nav-link active" data-scroll-target="#objectives">🎯 Objectives</a></li>
+  <li><a href="#preprocessing-pipeline" id="toc-preprocessing-pipeline" class="nav-link" data-scroll-target="#preprocessing-pipeline">🧼 Preprocessing pipeline</a></li>
+  <li><a href="#frequencies-word-cloud-orientation-only" id="toc-frequencies-word-cloud-orientation-only" class="nav-link" data-scroll-target="#frequencies-word-cloud-orientation-only">📊 Frequencies &amp; word cloud (orientation only)</a></li>
+  <li><a href="#n-grams-bigrams-trigrams" id="toc-n-grams-bigrams-trigrams" class="nav-link" data-scroll-target="#n-grams-bigrams-trigrams">🔗 N-grams (bigrams &amp; trigrams)</a></li>
+  <li><a href="#optional-aides-pos-tags-vader-sentiment" id="toc-optional-aides-pos-tags-vader-sentiment" class="nav-link" data-scroll-target="#optional-aides-pos-tags-vader-sentiment">🧪 Optional aides: POS tags &amp; VADER sentiment</a></li>
+  <li><a href="#export-a-coding-ready-table" id="toc-export-a-coding-ready-table" class="nav-link" data-scroll-target="#export-a-coding-ready-table">📤 Export a coding-ready table</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">🧩 Exercises</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">✅ Conclusion</a></li>
   </ul>
 </nav>
 </div>
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">📝 6.2 Text Analysis for Qualitative Research</h1>
+</div>
 
 
 
-<section id="text-analysis-for-qualitative-research" class="level1">
-<h1>📝 6.2 Text Analysis for Qualitative Research</h1>
-<p>This notebook introduces text analysis techniques for qualitative nutrition research, focusing on processing survey responses.</p>
-<p><strong>Objectives</strong>:</p>
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We’ll <strong>prepare</strong> text for human-led coding (cleaning, tokenisation, light structure) and add <strong>small helper summaries</strong> (frequencies, n-grams) that support—not replace—interpretation.</p>
+<p>This notebook keeps the qualitative lens front-and-centre while giving you just enough NLP to work efficiently.</p>
+<section id="objectives" class="level2">
+<h2 class="anchored" data-anchor-id="objectives">🎯 Objectives</h2>
 <ul>
-<li>Preprocess text data using tokenisation and stopword removal.</li>
-<li>Perform word frequency analysis and visualisation.</li>
-<li>Apply techniques to <code>food_preferences.txt</code> to uncover hippo dietary preferences.</li>
+<li>Clean and tokenise open-ended responses with NLTK.</li>
+<li>Lemmatise, remove stopwords/punctuation, handle case.</li>
+<li>Build <strong>n-grams</strong> (bigrams, trigrams) to surface phrases.</li>
+<li>Optional: POS tags and (careful) sentiment as exploratory aides.</li>
+<li>Export a tidy table ready for <strong>manual coding</strong> or 6.3.</li>
 </ul>
-<p><strong>Context</strong>: Qualitative analysis of survey data, like hippo food preferences, reveals insights into dietary behaviours, complementing quantitative methods. 🦛</p>
-<details>
-<summary>
-Fun Fact
-</summary>
-Hippos love to express their food preferences, and text analysis helps us decode their crunchy cravings! 🦛
-</details>
-<div id="colab_setup" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the module and dataset for this notebook</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'06_qualitative'</span>  <span class="co"># e.g., '01_infrastructure'</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'food_preferences.txt'</span>  <span class="co"># e.g., 'hippo_diets.csv'</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(<span class="st">'data'</span>, DATASET)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Attempt to clone the repository (automatic method)</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you encounter a cloning error (e.g., 'fatal: destination path already exists'),</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       reset the runtime (Runtime &gt; Restart runtime) and run this cell again.</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Attempting to clone repository...'</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(BASE_PATH):</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Repository already exists, skipping clone.'</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Debug: Print directory structure</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Listing repository contents:'</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Listing notebooks directory contents:'</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}<span class="op">/</span>notebooks</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the module directory exists</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(MODULE_PATH):</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Module directory </span><span class="sc">{</span>MODULE_PATH<span class="sc">}</span><span class="ss"> not found. Check the repository structure.'</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set working directory to the notebook's folder</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verify dataset is accessible</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(DATASET_PATH):</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Error: Dataset </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> not found after cloning.'</span>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cloning failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Falling back to manual upload option...'</span>)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: Manual upload option</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Please upload </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> manually.'</span>)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'1. Click the "Choose Files" button below.'</span>)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'2. Select </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> from your local machine.'</span>)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'3. Ensure the file is placed in notebooks/</span><span class="sc">{</span>MODULE<span class="sc">}</span><span class="ss">/data/'</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the data directory if it doesn't exist</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prompt user to upload the dataset</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the dataset was uploaded</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please ensure you uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for this notebook</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="setup" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q pandas nltk matplotlib seaborn scikit<span class="op">-</span>learn wordcloudimport pandas <span class="im">as</span> pd, numpy <span class="im">as</span> np, matplotlib.pyplot <span class="im">as</span> plt, seaborn <span class="im">as</span> snsimport nltkfrom nltk.corpus <span class="im">import</span> stopwordsfrom nltk.tokenize <span class="im">import</span> word_tokenizefrom nltk.stem <span class="im">import</span> WordNetLemmatizerfrom collections <span class="im">import</span> Counterfrom wordcloud <span class="im">import</span> WordCloudsns.set_theme()<span class="co"># NLTK data (robust to version differences)try:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    nltk.download(<span class="st">'punkt'</span>, quiet<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>: <span class="cf">pass</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    nltk.download(<span class="st">'punkt_tab'</span>, quiet<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>: <span class="cf">pass</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'stopwords'</span>, quiet<span class="op">=</span><span class="va">True</span>)nltk.download(<span class="st">'wordnet'</span>, quiet<span class="op">=</span><span class="va">True</span>)<span class="cf">try</span>:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    nltk.download(<span class="st">'averaged_perceptron_tagger_eng'</span>, quiet<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    nltk.download(<span class="st">'averaged_perceptron_tagger'</span>, quiet<span class="op">=</span><span class="va">True</span>)<span class="cf">try</span>:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    nltk.download(<span class="st">'vader_lexicon'</span>, quiet<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span>: passprint(<span class="st">'Text/NLP environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="load" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Pathtxt <span class="op">=</span> Path(<span class="st">'data'</span>)<span class="op">/</span><span class="st">'food_preferences.txt'</span>responses <span class="op">=</span> [r.strip() <span class="cf">for</span> r <span class="kw">in</span> txt.read_text(encoding<span class="op">=</span><span class="st">'utf-8'</span>).splitlines() <span class="cf">if</span> r.strip()]df <span class="op">=</span> pd.DataFrame({<span class="st">'response_id'</span>: <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(responses)<span class="op">+</span><span class="dv">1</span>), <span class="st">'text'</span>: responses})<span class="bu">print</span>(<span class="st">'N responses:'</span>, <span class="bu">len</span>(df))df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="text-analysis-for-qualitative-research-1" class="level1">
-<h1>📝 6.2 Text Analysis for Qualitative Research</h1>
-<p>This notebook introduces text analysis techniques for qualitative nutrition research, focusing on processing survey responses.</p>
-<p><strong>Objectives</strong>: - Preprocess text data using tokenization and stopword removal. - Perform word frequency analysis and visualization. - Apply techniques to <code>food_preferences.txt</code> to uncover hippo dietary preferences.</p>
-<p><strong>Context</strong>: Qualitative analysis of survey data, like hippo food preferences, reveals insights into dietary behaviours, complementing quantitative methods.</p>
-<details>
-<summary>
-Fun Fact
-</summary>
-Hippos love to express their food preferences, and text analysis helps us decode their crunchy cravings! 🦛
-</details>
-<div id="setup" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for text analysis</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install nltk pandas  <span class="co"># Ensures compatibility in Colab</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nltk  <span class="co"># For natural language processing</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd  <span class="co"># For data manipulation</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.tokenize <span class="im">import</span> word_tokenize  <span class="co"># For splitting text into words</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.corpus <span class="im">import</span> stopwords  <span class="co"># For removing common words</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter  <span class="co"># For counting word frequencies</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt  <span class="co"># For visualization</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Download NLTK resources</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'punkt_tab'</span>)  <span class="co"># Tokenizer</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>nltk.download(<span class="st">'stopwords'</span>)  <span class="co"># Stopwords list</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Text analysis environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Text analysis environment ready.</code></pre>
-</div>
-</div>
-<section id="data-preparation" class="level2">
-<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
-<p>Load <code>food_preferences.txt</code>, containing 50 hippo survey responses, and preprocess the text.</p>
-<div id="load" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load survey responses</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'data/food_preferences.txt'</span>, <span class="st">'r'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    responses <span class="op">=</span> [line.strip() <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>]</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Number of responses: </span><span class="sc">{</span><span class="bu">len</span>(responses)<span class="sc">}</span><span class="ss">'</span>)  <span class="co"># Display total responses</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Sample response: </span><span class="sc">{</span>responses[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">'</span>)  <span class="co"># Show first response</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Number of responses: 50
-Sample response: Hippo H1: I enjoy crunchy carrots.</code></pre>
-</div>
+<section id="preprocessing-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="preprocessing-pipeline">🧼 Preprocessing pipeline</h2>
+<p>We’ll lowercase, tokenise, remove stopwords/punctuation, and <strong>lemmatise</strong> (carrots→carrot). This <strong>supports</strong> coding by removing noise.</p>
+<div id="pipe" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>stop <span class="op">=</span> <span class="bu">set</span>(stopwords.words(<span class="st">'english'</span>)).union({<span class="st">'hippo'</span>, <span class="st">'h1'</span>,<span class="st">'h2'</span>,<span class="st">'h3'</span>})lem <span class="op">=</span> WordNetLemmatizer()<span class="kw">def</span> clean_tokens(text: <span class="bu">str</span>):    words <span class="op">=</span> word_tokenize(text.lower())    words <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> words <span class="cf">if</span> w.isalpha()]  <span class="co"># drop punctuation/numbers    words = [w for w in words if w not in stop]    words = [lem.lemmatize(w) for w in words]    return wordsdf['tokens'] = df['text'].apply(clean_tokens)df[['response_id','text','tokens']].head(6)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="text-preprocessing" class="level2">
-<h2 class="anchored" data-anchor-id="text-preprocessing">Text Preprocessing</h2>
-<p>Tokenize responses, convert to lowercase, and remove stopwords and punctuation.</p>
-<div id="preprocess" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize stopwords</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> <span class="bu">set</span>(stopwords.words(<span class="st">'english'</span>)).union({<span class="st">':'</span>, <span class="st">'.'</span>, <span class="st">'hippo'</span>, <span class="st">'i'</span>})</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tokenize and clean responses</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>tokens <span class="op">=</span> []</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> response <span class="kw">in</span> responses:</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> word_tokenize(response.lower())  <span class="co"># Convert to lowercase and tokenize</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    clean_words <span class="op">=</span> [word <span class="cf">for</span> word <span class="kw">in</span> words <span class="cf">if</span> word.isalpha() <span class="kw">and</span> word <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    tokens.extend(clean_words)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Sample tokens from first response: </span><span class="sc">{</span>tokens[:<span class="dv">3</span>]<span class="sc">}</span><span class="ss">'</span>)  <span class="co"># Show first few tokens</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Sample tokens from first response: ['enjoy', 'crunchy', 'carrots']</code></pre>
+<section id="frequencies-word-cloud-orientation-only" class="level2">
+<h2 class="anchored" data-anchor-id="frequencies-word-cloud-orientation-only">📊 Frequencies &amp; word cloud (orientation only)</h2>
+<div id="freq_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>all_tokens <span class="op">=</span> [t <span class="cf">for</span> row <span class="kw">in</span> df[<span class="st">'tokens'</span>] <span class="cf">for</span> t <span class="kw">in</span> row]freq <span class="op">=</span> Counter(all_tokens).most_common(<span class="dv">15</span>)pd.DataFrame(freq, columns<span class="op">=</span>[<span class="st">'word'</span>,<span class="st">'count'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div id="wordcloud" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wc <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(<span class="st">' '</span>.join(all_tokens))plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">4</span>))<span class="op">;</span> plt.imshow(wc)<span class="op">;</span> plt.axis(<span class="st">'off'</span>)<span class="op">;</span> plt.title(<span class="st">'Word Cloud'</span>)<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="word-frequency-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="word-frequency-analysis">Word Frequency Analysis</h2>
-<p>Count and visualize the most common words in the responses.</p>
-<div id="frequency" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count word frequencies</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>word_freq <span class="op">=</span> Counter(tokens)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>top_words <span class="op">=</span> word_freq.most_common(<span class="dv">5</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Top 5 words: </span><span class="sc">{</span>top_words<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize word frequencies</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>words, counts <span class="op">=</span> <span class="bu">zip</span>(<span class="op">*</span>top_words)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>plt.bar(words, counts)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Top 5 Words in Hippo Food Preferences'</span>)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Words'</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.show()  <span class="co"># Display bar plot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Top 5 words: [('carrots', 15), ('crunchy', 12), ('sweet', 10), ('enjoy', 8), ('greens', 7)]</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<pre><code>&lt;Figure size 800x600 with 1 Axes&gt;</code></pre>
-</div>
+<section id="n-grams-bigrams-trigrams" class="level2">
+<h2 class="anchored" data-anchor-id="n-grams-bigrams-trigrams">🔗 N-grams (bigrams &amp; trigrams)</h2>
+<p>Short phrases can reveal food pairings (e.g., <em>fresh fruit</em>, <em>crunchy carrot</em>).</p>
+<div id="ngram_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.util <span class="im">import</span> ngramsdef ngram_counts(tokens_list, n<span class="op">=</span><span class="dv">2</span>, top<span class="op">=</span><span class="dv">15</span>):    ng <span class="op">=</span> Counter()    <span class="cf">for</span> toks <span class="kw">in</span> tokens_list:        ng.update(ngrams(toks, n))    <span class="cf">return</span> pd.DataFrame(ng.most_common(top), columns<span class="op">=</span>[<span class="ss">f'</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">-gram'</span>,<span class="st">'count'</span>])bigrams <span class="op">=</span> ngram_counts(df[<span class="st">'tokens'</span>], n<span class="op">=</span><span class="dv">2</span>, top<span class="op">=</span><span class="dv">15</span>)trigrams <span class="op">=</span> ngram_counts(df[<span class="st">'tokens'</span>], n<span class="op">=</span><span class="dv">3</span>, top<span class="op">=</span><span class="dv">10</span>)display(bigrams)<span class="op">;</span> display(trigrams)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="exercise-analyze-adjectives" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-analyze-adjectives">Exercise: Analyze Adjectives</h2>
-<p>Modify the preprocessing to extract only adjectives (e.g., ‘crunchy’, ‘sweet’) and count their frequencies. Visualize the top 3 adjectives in a bar plot.</p>
-<p><strong>Guidance</strong>: - Use NLTK’s part-of-speech tagging (<code>nltk.pos_tag</code>) with <code>nltk.download('averaged_perceptron_tagger')</code>. - Filter for adjectives (POS tag ‘JJ’). - Create a bar plot of the top 3 adjectives.</p>
-<p><strong>Answer</strong>:</p>
-<p>My adjective analysis code and results are as follows:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Top 3 Adjectives</strong>:</p>
-<ul>
-<li>[Adjective 1]: [Count]</li>
-<li>[Adjective 2]: [Count]</li>
-<li>[Adjective 3]: [Count]</li>
-</ul>
+<section id="optional-aides-pos-tags-vader-sentiment" class="level2">
+<h2 class="anchored" data-anchor-id="optional-aides-pos-tags-vader-sentiment">🧪 Optional aides: POS tags &amp; VADER sentiment</h2>
+<p>Use sparingly; these are <strong>exploratory hints</strong>, not findings. Sentiment can be noisy in domain language.</p>
+<div id="pos" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:    <span class="im">from</span> nltk <span class="im">import</span> pos_tag    df[<span class="st">'pos'</span>] <span class="op">=</span> df[<span class="st">'tokens'</span>].<span class="bu">apply</span>(pos_tag)    df[[<span class="st">'response_id'</span>,<span class="st">'pos'</span>]].head(<span class="dv">4</span>)<span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:    <span class="bu">print</span>(<span class="st">'POS tagging unavailable:'</span>, e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="vader" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:    <span class="im">from</span> nltk.sentiment <span class="im">import</span> SentimentIntensityAnalyzer    sia <span class="op">=</span> SentimentIntensityAnalyzer()    df[<span class="st">'sentiment'</span>] <span class="op">=</span> df[<span class="st">'text'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: sia.polarity_scores(x)[<span class="st">'compound'</span>])    sns.histplot(df[<span class="st">'sentiment'</span>])<span class="op">;</span> plt.title(<span class="st">'Sentiment (VADER) — exploratory only'</span>)<span class="op">;</span> plt.show()<span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:    <span class="bu">print</span>(<span class="st">'VADER unavailable:'</span>, e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="export-a-coding-ready-table" class="level2">
+<h2 class="anchored" data-anchor-id="export-a-coding-ready-table">📤 Export a coding-ready table</h2>
+<p>We create a simple structure that supports <strong>manual coding</strong> (e.g., in Excel/Sheets or in 6.3).</p>
+<div id="export_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> df[[<span class="st">'response_id'</span>,<span class="st">'text'</span>,<span class="st">'tokens'</span>]].copy()out[<span class="st">'initial_code'</span>] <span class="op">=</span> <span class="st">''</span>  <span class="co"># analyst will fill codesout['notes'] = ''         # memo/commentsout_path = 'qual_coding_sheet.csv'out.to_csv(out_path, index=False)print('Wrote:', out_path)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">🧩 Exercises</h2>
+<ol type="1">
+<li><strong>Stoplist tuning</strong>: add domain-specific stopwords (e.g., <em>like, really, very</em>)—how do top words change?</li>
+<li><strong>Phrase mining</strong>: examine bigrams containing <em>fruit</em> or <em>carrot</em>; collect example quotes.</li>
+<li><strong>Coding sheet</strong>: add 2–4 provisional <strong>initial codes</strong> per 10 responses (keep them short &amp; action-oriented).</li>
+</ol>
 </section>
 <section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>You’ve applied text analysis to uncover dietary preferences from hippo survey responses, revealing key themes like ‘crunchy carrots’.</p>
-<p><strong>Next Steps</strong>: Apply these skills to your own qualitative datasets or revisit earlier modules for quantitative analysis.</p>
-<p><strong>Resources</strong>: - <a href="https://www.nltk.org/">NLTK Documentation</a> - <a href="https://www.datacamp.com/community/tutorials/text-analytics-beginners-nltk">Text Analysis Tutorial</a> - Repository: <a href="https://github.com/ggkuhnle/data-analysis-projects">github.com/ggkuhnle/data-analysis-projects</a></p>
-</section>
+<h2 class="anchored" data-anchor-id="conclusion">✅ Conclusion</h2>
+<p>You prepared text for analysis and produced a coding-ready table. Next: formal <strong>coding &amp; thematic analysis</strong> with reliability checks (6.3).</p>
+<details>
+<summary>
+More
+</summary>
+<ul>
+<li>NLTK docs (tokenisation, POS, stopwords)</li>
+<li>Practical theming workflows</li>
+</ul>
+</details>
 </section>
 
 </main>

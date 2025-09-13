@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="why-this-matters" class="level2">
 <h2 class="anchored" data-anchor-id="why-this-matters">📖 Why This Matters</h2>
 <p>Most real-world datasets do not arrive perfectly formatted. Some are <em>wide</em> because they come from spreadsheets, others are <em>long</em> because they come from experiments or databases. You need to: - Reshape them for analysis and plotting. - Ensure consistency across different datasets. - Follow the principle of <strong>tidy data</strong>: <em>each variable is a column, each observation is a row, and each type of observational unit is a table.</em></p>
-<div id="e959b6e6" class="cell">
+<div id="e959b6e6" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
@@ -206,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>Here, each row is one observation: a hippo’s intake of a nutrient in a specific year. This is tidy data and works seamlessly with pandas and most plotting libraries.</p>
 <p>👉 <strong>Summary:</strong> - <strong>Wide data</strong>: easy for humans to read, harder for computers. - <strong>Long/tidy data</strong>: the standard for analysis, modelling, and plotting.</p>
-<div id="load_data" class="cell">
+<div id="load_data" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_nutrients.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -222,7 +222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    values<span class="op">=</span><span class="st">'Value'</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>).reset_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This produces a DataFrame where nutrients like Iron, Calcium, etc. are each their own column.</p>
-<div id="do_pivot" class="cell">
+<div id="do_pivot" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df_wide <span class="op">=</span> df.pivot(index<span class="op">=</span>[<span class="st">'ID'</span>,<span class="st">'Year'</span>,<span class="st">'Age'</span>,<span class="st">'Sex'</span>], columns<span class="op">=</span><span class="st">'Nutrient'</span>, values<span class="op">=</span><span class="st">'Value'</span>).reset_index()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df_wide.head(<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -237,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    value_name<span class="op">=</span><span class="st">'Value'</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This stacks all nutrient columns into two columns: <code>Nutrient</code> (the name) and <code>Value</code> (the measurement).</p>
-<div id="do_melt" class="cell">
+<div id="do_melt" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_long <span class="op">=</span> df_wide.melt(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    id_vars<span class="op">=</span>[<span class="st">'ID'</span>,<span class="st">'Year'</span>,<span class="st">'Age'</span>,<span class="st">'Sex'</span>],</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    var_name<span class="op">=</span><span class="st">'Nutrient'</span>,</span>

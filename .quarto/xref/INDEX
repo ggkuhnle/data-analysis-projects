@@ -150,7 +150,8 @@
     "5.4_databases_sql.html": "31343fcb"
   },
   "notebooks/05_advanced/5.3_adcanced_bayesian.ipynb": {
-    "advanced_bayesian.html": "d8b51bd9"
+    "advanced_bayesian.html": "d8b51bd9",
+    "5.3_adcanced_bayesian.html": "87fa6c8b"
   },
   "notebooks/05_advanced/5.5_dashboards.ipynb": {
     "5.5_dashboards.html": "8aa08606"
@@ -250,7 +251,8 @@
     "4.7_clinical_trial_analysis.html": "c3a8f4a5"
   },
   "notebooks/04_data_analysis/4.6_logistic_and_survival.ipynb": {
-    "04_logistic_and_survival.html": "ed8dcce2"
+    "04_logistic_and_survival.html": "ed8dcce2",
+    "4.6_logistic_and_survival.html": "013a5488"
   },
   "notebooks/02_programming_basics/2.0_intro_to_programming.ipynb": {
     "2.0_intro_to_programming.html": "f47d230e"
@@ -296,5 +298,8 @@
   },
   "notebooks/10_mini_projects/10.9_fortran.ipynb": {
     "10.9_fortran.html": "f3a0d92a"
+  },
+  "notebooks/06_qualitative/6.3_thematic_coding.ipynb": {
+    "6.3_thematic_coding.html": "56fb3a9d"
   }
 }

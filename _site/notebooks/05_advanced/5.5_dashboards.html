@@ -79,10 +79,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link active" data-scroll-target="#data-preparation">Data Preparation</a></li>
-  <li><a href="#building-a-dashboard" id="toc-building-a-dashboard" class="nav-link" data-scroll-target="#building-a-dashboard">Building a Dashboard</a></li>
-  <li><a href="#exercise-1-customize-the-dashboard" id="toc-exercise-1-customize-the-dashboard" class="nav-link" data-scroll-target="#exercise-1-customize-the-dashboard">Exercise 1: Customize the Dashboard</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#load-tidy" id="toc-load-tidy" class="nav-link active" data-scroll-target="#load-tidy">📥 Load &amp; Tidy</a></li>
+  <li><a href="#helpers-kpi-slicer-functions" id="toc-helpers-kpi-slicer-functions" class="nav-link" data-scroll-target="#helpers-kpi-slicer-functions">🧰 Helpers: KPI &amp; Slicer Functions</a></li>
+  <li><a href="#interactive-controls" id="toc-interactive-controls" class="nav-link" data-scroll-target="#interactive-controls">🎛️ Interactive Controls</a></li>
+  <li><a href="#kpis" id="toc-kpis" class="nav-link" data-scroll-target="#kpis">📌 KPIs</a></li>
+  <li><a href="#trend-daily-rolling-7" id="toc-trend-daily-rolling-7" class="nav-link" data-scroll-target="#trend-daily-rolling-7">📈 Trend (Daily + Rolling 7)</a></li>
+  <li><a href="#stacked-bars-meal-composition" id="toc-stacked-bars-meal-composition" class="nav-link" data-scroll-target="#stacked-bars-meal-composition">🍱 Stacked Bars (Meal Composition)</a></li>
+  <li><a href="#treemap-who-eats-what" id="toc-treemap-who-eats-what" class="nav-link" data-scroll-target="#treemap-who-eats-what">🌳 Treemap (Who eats what?)</a></li>
+  <li><a href="#export-single-file-html-dashboard" id="toc-export-single-file-html-dashboard" class="nav-link" data-scroll-target="#export-single-file-html-dashboard">💾 Export Single-File HTML Dashboard</a></li>
+  <li><a href="#optional-quarto-template-staticparametric" id="toc-optional-quarto-template-staticparametric" class="nav-link" data-scroll-target="#optional-quarto-template-staticparametric">➕ Optional: Quarto Template (Static/Parametric)</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">🧩 Exercises</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">✅ Conclusion</a></li>
   </ul>
 </nav>
 </div>
@@ -107,138 +114,342 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This notebook introduces Quarto dashboards for visualizing nutrition data, ideal for presenting research findings.</p>
-<p><strong>Objectives</strong>:</p>
-<ul>
-<li>Build interactive dashboards with Quarto.</li>
-<li>Visualize nutrient trends from <code>large_food_log.csv</code>.</li>
-<li>Export dashboards for sharing.</li>
-</ul>
-<p><strong>Context</strong>: Dashboards consolidate complex data, like hippo nutrient logs, into clear insights. 🦛</p>
+<p>In this notebook you’ll build an <strong>interactive dashboard</strong> for nutrition data with Plotly and ipywidgets, and export a <strong>single-file HTML</strong> you can share.</p>
+<p><strong>You will:</strong> - Load and tidy <code>large_food_log.csv</code> (hippo snacks 🍉🦛). - Create interactive controls (Nutrient / Meal / Date range). - Build key visuals: trend lines, stacked bars, treemap, rolling averages. - Show KPIs (totals, daily average, unique days). - Export a shareable <strong>dashboard.html</strong>.</p>
 <details>
 <summary>
-Fun Fact
+Why dashboards?
 </summary>
-A dashboard is like a hippo’s control panel—clear and insightful! 🦛
+Dashboards condense many views into one space so trends pop out fast — perfect for busy nutrition teams.
 </details>
-<div id="colab_setup" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
+<div id="colab_setup" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Colab setup: fetch repo so we can read data</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the module and dataset for this notebook</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'05_advanced'</span>  <span class="co"># e.g., '01_infrastructure'</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'large_food_log.csv'</span>  <span class="co"># e.g., 'hippo_diets.csv'</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(<span class="st">'data'</span>, DATASET)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Attempt to clone the repository (automatic method)</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you encounter a cloning error (e.g., 'fatal: destination path already exists'),</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       reset the runtime (Runtime &gt; Restart runtime) and run this cell again.</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Attempting to clone repository...'</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(BASE_PATH):</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Repository already exists, skipping clone.'</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Debug: Print directory structure</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Listing repository contents:'</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Listing notebooks directory contents:'</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}<span class="op">/</span>notebooks</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the module directory exists</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(MODULE_PATH):</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Module directory </span><span class="sc">{</span>MODULE_PATH<span class="sc">}</span><span class="ss"> not found. Check the repository structure.'</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set working directory to the notebook's folder</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verify dataset is accessible</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(DATASET_PATH):</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Error: Dataset </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> not found after cloning.'</span>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cloning failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Falling back to manual upload option...'</span>)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: Manual upload option</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Please upload </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> manually.'</span>)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'1. Click the "Choose Files" button below.'</span>)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'2. Select </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> from your local machine.'</span>)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'3. Ensure the file is placed in notebooks/</span><span class="sc">{</span>MODULE<span class="sc">}</span><span class="ss">/data/'</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the data directory if it doesn't exist</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prompt user to upload the dataset</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the dataset was uploaded</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please ensure you uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for this notebook</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'05_advanced'</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'large_food_log.csv'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(MODULE_PATH, <span class="st">'data'</span>, DATASET)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Attempting to clone repository...'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(BASE_PATH):</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(DATASET_PATH):</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">'Dataset missing after clone.'</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cloning failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Falling back to manual upload...'</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(os.path.join(<span class="st">'data'</span>, DATASET), <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> to continue.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="setup" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas matplotlib seaborn  <span class="co"># For Colab users</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Dashboard environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="imports" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q pandas plotly ipywidgets</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, widgets, Layout, HBox, VBox</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_columns'</span>, <span class="dv">40</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Dashboard environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="data-preparation" class="level2">
-<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
-<p>Load <code>large_food_log.csv</code>, a detailed dataset of hippo meals and nutrients.</p>
-<div id="load" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/large_food_log.csv'</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   ID      Meal Nutrient  Amount        Date
-0  H1  Breakfast     Iron     2.5  2024-01-01</code></pre>
-</div>
+<section id="load-tidy" class="level2">
+<h2 class="anchored" data-anchor-id="load-tidy">📥 Load &amp; Tidy</h2>
+<p>We’ll parse dates, normalise text columns, and add a few helpful features (year / month, day-of-week).</p>
+<div id="read_tidy" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>csv_path <span class="op">=</span> Path(<span class="st">'data'</span>) <span class="op">/</span> <span class="st">'large_food_log.csv'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(csv_path)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic cleaning</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> [<span class="st">'ID'</span>,<span class="st">'Meal'</span>,<span class="st">'Nutrient'</span>]:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> col <span class="kw">in</span> df.columns:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        df[col] <span class="op">=</span> df[col].astype(<span class="bu">str</span>).<span class="bu">str</span>.strip()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Amount'</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">'Amount'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Date'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'Date'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter invalid rows</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.dropna(subset<span class="op">=</span>[<span class="st">'Amount'</span>,<span class="st">'Date'</span>])</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">'Amount'</span>] <span class="op">&gt;=</span> <span class="dv">0</span>]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Time features</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Year'</span>]  <span class="op">=</span> df[<span class="st">'Date'</span>].dt.year</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Month'</span>] <span class="op">=</span> df[<span class="st">'Date'</span>].dt.to_period(<span class="st">'M'</span>).astype(<span class="bu">str</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'DOW'</span>]   <span class="op">=</span> df[<span class="st">'Date'</span>].dt.day_name()</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>display(df.head())</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">Rows:'</span>, <span class="bu">len</span>(df), <span class="st">'| Date range:'</span>, df[<span class="st">'Date'</span>].<span class="bu">min</span>().date(), <span class="st">'→'</span>, df[<span class="st">'Date'</span>].<span class="bu">max</span>().date())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="building-a-dashboard" class="level2">
-<h2 class="anchored" data-anchor-id="building-a-dashboard">Building a Dashboard</h2>
-<p>Create a line plot to visualize nutrient trends over time. This can be embedded in a Quarto dashboard.</p>
-<div id="lineplot" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span><span class="st">'Date'</span>, y<span class="op">=</span><span class="st">'Amount'</span>, hue<span class="op">=</span><span class="st">'Nutrient'</span>, data<span class="op">=</span>df)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Nutrient Trends Over Time'</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Date'</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Amount (mg or g)'</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="helpers-kpi-slicer-functions" class="level2">
+<h2 class="anchored" data-anchor-id="helpers-kpi-slicer-functions">🧰 Helpers: KPI &amp; Slicer Functions</h2>
+<p>A couple of small utilities we’ll reuse across the dashboard.</p>
+<div id="utils" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> slice_data(df, nutrient<span class="op">=</span><span class="va">None</span>, meal<span class="op">=</span><span class="va">None</span>, date_range<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> df.copy()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> nutrient <span class="kw">and</span> nutrient <span class="op">!=</span> <span class="st">'All'</span>:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> d[d[<span class="st">'Nutrient'</span>] <span class="op">==</span> nutrient]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> meal <span class="kw">and</span> meal <span class="op">!=</span> <span class="st">'All'</span>:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> d[d[<span class="st">'Meal'</span>] <span class="op">==</span> meal]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> date_range <span class="kw">and</span> <span class="bu">all</span>(date_range):</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> d[(d[<span class="st">'Date'</span>] <span class="op">&gt;=</span> date_range[<span class="dv">0</span>]) <span class="op">&amp;</span> (d[<span class="st">'Date'</span>] <span class="op">&lt;=</span> date_range[<span class="dv">1</span>])]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> d</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kpis(d):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> d[<span class="st">'Amount'</span>].<span class="bu">sum</span>()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    n_days <span class="op">=</span> d[<span class="st">'Date'</span>].nunique()</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    daily_avg <span class="op">=</span> total <span class="op">/</span> n_days <span class="cf">if</span> n_days <span class="cf">else</span> <span class="fl">0.0</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Total amount'</span>: total,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Unique days'</span>: <span class="bu">int</span>(n_days),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Daily average'</span>: daily_avg</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="exercise-1-customize-the-dashboard" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-1-customize-the-dashboard">Exercise 1: Customize the Dashboard</h2>
-<p>Add a second plot (e.g., bar plot of nutrients by meal type) and describe its insights in a Markdown cell.</p>
-<p><strong>Guidance</strong>: Use <code>sns.catplot()</code> with <code>kind='bar'</code>.</p>
-<p><strong>Answer</strong>:</p>
-<p>The bar plot shows…</p>
+<section id="interactive-controls" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-controls">🎛️ Interactive Controls</h2>
+<p>Pick a <strong>Nutrient</strong>, <strong>Meal</strong>, and a <strong>Date range</strong> to drive the visuals below.</p>
+<div id="widgets" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>nutrients <span class="op">=</span> [<span class="st">'All'</span>] <span class="op">+</span> <span class="bu">sorted</span>(df[<span class="st">'Nutrient'</span>].dropna().unique().tolist())</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>meals     <span class="op">=</span> [<span class="st">'All'</span>] <span class="op">+</span> <span class="bu">sorted</span>(df[<span class="st">'Meal'</span>].dropna().unique().tolist())</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>start, end <span class="op">=</span> df[<span class="st">'Date'</span>].<span class="bu">min</span>().date(), df[<span class="st">'Date'</span>].<span class="bu">max</span>().date()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>w_nutrient <span class="op">=</span> widgets.Dropdown(options<span class="op">=</span>nutrients, value<span class="op">=</span><span class="st">'All'</span>, description<span class="op">=</span><span class="st">'Nutrient:'</span>, layout<span class="op">=</span>Layout(width<span class="op">=</span><span class="st">'250px'</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>w_meal     <span class="op">=</span> widgets.Dropdown(options<span class="op">=</span>meals, value<span class="op">=</span><span class="st">'All'</span>, description<span class="op">=</span><span class="st">'Meal:'</span>, layout<span class="op">=</span>Layout(width<span class="op">=</span><span class="st">'250px'</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>w_start    <span class="op">=</span> widgets.DatePicker(description<span class="op">=</span><span class="st">'Start:'</span>, value<span class="op">=</span>pd.Timestamp(start).date())</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>w_end      <span class="op">=</span> widgets.DatePicker(description<span class="op">=</span><span class="st">'End:'</span>, value<span class="op">=</span>pd.Timestamp(end).date())</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>display(HBox([w_nutrient, w_meal, w_start, w_end]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="kpis" class="level2">
+<h2 class="anchored" data-anchor-id="kpis">📌 KPIs</h2>
+<p>Quick headline numbers update with your selections.</p>
+<div id="kpi_render" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> render_kpis(nutrient, meal, start_date, end_date):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> slice_data(df, nutrient, meal, (pd.to_datetime(start_date), pd.to_datetime(end_date)))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    stats <span class="op">=</span> kpis(d)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> go.Figure()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    fig.add_trace(go.Indicator(mode<span class="op">=</span><span class="st">'number'</span>, value<span class="op">=</span>stats[<span class="st">'Total amount'</span>], title<span class="op">=</span>{<span class="st">'text'</span>:<span class="st">'Total amount'</span>}))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    fig.add_trace(go.Indicator(mode<span class="op">=</span><span class="st">'number'</span>, value<span class="op">=</span>stats[<span class="st">'Daily average'</span>], title<span class="op">=</span>{<span class="st">'text'</span>:<span class="st">'Daily average'</span>}, domain<span class="op">=</span>{<span class="st">'x'</span>:[<span class="fl">0.35</span>,<span class="fl">0.65</span>], <span class="st">'y'</span>:[<span class="dv">0</span>,<span class="dv">1</span>]}))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    fig.add_trace(go.Indicator(mode<span class="op">=</span><span class="st">'number'</span>, value<span class="op">=</span>stats[<span class="st">'Unique days'</span>], title<span class="op">=</span>{<span class="st">'text'</span>:<span class="st">'Unique days'</span>}, domain<span class="op">=</span>{<span class="st">'x'</span>:[<span class="fl">0.7</span>,<span class="dv">1</span>], <span class="st">'y'</span>:[<span class="dv">0</span>,<span class="dv">1</span>]}))</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    fig.update_layout(grid<span class="op">=</span>{<span class="st">'rows'</span>:<span class="dv">1</span>,<span class="st">'columns'</span>:<span class="dv">3</span>}, height<span class="op">=</span><span class="dv">200</span>, margin<span class="op">=</span><span class="bu">dict</span>(l<span class="op">=</span><span class="dv">10</span>,r<span class="op">=</span><span class="dv">10</span>,t<span class="op">=</span><span class="dv">10</span>,b<span class="op">=</span><span class="dv">10</span>))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    fig.show()</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>render_kpis(w_nutrient.value, w_meal.value, w_start.value, w_end.value)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _on_change(change):</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    render_kpis(w_nutrient.value, w_meal.value, w_start.value, w_end.value)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> [w_nutrient, w_meal, w_start, w_end]:</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    w.observe(_on_change, names<span class="op">=</span><span class="st">'value'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="trend-daily-rolling-7" class="level2">
+<h2 class="anchored" data-anchor-id="trend-daily-rolling-7">📈 Trend (Daily + Rolling 7)</h2>
+<p>Daily totals with a <strong>7-day rolling mean</strong>. Facets by <strong>Nutrient</strong> when ‘All’ is selected.</p>
+<div id="trend_plot" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> trend_figure(nutrient, meal, start_date, end_date):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> slice_data(df, nutrient, meal, (pd.to_datetime(start_date), pd.to_datetime(end_date)))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> d.empty:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> go.Figure().add_annotation(text<span class="op">=</span><span class="st">'No data in selection'</span>, showarrow<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    daily <span class="op">=</span> d.groupby([<span class="st">'Date'</span>,<span class="st">'Nutrient'</span>], as_index<span class="op">=</span><span class="va">False</span>)[<span class="st">'Amount'</span>].<span class="bu">sum</span>().rename(columns<span class="op">=</span>{<span class="st">'Amount'</span>:<span class="st">'Total'</span>})</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    daily[<span class="st">'Roll7'</span>] <span class="op">=</span> daily.sort_values(<span class="st">'Date'</span>).groupby(<span class="st">'Nutrient'</span>)[<span class="st">'Total'</span>].transform(<span class="kw">lambda</span> s: s.rolling(<span class="dv">7</span>, min_periods<span class="op">=</span><span class="dv">1</span>).mean())</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> nutrient <span class="op">==</span> <span class="st">'All'</span>:</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        fig <span class="op">=</span> px.line(daily, x<span class="op">=</span><span class="st">'Date'</span>, y<span class="op">=</span><span class="st">'Total'</span>, color<span class="op">=</span><span class="st">'Nutrient'</span>, title<span class="op">=</span><span class="st">'Daily totals by Nutrient'</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n <span class="kw">in</span> daily[<span class="st">'Nutrient'</span>].unique():</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            dn <span class="op">=</span> daily[daily[<span class="st">'Nutrient'</span>]<span class="op">==</span>n]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>            fig.add_trace(go.Scatter(x<span class="op">=</span>dn[<span class="st">'Date'</span>], y<span class="op">=</span>dn[<span class="st">'Roll7'</span>], name<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> (7d MA)'</span>, mode<span class="op">=</span><span class="st">'lines'</span>, line<span class="op">=</span><span class="bu">dict</span>(dash<span class="op">=</span><span class="st">'dash'</span>)))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        fig <span class="op">=</span> px.line(daily, x<span class="op">=</span><span class="st">'Date'</span>, y<span class="op">=</span><span class="st">'Total'</span>, title<span class="op">=</span><span class="ss">f'Daily totals: </span><span class="sc">{</span>nutrient<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        fig.add_trace(go.Scatter(x<span class="op">=</span>daily[<span class="st">'Date'</span>], y<span class="op">=</span>daily[<span class="st">'Roll7'</span>], name<span class="op">=</span><span class="st">'7d MA'</span>, mode<span class="op">=</span><span class="st">'lines'</span>, line<span class="op">=</span><span class="bu">dict</span>(dash<span class="op">=</span><span class="st">'dash'</span>)))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    fig.update_layout(height<span class="op">=</span><span class="dv">420</span>, margin<span class="op">=</span><span class="bu">dict</span>(l<span class="op">=</span><span class="dv">10</span>,r<span class="op">=</span><span class="dv">10</span>,t<span class="op">=</span><span class="dv">40</span>,b<span class="op">=</span><span class="dv">10</span>))</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>fig_trend <span class="op">=</span> trend_figure(w_nutrient.value, w_meal.value, w_start.value, w_end.value)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>fig_trend.show()</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _on_change_trend(change):</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    trend_figure(w_nutrient.value, w_meal.value, w_start.value, w_end.value).show()</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> [w_nutrient, w_meal, w_start, w_end]:</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    w.observe(_on_change_trend, names<span class="op">=</span><span class="st">'value'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="stacked-bars-meal-composition" class="level2">
+<h2 class="anchored" data-anchor-id="stacked-bars-meal-composition">🍱 Stacked Bars (Meal Composition)</h2>
+<p>Composition by <strong>Meal</strong> within the selected period (sum of Amount).</p>
+<div id="bars_plot" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> stacked_meal(nutrient, meal, start_date, end_date):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> slice_data(df, nutrient, meal, (pd.to_datetime(start_date), pd.to_datetime(end_date)))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> d.empty:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> go.Figure().add_annotation(text<span class="op">=</span><span class="st">'No data in selection'</span>, showarrow<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    comp <span class="op">=</span> d.groupby([<span class="st">'Meal'</span>,<span class="st">'Nutrient'</span>], as_index<span class="op">=</span><span class="va">False</span>)[<span class="st">'Amount'</span>].<span class="bu">sum</span>()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.bar(comp, x<span class="op">=</span><span class="st">'Meal'</span>, y<span class="op">=</span><span class="st">'Amount'</span>, color<span class="op">=</span><span class="st">'Nutrient'</span>, title<span class="op">=</span><span class="st">'Meal composition (sum of Amount)'</span>, barmode<span class="op">=</span><span class="st">'stack'</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    fig.update_layout(height<span class="op">=</span><span class="dv">380</span>, margin<span class="op">=</span><span class="bu">dict</span>(l<span class="op">=</span><span class="dv">10</span>,r<span class="op">=</span><span class="dv">10</span>,t<span class="op">=</span><span class="dv">40</span>,b<span class="op">=</span><span class="dv">10</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>fig_bars <span class="op">=</span> stacked_meal(w_nutrient.value, w_meal.value, w_start.value, w_end.value)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>fig_bars.show()</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _on_change_bars(change):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    stacked_meal(w_nutrient.value, w_meal.value, w_start.value, w_end.value).show()</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> [w_nutrient, w_meal, w_start, w_end]:</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    w.observe(_on_change_bars, names<span class="op">=</span><span class="st">'value'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="treemap-who-eats-what" class="level2">
+<h2 class="anchored" data-anchor-id="treemap-who-eats-what">🌳 Treemap (Who eats what?)</h2>
+<p>Treemap by <strong>ID → Meal → Nutrient</strong> reveals heavy hitters and diet mix quickly.</p>
+<div id="treemap_plot" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> treemap_fig(nutrient, meal, start_date, end_date):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> slice_data(df, nutrient, meal, (pd.to_datetime(start_date), pd.to_datetime(end_date)))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> d.empty:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> go.Figure().add_annotation(text<span class="op">=</span><span class="st">'No data in selection'</span>, showarrow<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    agg <span class="op">=</span> d.groupby([<span class="st">'ID'</span>,<span class="st">'Meal'</span>,<span class="st">'Nutrient'</span>], as_index<span class="op">=</span><span class="va">False</span>)[<span class="st">'Amount'</span>].<span class="bu">sum</span>()</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    fig <span class="op">=</span> px.treemap(agg, path<span class="op">=</span>[<span class="st">'ID'</span>,<span class="st">'Meal'</span>,<span class="st">'Nutrient'</span>], values<span class="op">=</span><span class="st">'Amount'</span>, title<span class="op">=</span><span class="st">'Treemap: totals by ID → Meal → Nutrient'</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    fig.update_layout(height<span class="op">=</span><span class="dv">500</span>, margin<span class="op">=</span><span class="bu">dict</span>(l<span class="op">=</span><span class="dv">10</span>,r<span class="op">=</span><span class="dv">10</span>,t<span class="op">=</span><span class="dv">40</span>,b<span class="op">=</span><span class="dv">10</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>fig_tree <span class="op">=</span> treemap_fig(w_nutrient.value, w_meal.value, w_start.value, w_end.value)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>fig_tree.show()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _on_change_tree(change):</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    treemap_fig(w_nutrient.value, w_meal.value, w_start.value, w_end.value).show()</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> [w_nutrient, w_meal, w_start, w_end]:</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    w.observe(_on_change_tree, names<span class="op">=</span><span class="st">'value'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="export-single-file-html-dashboard" class="level2">
+<h2 class="anchored" data-anchor-id="export-single-file-html-dashboard">💾 Export Single-File HTML Dashboard</h2>
+<p>Write a self-contained <strong><code>dashboard.html</code></strong> (no server needed) with KPIs + charts for your current selection.</p>
+<div id="export_html" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_dashboard_html(nutrient, meal, start_date, end_date, out<span class="op">=</span><span class="st">'dashboard.html'</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Build figures with current selection</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    kpi_fig <span class="op">=</span> go.Figure()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> slice_data(df, nutrient, meal, (pd.to_datetime(start_date), pd.to_datetime(end_date)))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> kpis(d)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    kpi_fig.add_trace(go.Indicator(mode<span class="op">=</span><span class="st">'number'</span>, value<span class="op">=</span>s[<span class="st">'Total amount'</span>], title<span class="op">=</span>{<span class="st">'text'</span>:<span class="st">'Total amount'</span>}))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    kpi_fig.add_trace(go.Indicator(mode<span class="op">=</span><span class="st">'number'</span>, value<span class="op">=</span>s[<span class="st">'Daily average'</span>], title<span class="op">=</span>{<span class="st">'text'</span>:<span class="st">'Daily average'</span>}, domain<span class="op">=</span>{<span class="st">'x'</span>:[<span class="fl">0.35</span>,<span class="fl">0.65</span>], <span class="st">'y'</span>:[<span class="dv">0</span>,<span class="dv">1</span>]}))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    kpi_fig.add_trace(go.Indicator(mode<span class="op">=</span><span class="st">'number'</span>, value<span class="op">=</span>s[<span class="st">'Unique days'</span>], title<span class="op">=</span>{<span class="st">'text'</span>:<span class="st">'Unique days'</span>}, domain<span class="op">=</span>{<span class="st">'x'</span>:[<span class="fl">0.7</span>,<span class="dv">1</span>], <span class="st">'y'</span>:[<span class="dv">0</span>,<span class="dv">1</span>]}))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    kpi_fig.update_layout(grid<span class="op">=</span>{<span class="st">'rows'</span>:<span class="dv">1</span>,<span class="st">'columns'</span>:<span class="dv">3</span>}, height<span class="op">=</span><span class="dv">200</span>, margin<span class="op">=</span><span class="bu">dict</span>(l<span class="op">=</span><span class="dv">10</span>,r<span class="op">=</span><span class="dv">10</span>,t<span class="op">=</span><span class="dv">10</span>,b<span class="op">=</span><span class="dv">10</span>))</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    figs <span class="op">=</span> [</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'KPIs'</span>, kpi_fig),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Trend'</span>, trend_figure(nutrient, meal, start_date, end_date)),</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Meal Composition'</span>, stacked_meal(nutrient, meal, start_date, end_date)),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Treemap'</span>, treemap_fig(nutrient, meal, start_date, end_date))</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    html_blocks <span class="op">=</span> []</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> title, fig <span class="kw">in</span> figs:</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>        html_blocks.append(<span class="ss">f"&lt;h2 style='font-family:sans-serif'&gt;</span><span class="sc">{</span>title<span class="sc">}</span><span class="ss">&lt;/h2&gt;"</span> <span class="op">+</span> fig.to_html(full_html<span class="op">=</span><span class="va">False</span>, include_plotlyjs<span class="op">=</span><span class="st">'cdn'</span>))</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    template <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;html&gt;</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;head&gt;</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="ss">      &lt;meta charset='utf-8'&gt;</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="ss">      &lt;title&gt;Nutrition Dashboard&lt;/title&gt;</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="ss">      &lt;style&gt;body</span><span class="ch">{{</span><span class="ss">max-width:1200px;margin:20px auto;font-family:sans-serif;</span><span class="ch">}}</span><span class="ss">&lt;/style&gt;</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;/head&gt;</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;body&gt;</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="ss">      &lt;h1 style='font-family:sans-serif'&gt;Nutrition Dashboard&lt;/h1&gt;</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="ss">      &lt;p&gt;&lt;b&gt;Filters:&lt;/b&gt; Nutrient=</span><span class="sc">{</span>nutrient<span class="sc">}</span><span class="ss"> | Meal=</span><span class="sc">{</span>meal<span class="sc">}</span><span class="ss"> | Range=</span><span class="sc">{</span>start_date<span class="sc">}</span><span class="ss"> → </span><span class="sc">{</span>end_date<span class="sc">}</span><span class="ss">&lt;/p&gt;</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="ss">      </span><span class="sc">{</span><span class="st">''</span><span class="sc">.</span>join(html_blocks)<span class="sc">}</span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;/body&gt;</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="ss">    &lt;/html&gt;</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(out, <span class="st">'w'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>        f.write(template)</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Wrote:'</span>, Path(out).resolve())</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>build_dashboard_html(w_nutrient.value, w_meal.value, w_start.value, w_end.value, out<span class="op">=</span><span class="st">'dashboard.html'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="optional-quarto-template-staticparametric" class="level2">
+<h2 class="anchored" data-anchor-id="optional-quarto-template-staticparametric">➕ Optional: Quarto Template (Static/Parametric)</h2>
+<p>If you use <strong>Quarto</strong>, this writes a minimal <code>.qmd</code> you can render outside Colab to a polished dashboard.</p>
+<details>
+<summary>
+What you get
+</summary>
+A starter Quarto page with Plotly support, filter parameters, and Python code chunks.
+</details>
+<div id="write_qmd" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>qmd <span class="op">=</span> <span class="st">'''</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">---</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">title: "Nutrition Dashboard"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">format:</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">  html:</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="st">    theme: cosmo</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="st">    toc: false</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="st">filters:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="st">  - lightbox</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="st">execute:</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="st">  echo: false</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="st">params:</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="st">  nutrient: All</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="st">  meal: All</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="st">  start: 2024-01-01</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="st">  end: 2024-12-31</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="st">---</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="sc">{python}</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="st">import pandas as pd, plotly.express as px</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="st">df = pd.read_csv('data/large_food_log.csv')</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="st">df['Date'] = pd.to_datetime(df['Date'], errors='coerce')</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="st">df = df.dropna(subset=['Amount','Date'])</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="st">nutrient = params['nutrient']</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="st">meal = params['meal']</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="st">start = pd.to_datetime(params['start'])</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="st">end   = pd.to_datetime(params['end'])</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="st">d = df.copy()</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="st">if nutrient!='All': d = d[d['Nutrient']==nutrient]</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="st">if meal!='All': d = d[d['Meal']==meal]</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="st">d = d[(d['Date']&gt;=start)&amp;(d['Date']&lt;=end)]</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="st">daily = d.groupby(['Date','Nutrient'], as_index=False)['Amount'].sum()</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="st">fig = px.line(daily, x='Date', y='Amount', color='Nutrient', title='Daily totals')</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="st">fig</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'nutrition_dashboard.qmd'</span>,<span class="st">'w'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    f.write(qmd)</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Wrote Quarto file:'</span>, Path(<span class="st">'nutrition_dashboard.qmd'</span>).resolve())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">🧩 Exercises</h2>
+<ol type="1">
+<li><p><strong>Facet trends</strong> — Change the trend chart to facet by <strong>Meal</strong> when Nutrient is ‘All’.</p></li>
+<li><p><strong>Percent share</strong> — In the stacked bar, show <strong>percent</strong> composition per Meal (hint: compute totals per Meal, then divide and use <code>text_auto='0.0%'</code>).</p></li>
+<li><p><strong>Anomaly hint</strong> — Add a line for <strong>30-day rolling mean</strong> and scatter markers when daily total is <strong>50% above</strong> the rolling mean.</p></li>
+<li><p><strong>Save &amp; ship</strong> — Export different filter combinations as <code>dashboard_*.html</code> and share with your team.</p></li>
+</ol>
 </section>
 <section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>You’ve built a Quarto dashboard to visualize nutrient trends. Share it via GitHub Pages or PDF.</p>
-<p><strong>Resources</strong>:</p>
+<h2 class="anchored" data-anchor-id="conclusion">✅ Conclusion</h2>
+<p>You built an interactive dashboard with <strong>Plotly + ipywidgets</strong>, added KPIs and multiple linked views, and exported a <strong>portable HTML</strong>. You’re ready to package insights for nutrition stakeholders.</p>
+<details>
+<summary>
+More
+</summary>
 <ul>
-<li><a href="https://quarto.org/docs/interactive/">Quarto Dashboards</a></li>
-<li><a href="https://seaborn.pydata.org/">Seaborn Documentation</a></li>
-<li>Repository: <a href="https://github.com/ggkuhnle/data-analysis-projects">github.com/ggkuhnle/data-analysis-projects</a></li>
+<li>Plotly Express: https://plotly.com/python/</li>
+<li>ipywidgets: https://ipywidgets.readthedocs.io/</li>
+<li>Quarto dashboards: https://quarto.org/docs/interactive/</li>
 </ul>
+</details>
 </section>
 
 </main>

@@ -118,14 +118,14 @@ Fun Fact
 </summary>
 Data types are like a hippo’s food labels—knowing what’s what prevents a mix-up! 🦛
 </details>
-<div id="d56c57bb" class="cell">
+<div id="d56c57bb" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup: This module (Programming Basics) does not require external datasets</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'No dataset required for this notebook 🦛'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="exploring-data-types" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-data-types">Exploring Data Types</h2>
 <p>Create variables with different data types for a hippo’s diet and check their types.</p>
-<div id="f6887db6" class="cell">
+<div id="f6887db6" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hippo_id <span class="op">=</span> <span class="st">'H1'</span>           <span class="co"># String for hippo identifier</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>calories <span class="op">=</span> <span class="dv">2500</span>           <span class="co"># Integer for daily calorie intake</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>protein <span class="op">=</span> <span class="fl">80.5</span>            <span class="co"># Float for protein intake in grams</span></span>
@@ -138,7 +138,7 @@ Data types are like a hippo’s food labels—knowing what’s what prevents a m
 <section id="type-conversion" class="level2">
 <h2 class="anchored" data-anchor-id="type-conversion">Type Conversion</h2>
 <p>Convert a string nutrient value to a float for calculations.</p>
-<div id="46878f92" class="cell">
+<div id="46878f92" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>iron_str <span class="op">=</span> <span class="st">'8.2'</span>  <span class="co"># Iron intake as a string</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>iron_float <span class="op">=</span> <span class="bu">float</span>(iron_str)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Iron as float: </span><span class="sc">{</span>iron_float<span class="sc">}</span><span class="ss">'</span>)</span>
@@ -165,7 +165,7 @@ Common Problems
 <section id="working-with-dates" class="level2">
 <h2 class="anchored" data-anchor-id="working-with-dates">📅 Working with Dates</h2>
 <p>Python’s <code>datetime</code> helps convert and work with date strings.</p>
-<div id="ca84aef7" class="cell">
+<div id="ca84aef7" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -177,7 +177,7 @@ Common Problems
 </section>
 <section id="handling-missing-data" class="level2">
 <h2 class="anchored" data-anchor-id="handling-missing-data">🕳 Handling Missing Data</h2>
-<div id="e8c21c8f" class="cell">
+<div id="e8c21c8f" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>protein_values <span class="op">=</span> [<span class="st">'80.5'</span>, <span class="st">'75.2'</span>, <span class="st">''</span>, <span class="st">'82.0'</span>, <span class="st">'NaN'</span>, <span class="st">'missing'</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>converted <span class="op">=</span> []</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> val <span class="kw">in</span> protein_values:</span>
@@ -187,7 +187,7 @@ Common Problems
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        converted.append(<span class="va">None</span>)</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(converted)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="46176293" class="cell">
+<div id="46176293" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using Pandas to coerce errors</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'Protein (g)'</span>: [<span class="st">'80.5'</span>, <span class="st">'NaN'</span>, <span class="st">'75.0'</span>, <span class="st">''</span>, <span class="va">None</span>, <span class="st">'missing'</span>]})</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Protein (g)'</span>] <span class="op">=</span> pd.to_numeric(df[<span class="st">'Protein (g)'</span>], errors<span class="op">=</span><span class="st">'coerce'</span>)</span>

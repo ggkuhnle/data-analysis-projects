@@ -177,13 +177,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="defining-a-function" class="level3">
 <h3 class="anchored" data-anchor-id="defining-a-function">🧰 Defining a Function</h3>
-<div id="78c6d3d0" class="cell">
+<div id="78c6d3d0" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> greet():</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""This function prints a greeting."""</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Hello, hippo!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To use it, you call the function by name with <code>()</code>:</p>
-<div id="bbdecb1c" class="cell">
+<div id="bbdecb1c" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>greet()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
@@ -191,13 +191,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="functions-with-inputs-arguments" class="level3">
 <h3 class="anchored" data-anchor-id="functions-with-inputs-arguments">📦 Functions with Inputs (Arguments)</h3>
 <p>You can pass <strong>inputs</strong> into functions—these are called <strong>arguments</strong>. For example, to create a function that greets a specific hippo by ID:</p>
-<div id="b867738b" class="cell">
+<div id="b867738b" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> greet_hippo(hippo_id):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Greets a hippo by ID."""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Hello, Hippo </span><span class="sc">{</span>hippo_id<span class="sc">}</span><span class="ss">!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then call it like this:</p>
-<div id="1359986f" class="cell">
+<div id="1359986f" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>greet_hippo(<span class="st">"H3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
@@ -205,13 +205,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="functions-that-return-values" class="level3">
 <h3 class="anchored" data-anchor-id="functions-that-return-values">🎯 Functions That Return Values</h3>
 <p>Some functions do a calculation and <strong>return a result</strong> using the <code>return</code> keyword:</p>
-<div id="f185a8e1" class="cell">
+<div id="f185a8e1" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> nutrient_percentage(intake, reference):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns intake as a percentage of reference."""</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>((intake <span class="op">/</span> reference) <span class="op">*</span> <span class="dv">100</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Calling this function:</p>
-<div id="f4312fad" class="cell">
+<div id="f4312fad" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> nutrient_percentage(<span class="fl">8.2</span>, <span class="dv">15</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)  <span class="co"># 54.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -220,7 +220,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="what-is-a-docstring" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-a-docstring">📘 What Is a Docstring?</h3>
 <p>A <strong>docstring</strong> is a special comment enclosed in triple quotes <code>"""</code> that explains what the function does, its inputs, and output. These appear when using <code>help()</code> and are best practice in well-written code:</p>
-<div id="65b0afad" class="cell">
+<div id="65b0afad" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_bmi(weight, height):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calculates Body Mass Index (BMI).</span></span>
@@ -239,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="scope-where-variables-exist" class="level3">
 <h3 class="anchored" data-anchor-id="scope-where-variables-exist">🔒 Scope: Where Variables Exist</h3>
 <p>Variables defined <em>inside</em> a function only exist while that function runs. This is called <strong>local scope</strong>.</p>
-<div id="6ba824fa" class="cell">
+<div id="6ba824fa" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> local_example():</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="dv">42</span>  <span class="co"># This exists only inside the function</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(x)</span>
@@ -264,7 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="example-for-loop" class="level2">
 <h2 class="anchored" data-anchor-id="example-for-loop">🧪 Example: <code>for</code> Loop</h2>
-<div id="ce0bc00b" class="cell">
+<div id="ce0bc00b" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>hippos <span class="op">=</span> [<span class="st">'H1'</span>, <span class="st">'H2'</span>, <span class="st">'H3'</span>]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> hippo <span class="kw">in</span> hippos:</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Analysing data for hippo </span><span class="sc">{</span>hippo<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -281,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="example-while-loop" class="level2">
 <h2 class="anchored" data-anchor-id="example-while-loop">⏳ Example: <code>while</code> Loop</h2>
-<div id="594010f6" class="cell">
+<div id="594010f6" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>energy <span class="op">=</span> <span class="dv">100</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> energy <span class="op">&gt;</span> <span class="dv">0</span>:</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Energy remaining: </span><span class="sc">{</span>energy<span class="sc">}</span><span class="ss">"</span>)</span>
@@ -302,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="rangestart-stop-step" class="level3">
 <h3 class="anchored" data-anchor-id="rangestart-stop-step"><code>range(start, stop, step)</code></h3>
 <p>Generates a sequence of numbers.</p>
-<div id="e24f8b3a" class="cell">
+<div id="e24f8b3a" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>):</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Day </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -310,7 +310,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="enumerate" class="level3">
 <h3 class="anchored" data-anchor-id="enumerate"><code>enumerate()</code></h3>
 <p>Gives you both index and value during iteration.</p>
-<div id="cf31d41c" class="cell">
+<div id="cf31d41c" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>foods <span class="op">=</span> [<span class="st">'carrots'</span>, <span class="st">'apples'</span>, <span class="st">'hay'</span>]</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, item <span class="kw">in</span> <span class="bu">enumerate</span>(foods):</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>index<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>item<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -319,7 +319,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="zip" class="level3">
 <h3 class="anchored" data-anchor-id="zip"><code>zip()</code></h3>
 <p>Combines two or more sequences into tuples.</p>
-<div id="03f158e1" class="cell">
+<div id="03f158e1" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>hippos <span class="op">=</span> [<span class="st">'H1'</span>, <span class="st">'H2'</span>]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> [<span class="dv">1500</span>, <span class="dv">1600</span>]</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> hippo, weight <span class="kw">in</span> <span class="bu">zip</span>(hippos, weights):</span>
@@ -346,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <section id="example" class="level3">
 <h3 class="anchored" data-anchor-id="example">📦 Example</h3>
-<div id="37023618" class="cell">
+<div id="37023618" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>iron_intake <span class="op">=</span> <span class="fl">6.5</span>  <span class="co"># in mg</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> iron_intake <span class="op">&lt;</span> <span class="dv">8</span>:</span>
@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="indentation-matters" class="level2">
 <h2 class="anchored" data-anchor-id="indentation-matters">⚠️ Indentation Matters</h2>
 <p>Just like loops and functions, conditionals rely on <strong>indentation</strong> to define blocks of code. Each clause (if/elif/else) ends in a colon <code>:</code> and the block underneath must be indented.</p>
-<div id="647058c9" class="cell">
+<div id="647058c9" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>calories <span class="op">=</span> <span class="dv">2200</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> calories <span class="op">&gt;</span> <span class="dv">2500</span>:</span>
@@ -375,7 +375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="nested-conditionals" class="level2">
 <h2 class="anchored" data-anchor-id="nested-conditionals">🧪 Nested Conditionals</h2>
 <p>You can also put one conditional inside another, though it’s good practice to keep things readable.</p>
-<div id="606669c8" class="cell">
+<div id="606669c8" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>protein <span class="op">=</span> <span class="dv">60</span>  <span class="co"># in grams</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> protein <span class="op">&gt;</span> <span class="dv">50</span>:</span>
@@ -389,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="pythonic-alternatives" class="level2">
 <h2 class="anchored" data-anchor-id="pythonic-alternatives">🐍 Pythonic Alternatives</h2>
 <p>Sometimes, short decisions can be made with a <strong>ternary expression</strong>:</p>
-<div id="47e926e1" class="cell">
+<div id="47e926e1" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>iron_intake <span class="op">=</span> <span class="fl">6.5</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>status <span class="op">=</span> <span class="st">"Low"</span> <span class="cf">if</span> iron_intake <span class="op">&lt;</span> <span class="dv">8</span> <span class="cf">else</span> <span class="st">"OK"</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -415,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="lambda-functions-anonymous-functions" class="level3">
 <h3 class="anchored" data-anchor-id="lambda-functions-anonymous-functions">🧠 Lambda Functions (Anonymous Functions)</h3>
 <p>Sometimes you just need a simple one-line function for quick tasks. Enter the <code>lambda</code> function:</p>
-<div id="67a3af22" class="cell">
+<div id="67a3af22" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>double <span class="op">=</span> <span class="kw">lambda</span> x: x <span class="op">*</span> <span class="dv">2</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(double(<span class="dv">4</span>))  <span class="co"># ➝ 8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -425,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="list-comprehensions" class="level3">
 <h3 class="anchored" data-anchor-id="list-comprehensions">🌀 List Comprehensions</h3>
 <p>Loops can often be replaced with elegant one-liners:</p>
-<div id="8e323a43" class="cell">
+<div id="8e323a43" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>calories <span class="op">=</span> [<span class="dv">2500</span>, <span class="dv">2600</span>, <span class="dv">2300</span>]</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>kilojoules <span class="op">=</span> [c <span class="op">*</span> <span class="fl">4.184</span> <span class="cf">for</span> c <span class="kw">in</span> calories]</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>kilojoules</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -435,7 +435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="while-loops" class="level3">
 <h3 class="anchored" data-anchor-id="while-loops">🔁 <code>while</code> Loops</h3>
 <p>Besides <code>for</code>, you also have <code>while</code> loops, which run as long as a condition is true:</p>
-<div id="9822e691" class="cell">
+<div id="9822e691" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> x <span class="op">&lt;</span> <span class="dv">5</span>:</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(x)</span>

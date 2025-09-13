@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>🧾 6.1 Introduction to Qualitative Research</title>
+<title>🧬 6.1 Introduction to Qualitative Research</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,10 +79,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link active" data-scroll-target="#data-preparation">Data Preparation</a></li>
-  <li><a href="#basic-text-analysis" id="toc-basic-text-analysis" class="nav-link" data-scroll-target="#basic-text-analysis">Basic Text Analysis</a></li>
-  <li><a href="#exercise-1-expand-analysis" id="toc-exercise-1-expand-analysis" class="nav-link" data-scroll-target="#exercise-1-expand-analysis">Exercise 1: Expand Analysis</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#objectives" id="toc-objectives" class="nav-link active" data-scroll-target="#objectives">🎯 Objectives</a></li>
+  <li><a href="#when-to-use-qualitative-methods" id="toc-when-to-use-qualitative-methods" class="nav-link" data-scroll-target="#when-to-use-qualitative-methods">🧭 When to use qualitative methods?</a></li>
+  <li><a href="#setup-colab" id="toc-setup-colab" class="nav-link" data-scroll-target="#setup-colab">🔧 Setup (Colab)</a></li>
+  <li><a href="#load-the-qualitative-data" id="toc-load-the-qualitative-data" class="nav-link" data-scroll-target="#load-the-qualitative-data">📥 Load the qualitative data</a></li>
+  <li><a href="#first-look-light-touch" id="toc-first-look-light-touch" class="nav-link" data-scroll-target="#first-look-light-touch">🔍 First look (light-touch)</a></li>
+  <li><a href="#rigour-in-qualitative-work" id="toc-rigour-in-qualitative-work" class="nav-link" data-scroll-target="#rigour-in-qualitative-work">📏 Rigour in qualitative work</a></li>
+  <li><a href="#tiny-safe-quantifications" id="toc-tiny-safe-quantifications" class="nav-link" data-scroll-target="#tiny-safe-quantifications">🧪 Tiny, safe quantifications</a></li>
+  <li><a href="#next-steps-from-familiarisation-coding-themes" id="toc-next-steps-from-familiarisation-coding-themes" class="nav-link" data-scroll-target="#next-steps-from-familiarisation-coding-themes">🧩 Next steps: from familiarisation → coding → themes</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">🧩 Exercises</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">✅ Conclusion</a></li>
   </ul>
 </nav>
 </div>
@@ -90,7 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">🧾 6.1 Introduction to Qualitative Research</h1>
+<h1 class="title">🧬 6.1 Introduction to Qualitative Research</h1>
 </div>
 
 
@@ -107,126 +113,145 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This notebook explores qualitative methods for nutrition studies, such as analysing food preference surveys.</p>
-<p><strong>Objectives</strong>: - Compare quantitative and qualitative approaches. - Analyse textual survey data. - Apply basic text processing techniques.</p>
-<p><strong>Context</strong>: Qualitative data, like hippo food preferences, provides rich insights into dietary behaviours. 🦛</p>
+<p>Qualitative research explores the <strong>why</strong> and <strong>how</strong> of experiences, behaviours, and meanings. Instead of measuring quantities (grams, mmol/L), it examines <strong>language, stories, and context</strong>—for example, <em>why</em> a family chooses certain foods, <em>how</em> participants experience a diet, or <em>what</em> barriers hippos (ok, stakeholders 🦛) face when changing routines.</p>
+<p>Unlike quantitative methods that test hypotheses with numbers, qualitative approaches seek <strong>rich descriptions</strong> and <strong>interpretations</strong>. You’ll often work with interviews, focus groups, open-ended survey responses, diaries, field notes, or observations.</p>
+<hr>
+<section id="objectives" class="level2">
+<h2 class="anchored" data-anchor-id="objectives">🎯 Objectives</h2>
+<ul>
+<li>Understand what qualitative research is (and isn’t), and when to use it.</li>
+<li>Compare qualitative vs.&nbsp;quantitative approaches and how they complement each other.</li>
+<li>Get hands-on: load and lightly explore open-ended text (food preference notes).</li>
+<li>Prepare for rigorous analysis (sampling, reflexivity, ethics, coding frameworks).</li>
+</ul>
 <details>
 <summary>
-Fun Fact
+Key concepts (click)
 </summary>
-Qualitative data is like a hippo’s diary—full of stories and nuances! 🦛
+<p><strong>Data types</strong>: interviews, focus groups, observation notes, diaries, open-ended survey text.</p>
+<p><strong>Designs</strong>: phenomenology (lived experience), grounded theory (theory building), ethnography (culture/setting), case study, narrative analysis, reflexive thematic analysis.</p>
+<p><strong>Sampling</strong>: purposive, maximum variation, snowball, theoretical sampling (until <em>saturation</em>: no new themes emerge).</p>
+<p><strong>Trustworthiness</strong>: credibility (member checks, triangulation), dependability (audit trail), confirmability (reflexivity), transferability (thick description).</p>
+<strong>Ethics</strong>: consent, confidentiality, anonymisation, data minimisation, secure storage.
 </details>
-<div id="colab_setup" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the module and dataset for this notebook</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'06_qualitative'</span>  <span class="co"># e.g., '01_infrastructure'</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'food_preferences.txt'</span>  <span class="co"># e.g., 'hippo_diets.csv'</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(<span class="st">'data'</span>, DATASET)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Attempt to clone the repository (automatic method)</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: If you encounter a cloning error (e.g., 'fatal: destination path already exists'),</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#       reset the runtime (Runtime &gt; Restart runtime) and run this cell again.</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Attempting to clone repository...'</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(BASE_PATH):</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Repository already exists, skipping clone.'</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Debug: Print directory structure</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Listing repository contents:'</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Listing notebooks directory contents:'</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>ls {BASE_PATH}<span class="op">/</span>notebooks</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the module directory exists</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(MODULE_PATH):</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Module directory </span><span class="sc">{</span>MODULE_PATH<span class="sc">}</span><span class="ss"> not found. Check the repository structure.'</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set working directory to the notebook's folder</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verify dataset is accessible</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(DATASET_PATH):</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Error: Dataset </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> not found after cloning.'</span>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cloning failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Falling back to manual upload option...'</span>)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 2: Manual upload option</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Please upload </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> manually.'</span>)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'1. Click the "Choose Files" button below.'</span>)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'2. Select </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> from your local machine.'</span>)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'3. Ensure the file is placed in notebooks/</span><span class="sc">{</span>MODULE<span class="sc">}</span><span class="ss">/data/'</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create the data directory if it doesn't exist</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prompt user to upload the dataset</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if the dataset was uploaded</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> 🦛'</span>)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please ensure you uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for this notebook</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="setup" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas  <span class="co"># For Colab users</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Qualitative analysis environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<section id="data-preparation" class="level2">
-<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
-<p>Load <code>food_preferences.txt</code>, a survey of hippo food preferences.</p>
-<div id="load" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'data/food_preferences.txt'</span>, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    responses <span class="op">=</span> f.readlines()</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(responses[:<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>['Hippo H1: I enjoy crunchy carrots for their sweetness.\n', 'Hippo H2: Grass is acceptable, but fruit is preferred.\n']</code></pre>
-</div>
+</section>
+<section id="when-to-use-qualitative-methods" class="level2">
+<h2 class="anchored" data-anchor-id="when-to-use-qualitative-methods">🧭 When to use qualitative methods?</h2>
+<ul>
+<li>To <strong>understand experiences</strong> (e.g., why participants prefer certain foods).</li>
+<li>To explore <strong>contexts and systems</strong> (e.g., food access, cultural norms).</li>
+<li>To <strong>generate hypotheses</strong> and inform interventions or surveys.</li>
+<li>To explain <strong>unexpected quantitative results</strong> (mixed methods).</li>
+</ul>
+</section>
+<section id="setup-colab" class="level2">
+<h2 class="anchored" data-anchor-id="setup-colab">🔧 Setup (Colab)</h2>
+<p>Clone repo or upload <code>food_preferences.txt</code> (open-ended responses).</p>
+<div id="colab_setup" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>MODULE <span class="op">=</span> <span class="st">'06_qualitative'</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>DATASET <span class="op">=</span> <span class="st">'food_preferences.txt'</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>BASE_PATH <span class="op">=</span> <span class="st">'/content/data-analysis-projects'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>MODULE_PATH <span class="op">=</span> os.path.join(BASE_PATH, <span class="st">'notebooks'</span>, MODULE)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(MODULE_PATH, <span class="st">'data'</span>, DATASET)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(BASE_PATH):</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Cloning repository...'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(DATASET_PATH):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">'Dataset missing after clone.'</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Dataset ready ✅'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Setup fallback: upload file...'</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(os.path.join(<span class="st">'data'</span>, DATASET), <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Uploaded dataset ✅'</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">'Upload food_preferences.txt to continue.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="basic-text-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="basic-text-analysis">Basic Text Analysis</h2>
-<p>Count the frequency of words like ‘carrots’ or ‘fruit’ in the responses.</p>
-<div id="count" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>word_counts <span class="op">=</span> {<span class="st">'carrots'</span>: <span class="dv">0</span>, <span class="st">'fruit'</span>: <span class="dv">0</span>}</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> response <span class="kw">in</span> responses:</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> word_counts:</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        word_counts[word] <span class="op">+=</span> response.lower().count(word)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Word counts: </span><span class="sc">{</span>word_counts<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Word counts: {'carrots': 10, 'fruit': 15}</code></pre>
-</div>
+<section id="load-the-qualitative-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-the-qualitative-data">📥 Load the qualitative data</h2>
+<p>We treat each line as one response (e.g., short interview note or survey comment).</p>
+<div id="read" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>txt <span class="op">=</span> Path(<span class="st">'data'</span>)<span class="op">/</span><span class="st">'food_preferences.txt'</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>responses <span class="op">=</span> [r.strip() <span class="cf">for</span> r <span class="kw">in</span> txt.read_text(encoding<span class="op">=</span><span class="st">'utf-8'</span>).splitlines() <span class="cf">if</span> r.strip()]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">'response_id'</span>: <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(responses)<span class="op">+</span><span class="dv">1</span>), <span class="st">'text'</span>: responses})</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'N responses:'</span>, <span class="bu">len</span>(df))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="exercise-1-expand-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="exercise-1-expand-analysis">Exercise 1: Expand Analysis</h2>
-<p>Add another word (e.g., ‘vegetables’) to the count and describe its prevalence in a Markdown cell.</p>
-<p><strong>Answer</strong>:</p>
-<p>The word ‘vegetables’ appears…</p>
+<section id="first-look-light-touch" class="level2">
+<h2 class="anchored" data-anchor-id="first-look-light-touch">🔍 First look (light-touch)</h2>
+<p>Before coding/themes, a quick <em>familiarisation</em> pass helps: skim, note recurring words, surprising phrases, and tone.</p>
+<div id="skim" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> df.head(<span class="dv">8</span>).iterrows():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'response_id'</span>]<span class="sc">:&gt;2}</span><span class="ss">: </span><span class="sc">{</span>row[<span class="st">'text'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="rigour-in-qualitative-work" class="level2">
+<h2 class="anchored" data-anchor-id="rigour-in-qualitative-work">📏 Rigour in qualitative work</h2>
+<ul>
+<li><strong>Reflexivity</strong>: keep a short <strong>reflexive memo</strong> about your assumptions, role, and decisions.</li>
+<li><strong>Audit trail</strong>: version a <strong>codebook</strong>, note inclusion/exclusion criteria, justify transformations.</li>
+<li><strong>Ethics</strong>: anonymise identifiers, store raw audio/text securely, manage consent and withdrawal.</li>
+<li><strong>Triangulation</strong>: compare data sources (e.g., interview + observation + logs).</li>
+</ul>
+</section>
+<section id="tiny-safe-quantifications" class="level2">
+<h2 class="anchored" data-anchor-id="tiny-safe-quantifications">🧪 Tiny, safe quantifications</h2>
+<p>Counting words isn’t <em>the</em> analysis, but it can help orient you. We’ll keep this light and non-dominant.</p>
+<div id="counts" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>targets <span class="op">=</span> [<span class="st">'carrot'</span>, <span class="st">'carrots'</span>, <span class="st">'fruit'</span>, <span class="st">'grass'</span>, <span class="st">'sweet'</span>, <span class="st">'bitter'</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>word_counts <span class="op">=</span> {t:<span class="dv">0</span> <span class="cf">for</span> t <span class="kw">in</span> targets}</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> df[<span class="st">'text'</span>].<span class="bu">str</span>.lower():</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> targets:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        word_counts[w] <span class="op">+=</span> t.count(w)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>word_counts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="next-steps-from-familiarisation-coding-themes" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps-from-familiarisation-coding-themes">🧩 Next steps: from familiarisation → coding → themes</h2>
+<ol type="1">
+<li>Generate <strong>initial codes</strong> (labels on meaningful segments).</li>
+<li>Group codes into <strong>candidate themes</strong>.</li>
+<li><strong>Review &amp; refine</strong> themes against the data.</li>
+<li><strong>Define &amp; name</strong> themes; select vivid excerpts.</li>
+<li><strong>Report</strong> with thick description and transparent decisions.</li>
+</ol>
+<p>👉 You’ll practice coding in <strong>6.2 and 6.3</strong> (with reliability checks).</p>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">🧩 Exercises</h2>
+<ol type="1">
+<li><strong>Reflexive memo (5–8 lines)</strong>: what prior beliefs might shape your interpretations?</li>
+<li><strong>Context probe</strong>: list three non-text sources you’d triangulate (e.g., observation, diet logs, environmental notes)—why?</li>
+<li><strong>Ethics</strong>: identify any direct identifiers in these responses; propose an anonymisation rule.</li>
+</ol>
 </section>
 <section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>You’ve explored qualitative data analysis with text processing. Next, dive deeper into text analysis in 6.2.</p>
-<p><strong>Resources</strong>: - <a href="https://docs.python.org/3/library/string.html">Python Text Processing</a> - <a href="https://www.qualitative-research.net/">Qualitative Research Guide</a> - Repository: <a href="https://github.com/ggkuhnle/data-analysis-projects">github.com/ggkuhnle/data-analysis-projects</a></p>
+<h2 class="anchored" data-anchor-id="conclusion">✅ Conclusion</h2>
+<p>You’ve set a solid foundation for qualitative work—design choices, rigour, ethics, and a first “feel” for the text. Next, we’ll preprocess and move toward codes and themes.</p>
+<details>
+<summary>
+Further reading
+</summary>
+<ul>
+<li>Reflexive Thematic Analysis (overview)</li>
+<li>Qualitative rigour &amp; trustworthiness</li>
+<li>Ethics &amp; anonymisation in text</li>
+</ul>
+</details>
 </section>
 
 </main>

@@ -233,7 +233,7 @@ The rest of this notebook helps you create that space — so everything runs smo
 <li>📂 <strong>Manual upload</strong> – useful if you’re testing something private or custom</li>
 </ul>
 <p>This next step tries to clone the full toolkit repository. If it fails, you’ll be asked to upload the file manually.</p>
-<div id="colab_setup" class="cell">
+<div id="colab_setup" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
@@ -302,7 +302,7 @@ The rest of this notebook helps you create that space — so everything runs smo
 <span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy</span>
 <span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="setup" class="cell" data-execution_count="1">
+<div id="setup" class="cell" data-tags="[]" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install core packages</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy matplotlib  <span class="co"># For Colab users</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -317,7 +317,7 @@ The rest of this notebook helps you create that space — so everything runs smo
 <section id="testing-with-hippo-data" class="level2">
 <h2 class="anchored" data-anchor-id="testing-with-hippo-data">Testing with Hippo Data</h2>
 <p>Load <code>hippo_diets.csv</code> to verify your setup and create a simple visualization.</p>
-<div id="test_load" class="cell" data-execution_count="2">
+<div id="test_load" class="cell" data-tags="[]" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_diets.csv'</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(df[<span class="st">'Calories'</span>], df[<span class="st">'Protein'</span>])</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Calories'</span>)</span>
@@ -358,7 +358,7 @@ The rest of this notebook helps you create that space — so everything runs smo
 </ul>
 <p><strong>Answer</strong>:</p>
 <p>I changed the marker color by…</p>
-<div id="7f88b44d" class="cell">
+<div id="7f88b44d" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OPTION 1: Colour points based on protein levels</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>colours <span class="op">=</span> np.where(df[<span class="st">'Protein'</span>] <span class="op">&gt;</span> <span class="dv">80</span>, <span class="st">'red'</span>, <span class="st">'blue'</span>)  <span class="co"># True = red, False = blue</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(df[<span class="st">'Calories'</span>], df[<span class="st">'Protein'</span>], c<span class="op">=</span>colours)</span>

@@ -251,7 +251,7 @@ This is helpful if:</p>
 </details>
 <p>We’ll now run a code cell that first <strong>tries the automatic method</strong>, and falls back to manual upload if needed.<br>
 Don’t worry — it explains everything along the way!</p>
-<div id="colab_setup" class="cell">
+<div id="colab_setup" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
@@ -353,7 +353,7 @@ That’s where <strong>packages</strong> come in — they’re like apps you ins
 </summary>
 <em>Even hippos appreciate the right tools for the job — let’s load ours!</em>
 </details>
-<div id="setup" class="cell">
+<div id="setup" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install core packages</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy matplotlib  <span class="co"># For Colab users</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -386,7 +386,7 @@ This lets us quickly check that the data loaded correctly.</p></li>
 <li><p><strong>Make a scatter plot</strong><br>
 We’ll plot <code>Calories</code> vs <code>Protein</code> to get a feel for the data.</p></li>
 </ol>
-<div id="test_load" class="cell">
+<div id="test_load" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_diets.csv'</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.head(<span class="dv">1</span>))</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(df[<span class="st">'Calories'</span>], df[<span class="st">'Protein'</span>])</span>

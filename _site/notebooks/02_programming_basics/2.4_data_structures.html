@@ -171,7 +171,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 <li>Prepare your data for visualisation, statistics, or modelling</li>
 </ul>
 <p>In this notebook, we’ll explore the main Python data structures used in nutrition research and learn how to apply them in practice.</p>
-<div id="colab_setup" class="cell">
+<div id="colab_setup" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Ensure environment is ready</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: This module (Programming Basics) does not require datasets</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'No dataset required for this notebook 🦛'</span>)</span>
@@ -201,7 +201,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 </section>
 <section id="creating-and-accessing-lists" class="level3">
 <h3 class="anchored" data-anchor-id="creating-and-accessing-lists">🛠️ Creating and Accessing Lists</h3>
-<div id="cell-5" class="cell">
+<div id="cell-5" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A list of daily calcium intakes (mg) for different hippos</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>calcium_intakes <span class="op">=</span> [<span class="dv">1200</span>, <span class="dv">1150</span>, <span class="dv">1250</span>]</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -213,7 +213,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 </section>
 <section id="list-operations" class="level3">
 <h3 class="anchored" data-anchor-id="list-operations">🧮 List Operations</h3>
-<div id="cell-7" class="cell">
+<div id="cell-7" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Built-in operations</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(calcium_intakes))       <span class="co"># Number of items</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(calcium_intakes))       <span class="co"># Total calcium intake</span></span>
@@ -233,7 +233,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 </summary>
 <p>Lists can hold different types of values—even other lists!</p>
 </details>
-<div id="cell-9" class="cell">
+<div id="cell-9" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mixed_list <span class="op">=</span> [<span class="st">'apple'</span>, <span class="fl">3.5</span>, <span class="va">True</span>, [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -252,7 +252,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 <li>Calculate and print the average</li>
 </ul>
 <p>💬 <em>Add comments to explain what each line does.</em></p>
-<div id="2fbc2d55" class="cell">
+<div id="2fbc2d55" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>✏️ <em>Hint for the average:</em><br>
@@ -263,7 +263,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 💡 Show Solution
 </summary>
 <p>Solution code below:</p>
-<div id="cell-13" class="cell">
+<div id="cell-13" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list of iron intakes</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>iron_intakes <span class="op">=</span> [<span class="fl">8.2</span>, <span class="fl">7.9</span>, <span class="fl">8.5</span>]  <span class="co"># Three values in mg</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -287,7 +287,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 <p>Dictionaries are another fundamental data structure in Python. Unlike lists which store elements by position, dictionaries store <strong>key–value pairs</strong>. They’re very useful for structured data, like storing the nutrients of a single hippo.</p>
 <section id="creating-a-dictionary" class="level2">
 <h2 class="anchored" data-anchor-id="creating-a-dictionary">🔧 Creating a Dictionary</h2>
-<div id="cell-16" class="cell">
+<div id="cell-16" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dictionary with nutrient values</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hippo_nutrients <span class="op">=</span> {</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Iron"</span>: <span class="fl">8.2</span>,       <span class="co"># mg/day</span></span>
@@ -298,7 +298,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 </section>
 <section id="accessing-and-modifying-values" class="level2">
 <h2 class="anchored" data-anchor-id="accessing-and-modifying-values">📦 Accessing and Modifying Values</h2>
-<div id="cell-18" class="cell">
+<div id="cell-18" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access a value by key</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hippo_nutrients[<span class="st">"Calcium"</span>])  <span class="co"># Output: 1200</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -312,7 +312,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 </section>
 <section id="looping-through-a-dictionary" class="level2">
 <h2 class="anchored" data-anchor-id="looping-through-a-dictionary">🔁 Looping Through a Dictionary</h2>
-<div id="cell-20" class="cell">
+<div id="cell-20" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> nutrient, value <span class="kw">in</span> hippo_nutrients.items():</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>nutrient<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -334,7 +334,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 <li><code>"Water"</code>: 3500</li>
 </ul>
 <p>Print the dictionary and then update <code>"Water"</code> to <code>3600</code>.</p>
-<div id="ae181983" class="cell">
+<div id="ae181983" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>✏️ <em>Hint for the average:</em><br>
@@ -345,7 +345,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 💡 Show Solution
 </summary>
 <p>Solution code below:</p>
-<div id="cell-24" class="cell">
+<div id="cell-24" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a list of iron intakes</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>iron_intakes <span class="op">=</span> [<span class="fl">8.2</span>, <span class="fl">7.9</span>, <span class="fl">8.5</span>]  <span class="co"># Three values in mg</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -376,7 +376,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 <section id="what-is-a-numpy-array" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-a-numpy-array">📐 What is a NumPy Array?</h2>
 <p>A <strong>NumPy array</strong> is like a supercharged list. It can be 1D (like a list), 2D (like a table or matrix), or even higher dimensions.</p>
-<div id="cell-27" class="cell">
+<div id="cell-27" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 1D array</span></span>
@@ -393,21 +393,21 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 <ul>
 <li>Arrays support <strong>element-wise operations</strong>:</li>
 </ul>
-<div id="cell-29" class="cell">
+<div id="cell-29" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iron <span class="op">+</span> <span class="dv">1</span>)  <span class="co"># Adds 1 to each element</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iron <span class="op">*</span> <span class="dv">2</span>)  <span class="co"># Multiplies each element by 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>You can access elements using <strong>indices</strong>, starting from 0:</li>
 </ul>
-<div id="cell-31" class="cell">
+<div id="cell-31" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iron[<span class="dv">1</span>])         <span class="co"># 2nd value (7.9)</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nutrients[<span class="dv">0</span>, <span class="dv">1</span>]) <span class="co"># Row 0, column 1 (1200)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>You can easily calculate statistics:</li>
 </ul>
-<div id="cell-33" class="cell">
+<div id="cell-33" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.mean(iron))     <span class="co"># Average</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">max</span>(iron))      <span class="co"># Max</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.std(iron))      <span class="co"># Standard deviation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -428,7 +428,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 <li>Access the last value</li>
 </ol>
 <p>💬 <em>Add comments explaining each step.</em></p>
-<div id="8ab8aa6b" class="cell">
+<div id="8ab8aa6b" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <details>
@@ -436,7 +436,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 💡 Show Answer
 </summary>
 <p>Solution code below:</p>
-<div id="cell-37" class="cell">
+<div id="cell-37" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the NumPy array</span></span>
@@ -468,7 +468,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 <p>You can create a DataFrame from a dictionary, a list of dictionaries, or by reading from a CSV or Excel file.</p>
 <section id="creating-a-dataframe-from-a-dictionary" class="level3">
 <h3 class="anchored" data-anchor-id="creating-a-dataframe-from-a-dictionary">📦 Creating a DataFrame from a Dictionary</h3>
-<div id="cell-40" class="cell">
+<div id="cell-40" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Dictionary of hippo data</span></span>
@@ -505,7 +505,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 </ul>
 <p>Then print the DataFrame.</p>
 <p>💬 <em>Hint: Use <code>pd.DataFrame()</code> with a dictionary like in the example above.</em></p>
-<div id="a9dbb8a1" class="cell">
+<div id="a9dbb8a1" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -524,7 +524,7 @@ A DataFrame is like a hippo’s pantry—everything neatly organised for quick a
 💡 Show Answer
 </summary>
 <p>Solution code below:</p>
-<div id="cell-44" class="cell">
+<div id="cell-44" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the DataFrame</span></span>

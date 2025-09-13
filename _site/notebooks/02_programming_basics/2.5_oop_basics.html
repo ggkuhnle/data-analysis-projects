@@ -169,14 +169,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="example-from-nutrition" class="level2">
 <h2 class="anchored" data-anchor-id="example-from-nutrition">🧪 Example from Nutrition</h2>
 <p>Imagine a <code>Food</code> class:</p>
-<div id="cell-1" class="cell">
+<div id="cell-1" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Food:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories):</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calories <span class="op">=</span> calories</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can now create specific food items:</p>
-<div id="cell-3" class="cell">
+<div id="cell-3" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>apple <span class="op">=</span> Food(<span class="st">"Apple"</span>, <span class="dv">95</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>banana <span class="op">=</span> Food(<span class="st">"Banana"</span>, <span class="dv">120</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -201,7 +201,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <li><strong>Best Practices</strong>: Naming, structure, and readability</li>
 </ul>
 <p>You’ll also practise applying OOP principles to realistic nutrition problems—think <code>Nutrient</code>, <code>Meal</code>, or <code>DietPlan</code> classes.</p>
-<div id="colab_setup" class="cell">
+<div id="colab_setup" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Ensure environment is ready</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: This module (Programming Basics) does not require datasets</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'No dataset required for this notebook 🦛'</span>)</span>
@@ -225,7 +225,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <section id="defining-a-basic-class" class="level2">
 <h2 class="anchored" data-anchor-id="defining-a-basic-class">📦 Defining a Basic Class</h2>
 <p>Here’s a simple example of a class that represents a <code>FoodItem</code>.</p>
-<div id="cell-7" class="cell">
+<div id="cell-7" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FoodItem:</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories):</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
@@ -244,7 +244,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <section id="creating-and-using-an-object" class="level2">
 <h2 class="anchored" data-anchor-id="creating-and-using-an-object">🍏 Creating and Using an Object</h2>
 <p>Let’s create an instance of <code>FoodItem</code>.</p>
-<div id="cell-9" class="cell">
+<div id="cell-9" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>apple <span class="op">=</span> FoodItem(<span class="st">"Apple"</span>, <span class="dv">95</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(apple.describe())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -256,7 +256,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <h2 class="anchored" data-anchor-id="exercise-define-your-own-class">🧪 Exercise: Define Your Own Class</h2>
 <p>Create a class called <code>Drink</code> with attributes: - <code>name</code> (e.g., “Orange Juice”) - <code>volume_ml</code> (e.g., 250) - <code>sugar_g</code> (e.g., 22)</p>
 <p>Add a method <code>sugar_concentration()</code> that returns grams of sugar per 100 mL.</p>
-<div id="a889e054" class="cell">
+<div id="a889e054" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <details>
@@ -264,7 +264,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 💡 Show Answer
 </summary>
 <p>Solution code below:</p>
-<div id="cell-13" class="cell">
+<div id="cell-13" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Drink:</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, volume_ml, sugar_g):</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
@@ -303,7 +303,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <li>A new <strong>attribute</strong> for category (e.g., ‘Fruit’, ‘Vegetable’)</li>
 <li>A <strong>method</strong> to update the calorie value based on serving size</li>
 </ul>
-<div id="cell-16" class="cell">
+<div id="cell-16" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Food:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories, category):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
@@ -318,7 +318,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Updated </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calories<span class="sc">}</span><span class="ss"> calories."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now let’s create and use some objects:</p>
-<div id="cell-18" class="cell">
+<div id="cell-18" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>carrot <span class="op">=</span> Food(<span class="st">"Carrot"</span>, <span class="dv">41</span>, <span class="st">"Vegetable"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mango <span class="op">=</span> Food(<span class="st">"Mango"</span>, <span class="dv">60</span>, <span class="st">"Fruit"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -356,7 +356,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <section id="step-by-step-building-the-food-class" class="level2">
 <h2 class="anchored" data-anchor-id="step-by-step-building-the-food-class">🍎 Step-by-Step: Building the <code>Food</code> Class</h2>
 <p>First, we define a general class that represents any food item:</p>
-<div id="cell-21" class="cell">
+<div id="cell-21" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parent class</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Food:</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories, category):</span>
@@ -377,7 +377,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <section id="creating-a-subclass-diet" class="level2">
 <h2 class="anchored" data-anchor-id="creating-a-subclass-diet">🌿 Creating a Subclass: <code>Diet</code></h2>
 <p>Now let’s say we want to add an extra piece of information for some foods that are part of a <strong>diet plan</strong>, such as <code>"Low-Carb"</code> or <code>"Keto"</code>. Instead of rewriting the whole <code>Food</code> class, we create a child class <code>Diet</code> that inherits from it.</p>
-<div id="cell-23" class="cell">
+<div id="cell-23" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Child class that inherits from Food</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Diet(Food):</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories, category, diet_type):</span>
@@ -402,7 +402,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 </section>
 <section id="testing-the-subclass" class="level2">
 <h2 class="anchored" data-anchor-id="testing-the-subclass">🧪 Testing the Subclass</h2>
-<div id="cell-25" class="cell">
+<div id="cell-25" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>keto_avocado <span class="op">=</span> Diet(<span class="st">"Avocado"</span>, <span class="dv">160</span>, <span class="st">"Fruit"</span>, <span class="st">"Keto"</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(keto_avocado.describe())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -466,7 +466,7 @@ Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attri
 <h3 class="anchored" data-anchor-id="custom-food-class">1. Custom Food Class</h3>
 <p>Create a <code>Snack</code> class that inherits from <code>Food</code> and includes: - A new attribute <code>snack_type</code> (e.g., ‘sweet’, ‘salty’) - A method <code>is_healthy()</code> that returns <code>True</code> if calories are below 200.</p>
 <p>Test it with examples like:</p>
-<div id="cell-28" class="cell">
+<div id="cell-28" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>popcorn <span class="op">=</span> Snack(<span class="st">'Popcorn'</span>, <span class="dv">150</span>, <span class="st">'Grain'</span>, <span class="st">'salty'</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(popcorn.is_healthy())  <span class="co"># Should return True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

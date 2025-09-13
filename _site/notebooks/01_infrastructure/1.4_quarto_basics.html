@@ -219,7 +219,7 @@ A Quarto document is like a hippo’s lab report—neat, detailed, and ready to 
 <h2 class="anchored" data-anchor-id="from-concept-to-practice">🧪 From Concept to Practice</h2>
 <p>Now that you know what Quarto is and why it matters, let’s see it in action! To explore how Quarto supports reproducible research, we’ll start by working with a small dataset — hippo_diets.csv. This dataset, just like your own project data, can be analysed and visualised directly in Quarto documents.</p>
 <p>In the next steps, we’ll load the data and prepare a simple plot, which we’ll later embed into a Quarto report. Let’s dive in!</p>
-<div id="colab_setup" class="cell">
+<div id="colab_setup" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
@@ -255,7 +255,7 @@ A Quarto document is like a hippo’s lab report—neat, detailed, and ready to 
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="setup" class="cell" data-execution_count="1">
+<div id="setup" class="cell" data-tags="[]" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas matplotlib</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -268,7 +268,7 @@ A Quarto document is like a hippo’s lab report—neat, detailed, and ready to 
 <section id="creating-a-quarto-document" class="level2">
 <h2 class="anchored" data-anchor-id="creating-a-quarto-document">Creating a Quarto Document</h2>
 <p>Load <code>hippo_diets.csv</code> and create a plot to include in a Quarto document.</p>
-<div id="plot" class="cell" data-execution_count="2">
+<div id="plot" class="cell" data-tags="[]" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_diets.csv'</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.hist(df[<span class="st">'Calories'</span>], bins<span class="op">=</span><span class="dv">10</span>, color<span class="op">=</span><span class="st">'teal'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Calories (kcal)'</span>)</span>

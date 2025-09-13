@@ -83,9 +83,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#context" id="toc-context" class="nav-link" data-scroll-target="#context">📌 Context</a></li>
   <li><a href="#load-and-inspect" id="toc-load-and-inspect" class="nav-link" data-scroll-target="#load-and-inspect">1) Load and Inspect</a></li>
   <li><a href="#filtering-rows-and-selecting-columns" id="toc-filtering-rows-and-selecting-columns" class="nav-link" data-scroll-target="#filtering-rows-and-selecting-columns">2) Filtering Rows and Selecting Columns</a></li>
-  <li><a href="#grouping-and-aggregation" id="toc-grouping-and-aggregation" class="nav-link" data-scroll-target="#grouping-and-aggregation">3) Grouping and Aggregation</a>
+  <li><a href="#aggregation-concept-and-.agg-syntax" id="toc-aggregation-concept-and-.agg-syntax" class="nav-link" data-scroll-target="#aggregation-concept-and-.agg-syntax">3) Aggregation — Concept and <code>.agg</code> Syntax</a>
   <ul class="collapse">
-  <li><a href="#common-patterns" id="toc-common-patterns" class="nav-link" data-scroll-target="#common-patterns">Common patterns</a></li>
+  <li><a href="#what-can-how-be" id="toc-what-can-how-be" class="nav-link" data-scroll-target="#what-can-how-be">What can <code>&lt;how&gt;</code> be?</a></li>
+  <li><a href="#why-aggregate" id="toc-why-aggregate" class="nav-link" data-scroll-target="#why-aggregate">Why aggregate?</a></li>
+  <li><a href="#basic-aggregations-mean-median-count" id="toc-basic-aggregations-mean-median-count" class="nav-link" data-scroll-target="#basic-aggregations-mean-median-count">3.1 Basic aggregations (mean, median, count)</a></li>
   </ul></li>
   <li><a href="#reshaping-between-wide-and-long" id="toc-reshaping-between-wide-and-long" class="nav-link" data-scroll-target="#reshaping-between-wide-and-long">4) Reshaping Between Wide and Long</a>
   <ul class="collapse">
@@ -102,7 +104,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#minmax-scaling-01" id="toc-minmax-scaling-01" class="nav-link" data-scroll-target="#minmax-scaling-01">6.3 Min–max scaling (0–1)</a></li>
   <li><a href="#group-wise-transforms" id="toc-group-wise-transforms" class="nav-link" data-scroll-target="#group-wise-transforms">6.4 Group-wise transforms</a></li>
   </ul></li>
-  <li><a href="#bonus-time-based-and-rolling-transforms" id="toc-bonus-time-based-and-rolling-transforms" class="nav-link" data-scroll-target="#bonus-time-based-and-rolling-transforms">7) (Bonus) Time-based and Rolling Transforms</a></li>
+  <li><a href="#density-plots-visualise-transformations" id="toc-density-plots-visualise-transformations" class="nav-link" data-scroll-target="#density-plots-visualise-transformations">7) Density Plots — Visualise Transformations</a></li>
+  <li><a href="#bonus-time-based-and-rolling-transforms" id="toc-bonus-time-based-and-rolling-transforms" class="nav-link" data-scroll-target="#bonus-time-based-and-rolling-transforms">8) (Bonus) Time-based and Rolling Transforms</a></li>
   <li><a href="#exercise-1-grouped-summary" id="toc-exercise-1-grouped-summary" class="nav-link" data-scroll-target="#exercise-1-grouped-summary">🧪 Exercise 1 — Grouped Summary</a></li>
   <li><a href="#exercise-2-wide-long" id="toc-exercise-2-wide-long" class="nav-link" data-scroll-target="#exercise-2-wide-long">🧪 Exercise 2 — Wide ↔︎ Long</a></li>
   <li><a href="#exercise-3-transformations-for-modelling" id="toc-exercise-3-transformations-for-modelling" class="nav-link" data-scroll-target="#exercise-3-transformations-for-modelling">🧪 Exercise 3 — Transformations for Modelling</a></li>
@@ -131,23 +134,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>In this notebook you’ll learn how to <strong>transform</strong> data so it’s easy to analyse and model. We’ll work with <code>hippo_nutrients.csv</code> and cover filtering, grouping, reshaping (wide/long), pivoting, and numeric transformations such as <strong>log</strong> and <strong>z-score</strong> standardisation.</p>
+<p>In this notebook you’ll learn how to <strong>transform</strong> data so it’s easy to analyse and model. We’ll work with <code>hippo_nutrients.csv</code> and cover filtering, grouping, reshaping (wide/long), pivoting, and numeric transformations such as <strong>log</strong> and <strong>z-score</strong> standardisation. We’ll also add <strong>density plots</strong> to visualise how transformations change the distribution.</p>
 <section id="objectives" class="level2">
 <h2 class="anchored" data-anchor-id="objectives">🎯 Objectives</h2>
 <ul>
 <li>Filter rows and select columns with expressive, reproducible code.</li>
-<li>Group and aggregate (mean, median, multiple aggregations).</li>
+<li><strong>Aggregate</strong> groups (what it means, when to use it) using <code>.groupby(...).agg(...)</code> with clear syntax.</li>
 <li>Reshape between <strong>wide</strong> and <strong>long</strong> formats (melt / pivot).</li>
 <li>Pivot-tabulate values for quick comparisons.</li>
 <li>Create derived variables and apply <strong>log</strong>, <strong>z-score</strong>, <strong>min–max</strong> scaling.</li>
 <li>(Bonus) Group-wise standardisation and rolling transforms over time.</li>
+<li>Use <strong>density plots</strong> to see how transformations change distributions.</li>
 </ul>
 </section>
 <section id="context" class="level2">
 <h2 class="anchored" data-anchor-id="context">📌 Context</h2>
 <p>Transformation is the ladder from raw data to insight. In nutrition datasets, you’ll often transform by <strong>group</strong> (e.g., nutrient, sex, year) and reshape between <strong>wide</strong> (one row per ID with many columns) and <strong>long</strong> (one row per measurement).</p>
 <blockquote class="blockquote">
-<p><strong>Wide vs Long</strong> - <strong>Wide</strong>: Each variable has its own column (e.g., <code>Iron</code>, <code>Calcium</code>, <code>Vitamin_D</code> columns). Good for human reading, some stats. - <strong>Long (tidy)</strong>: One row per observation; variables encoded in <em>columns</em>, not headers (e.g., a <code>Nutrient</code> column and a <code>Value</code> column). Preferred for plotting, grouping, modelling.</p>
+<p><strong>Wide vs Long</strong> - <strong>Wide</strong>: Each variable has its own column (e.g., <code>Iron</code>, <code>Calcium</code>, <code>Vitamin_D</code>). Good for humans and some models. - <strong>Long (tidy)</strong>: One row per observation; variables are in <em>columns</em>, not headers (e.g., a <code>Nutrient</code> column and a <code>Value</code> column). Preferred for plotting, grouping, modelling.</p>
 </blockquote>
 <details>
 <summary>
@@ -155,7 +159,7 @@ Fun Fact
 </summary>
 Transforming data is like a hippo rearranging its snacks — same nutrients, better view! 🦛
 </details>
-<div id="colab_setup" class="cell">
+<div id="colab_setup" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Fetch datasets automatically or manually</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> files</span>
@@ -167,42 +171,37 @@ Transforming data is like a hippo rearranging its snacks — same nutrients, bet
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>DATASET_PATH <span class="op">=</span> os.path.join(<span class="st">'data'</span>, DATASET)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Attempting to clone repository...'</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(BASE_PATH):</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Setting working directory...'</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(DATASET_PATH):</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">'Dataset missing after clone.'</span>)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Cloning failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Falling back to manual upload...'</span>)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please upload </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> os.path.exists(BASE_PATH):</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">!</span>git clone https:<span class="op">//</span>github.com<span class="op">/</span>ggkuhnle<span class="op">/</span>data<span class="op">-</span>analysis<span class="op">-</span>projects.git</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    os.chdir(MODULE_PATH)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> os.path.exists(DATASET_PATH)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Dataset found: </span><span class="sc">{</span>DATASET_PATH<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Automatic clone failed: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    os.makedirs(<span class="st">'data'</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    uploaded <span class="op">=</span> files.upload()</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> DATASET <span class="kw">in</span> uploaded:</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(DATASET_PATH, <span class="st">'wb'</span>) <span class="im">as</span> f:</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            f.write(uploaded[DATASET])</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f'Successfully uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss"> ✅'</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f'Upload failed. Please ensure you uploaded </span><span class="sc">{</span>DATASET<span class="sc">}</span><span class="ss">.'</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Add additional libraries.</p>
-<div id="762032fa" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q pandas numpy</span>
+<p>Add required libraries (pandas, numpy, matplotlib for density plots).</p>
+<div id="install_libs" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install <span class="op">-</span>q pandas numpy matplotlib</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd, numpy <span class="im">as</span> np</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_columns'</span>, <span class="dv">30</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_columns'</span>, <span class="dv">30</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Libraries ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="load-and-inspect" class="level2">
 <h2 class="anchored" data-anchor-id="load-and-inspect">1) Load and Inspect</h2>
 <p>Let’s load <code>hippo_nutrients.csv</code> and inspect the first rows and data types.</p>
-<div id="load" class="cell">
+<div id="load" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/hippo_nutrients.csv'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Shape:'</span>, df.shape)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Dtypes:</span><span class="ch">\n</span><span class="st">'</span>, df.dtypes)</span>
@@ -211,8 +210,8 @@ Transforming data is like a hippo rearranging its snacks — same nutrients, bet
 </section>
 <section id="filtering-rows-and-selecting-columns" class="level2">
 <h2 class="anchored" data-anchor-id="filtering-rows-and-selecting-columns">2) Filtering Rows and Selecting Columns</h2>
-<p>Use <strong>boolean masks</strong> to keep the rows you want, and bracket notation to select columns. This is the bread-and-butter of transformation.</p>
-<div id="filter_select_code" class="cell">
+<p>Use <strong>boolean masks</strong> to keep the rows you want, and bracket notation to select columns. This is bread-and-butter transformation.</p>
+<div id="filter_select_code" class="cell" data-tags="[]">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: female hippos, Iron only, years ≥ 2024</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> (df[<span class="st">'Sex'</span>] <span class="op">==</span> <span class="st">'F'</span>) <span class="op">&amp;</span> (df[<span class="st">'Nutrient'</span>] <span class="op">==</span> <span class="st">'Iron'</span>) <span class="op">&amp;</span> (df[<span class="st">'Year'</span>] <span class="op">&gt;=</span> <span class="dv">2024</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">'ID'</span>, <span class="st">'Year'</span>, <span class="st">'Nutrient'</span>, <span class="st">'Value'</span>, <span class="st">'Age'</span>, <span class="st">'Sex'</span>]</span>
@@ -220,35 +219,66 @@ Transforming data is like a hippo rearranging its snacks — same nutrients, bet
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>display(df_female_iron.head(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="grouping-and-aggregation" class="level2">
-<h2 class="anchored" data-anchor-id="grouping-and-aggregation">3) Grouping and Aggregation</h2>
-<p>Summarise data by groups (e.g., nutrient, sex, or year). You can apply single or multiple aggregations.</p>
-<section id="common-patterns" class="level3">
-<h3 class="anchored" data-anchor-id="common-patterns">Common patterns</h3>
+<section id="aggregation-concept-and-.agg-syntax" class="level2">
+<h2 class="anchored" data-anchor-id="aggregation-concept-and-.agg-syntax">3) Aggregation — Concept and <code>.agg</code> Syntax</h2>
+<p><strong>Aggregation</strong> means reducing many rows in a group to <strong>summary values</strong> (e.g., mean iron intake by sex). In pandas, you usually do this with:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="op">&lt;</span>group<span class="op">-</span>cols<span class="op">&gt;</span>)[<span class="op">&lt;</span>value<span class="op">-</span>col<span class="op">&gt;</span>].agg(<span class="op">&lt;</span>how<span class="op">&gt;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="what-can-how-be" class="level3">
+<h3 class="anchored" data-anchor-id="what-can-how-be">What can <code>&lt;how&gt;</code> be?</h3>
+<ol type="1">
+<li>A <strong>single function</strong>: <code>'mean'</code>, <code>'median'</code>, <code>'count'</code>, <code>'std'</code>, or a custom function:</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">'Nutrient'</span>)[<span class="st">'Value'</span>].agg(<span class="st">'mean'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="2" type="1">
+<li>A <strong>list of functions</strong>: returns multiple columns with each statistic:</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">'Nutrient'</span>)[<span class="st">'Value'</span>].agg([<span class="st">'mean'</span>,<span class="st">'median'</span>,<span class="st">'count'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="3" type="1">
+<li>A <strong>dictionary</strong> mapping column → function(s):</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df.groupby([<span class="st">'Nutrient'</span>,<span class="st">'Sex'</span>]).agg({</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Value'</span>: [<span class="st">'mean'</span>,<span class="st">'median'</span>,<span class="st">'count'</span>],</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Age'</span>: <span class="st">'mean'</span>  <span class="co"># optional extra summaries</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="4" type="1">
+<li><strong>Named aggregations</strong> (cleaner column names):</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df.groupby([<span class="st">'Nutrient'</span>,<span class="st">'Sex'</span>]).agg(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  Mean_Value <span class="op">=</span> (<span class="st">'Value'</span>, <span class="st">'mean'</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  Median_Value <span class="op">=</span> (<span class="st">'Value'</span>, <span class="st">'median'</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  N <span class="op">=</span> (<span class="st">'Value'</span>, <span class="st">'size'</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="why-aggregate" class="level3">
+<h3 class="anchored" data-anchor-id="why-aggregate">Why aggregate?</h3>
 <ul>
-<li><code>df.groupby('Nutrient')['Value'].mean()</code></li>
-<li><code>df.groupby(['Nutrient','Sex']).agg({'Value': ['mean','median','count']})</code></li>
+<li>To <strong>summarise</strong> groups (e.g., mean intake per nutrient, per sex).</li>
+<li>To <strong>compare</strong> across categories (e.g., male vs female, 2024 vs 2025).</li>
+<li>To <strong>reduce noise</strong> and <strong>prepare</strong> for plotting or reporting.</li>
 </ul>
-<div id="groupby_code" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean Value by Nutrient</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mean_by_nutrient <span class="op">=</span> df.groupby(<span class="st">'Nutrient'</span>)[<span class="st">'Value'</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>display(mean_by_nutrient)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Multiple aggregations by Nutrient and Sex</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>agg_ns <span class="op">=</span> (</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    df.groupby([<span class="st">'Nutrient'</span>,<span class="st">'Sex'</span>])</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      .agg(Mean_Value<span class="op">=</span>(<span class="st">'Value'</span>,<span class="st">'mean'</span>),</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>           Median_Value<span class="op">=</span>(<span class="st">'Value'</span>,<span class="st">'median'</span>),</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>           N<span class="op">=</span>(<span class="st">'Value'</span>,<span class="st">'size'</span>))</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      .reset_index()</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>display(agg_ns.head(<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="basic-aggregations-mean-median-count" class="level3">
+<h3 class="anchored" data-anchor-id="basic-aggregations-mean-median-count">3.1 Basic aggregations (mean, median, count)</h3>
+<div id="groupby_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean Value by Nutrient</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mean_by_nutrient <span class="op">=</span> df.groupby(<span class="st">'Nutrient'</span>)[<span class="st">'Value'</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>display(mean_by_nutrient)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Multiple aggregations by Nutrient and Sex (named aggregations for tidy column names)</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>agg_ns <span class="op">=</span> (</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    df.groupby([<span class="st">'Nutrient'</span>,<span class="st">'Sex'</span>])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>      .agg(Mean_Value<span class="op">=</span>(<span class="st">'Value'</span>,<span class="st">'mean'</span>),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>           Median_Value<span class="op">=</span>(<span class="st">'Value'</span>,<span class="st">'median'</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>           N<span class="op">=</span>(<span class="st">'Value'</span>,<span class="st">'size'</span>))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>      .reset_index()</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>display(agg_ns.head(<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="reshaping-between-wide-and-long" class="level2">
 <h2 class="anchored" data-anchor-id="reshaping-between-wide-and-long">4) Reshaping Between Wide and Long</h2>
-<p>Many real datasets arrive in <strong>wide</strong> form; most analyses and plots like <strong>long</strong> (tidy) form.</p>
+<p>Many real datasets arrive in <strong>wide</strong> form; most analyses and plots like <strong>long (tidy)</strong> form.</p>
 <section id="long-tidy-one-row-per-observation" class="level3">
 <h3 class="anchored" data-anchor-id="long-tidy-one-row-per-observation">Long (tidy) → one row per observation</h3>
 <ul>
@@ -264,34 +294,30 @@ Transforming data is like a hippo rearranging its snacks — same nutrients, bet
 <section id="long-wide-pivot-wider" class="level3">
 <h3 class="anchored" data-anchor-id="long-wide-pivot-wider">4.1 Long → Wide (pivot wider)</h3>
 <p>Use <code>pivot_table</code> with <code>index</code> = identifier columns and <code>columns</code> = the variable you want as new columns (<code>Nutrient</code>). Values come from <code>Value</code>.</p>
-<ul>
-<li>Pros: human-readable, one row per subject-year.</li>
-<li>Cons: harder to group/plot by Nutrient unless you re-melt later.</li>
-</ul>
-<div id="pivot_wider" class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>id_cols <span class="op">=</span> [<span class="st">'ID'</span>,<span class="st">'Year'</span>,<span class="st">'Age'</span>,<span class="st">'Sex'</span>]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> df.pivot_table(index<span class="op">=</span>id_cols, columns<span class="op">=</span><span class="st">'Nutrient'</span>, values<span class="op">=</span><span class="st">'Value'</span>, aggfunc<span class="op">=</span><span class="st">'mean'</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> wide.reset_index()  <span class="co"># move index back to columns</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>display(wide.head(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="pivot_wider" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>id_cols <span class="op">=</span> [<span class="st">'ID'</span>,<span class="st">'Year'</span>,<span class="st">'Age'</span>,<span class="st">'Sex'</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> df.pivot_table(index<span class="op">=</span>id_cols, columns<span class="op">=</span><span class="st">'Nutrient'</span>, values<span class="op">=</span><span class="st">'Value'</span>, aggfunc<span class="op">=</span><span class="st">'mean'</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> wide.reset_index()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>display(wide.head(<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="wide-long-melt" class="level3">
 <h3 class="anchored" data-anchor-id="wide-long-melt">4.2 Wide → Long (melt)</h3>
 <p>Use <code>melt</code> to gather nutrient columns back into two columns: <code>Nutrient</code> (variable name) and <code>Value</code> (measurement). This is the canonical <em>tidy</em> structure for plotting, modelling, and faceting.</p>
-<div id="melt_long" class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>value_vars <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> wide.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> id_cols]  <span class="co"># all nutrient columns</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>long_again <span class="op">=</span> wide.melt(id_vars<span class="op">=</span>id_cols, value_vars<span class="op">=</span>value_vars,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                      var_name<span class="op">=</span><span class="st">'Nutrient'</span>, value_name<span class="op">=</span><span class="st">'Value'</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>display(long_again.head(<span class="dv">6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="melt_long" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>value_vars <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> wide.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> id_cols]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>long_again <span class="op">=</span> wide.melt(id_vars<span class="op">=</span>id_cols, value_vars<span class="op">=</span>value_vars,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                      var_name<span class="op">=</span><span class="st">'Nutrient'</span>, value_name<span class="op">=</span><span class="st">'Value'</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>display(long_again.head(<span class="dv">6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="pivot-tables-for-comparisons" class="level2">
 <h2 class="anchored" data-anchor-id="pivot-tables-for-comparisons">5) Pivot Tables for Comparisons</h2>
-<p>Quickly cross-tabulate means by two dimensions (e.g., <code>Nutrient</code> × <code>Year</code>).</p>
-<div id="pivot_table_code" class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pt <span class="op">=</span> df.pivot_table(values<span class="op">=</span><span class="st">'Value'</span>, index<span class="op">=</span><span class="st">'Nutrient'</span>, columns<span class="op">=</span><span class="st">'Year'</span>, aggfunc<span class="op">=</span><span class="st">'mean'</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>display(pt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cross-tabulate means by two dimensions (e.g., <code>Nutrient</code> × <code>Year</code>).</p>
+<div id="pivot_table_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pt <span class="op">=</span> df.pivot_table(values<span class="op">=</span><span class="st">'Value'</span>, index<span class="op">=</span><span class="st">'Nutrient'</span>, columns<span class="op">=</span><span class="st">'Year'</span>, aggfunc<span class="op">=</span><span class="st">'mean'</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>display(pt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="derived-variables-and-numeric-transformations" class="level2">
@@ -312,54 +338,89 @@ Transforming data is like a hippo rearranging its snacks — same nutrients, bet
 <section id="group-wise-transforms" class="level3">
 <h3 class="anchored" data-anchor-id="group-wise-transforms">6.4 Group-wise transforms</h3>
 <p>Standardise <strong>within</strong> groups (e.g., within each <code>Nutrient</code>) so each nutrient’s distribution is centred and scaled separately.</p>
-<div id="numeric_transforms" class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_trans <span class="op">=</span> df.copy()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 6.1 Log transform: add epsilon to avoid log(0) if present</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> <span class="fl">1e-6</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>df_trans[<span class="st">'Value_log'</span>] <span class="op">=</span> np.log(df_trans[<span class="st">'Value'</span>] <span class="op">+</span> eps)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 6.2 Global z-score</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> df_trans[<span class="st">'Value'</span>].mean()</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>sd <span class="op">=</span> df_trans[<span class="st">'Value'</span>].std(ddof<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>df_trans[<span class="st">'Value_z'</span>] <span class="op">=</span> (df_trans[<span class="st">'Value'</span>] <span class="op">-</span> mu) <span class="op">/</span> (sd <span class="cf">if</span> sd <span class="cf">else</span> <span class="fl">1.0</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 6.3 Min–max scaling</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>vmin, vmax <span class="op">=</span> df_trans[<span class="st">'Value'</span>].<span class="bu">min</span>(), df_trans[<span class="st">'Value'</span>].<span class="bu">max</span>()</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> vmax <span class="op">-</span> vmin <span class="cf">if</span> vmax <span class="op">&gt;</span> vmin <span class="cf">else</span> <span class="fl">1.0</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>df_trans[<span class="st">'Value_minmax'</span>] <span class="op">=</span> (df_trans[<span class="st">'Value'</span>] <span class="op">-</span> vmin) <span class="op">/</span> rng</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 6.4 Group-wise z-score by Nutrient</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>df_trans[<span class="st">'Value_z_by_nutrient'</span>] <span class="op">=</span> (</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    df_trans.groupby(<span class="st">'Nutrient'</span>)[<span class="st">'Value'</span>]</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>           .transform(<span class="kw">lambda</span> s: (s <span class="op">-</span> s.mean()) <span class="op">/</span> (s.std(ddof<span class="op">=</span><span class="dv">0</span>) <span class="cf">if</span> s.std(ddof<span class="op">=</span><span class="dv">0</span>) <span class="cf">else</span> <span class="fl">1.0</span>))</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>display(df_trans.head(<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="numeric_transforms" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df_trans <span class="op">=</span> df.copy()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 6.1 Log transform: add epsilon to avoid log(0) if present</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> <span class="fl">1e-6</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>df_trans[<span class="st">'Value_log'</span>] <span class="op">=</span> np.log(df_trans[<span class="st">'Value'</span>] <span class="op">+</span> eps)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 6.2 Global z-score</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> df_trans[<span class="st">'Value'</span>].mean()</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>sd <span class="op">=</span> df_trans[<span class="st">'Value'</span>].std(ddof<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>df_trans[<span class="st">'Value_z'</span>] <span class="op">=</span> (df_trans[<span class="st">'Value'</span>] <span class="op">-</span> mu) <span class="op">/</span> (sd <span class="cf">if</span> sd <span class="cf">else</span> <span class="fl">1.0</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 6.3 Min–max scaling</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>vmin, vmax <span class="op">=</span> df_trans[<span class="st">'Value'</span>].<span class="bu">min</span>(), df_trans[<span class="st">'Value'</span>].<span class="bu">max</span>()</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> vmax <span class="op">-</span> vmin <span class="cf">if</span> vmax <span class="op">&gt;</span> vmin <span class="cf">else</span> <span class="fl">1.0</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>df_trans[<span class="st">'Value_minmax'</span>] <span class="op">=</span> (df_trans[<span class="st">'Value'</span>] <span class="op">-</span> vmin) <span class="op">/</span> rng</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 6.4 Group-wise z-score by Nutrient</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>df_trans[<span class="st">'Value_z_by_nutrient'</span>] <span class="op">=</span> (</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    df_trans.groupby(<span class="st">'Nutrient'</span>)[<span class="st">'Value'</span>]</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>           .transform(<span class="kw">lambda</span> s: (s <span class="op">-</span> s.mean()) <span class="op">/</span> (s.std(ddof<span class="op">=</span><span class="dv">0</span>) <span class="cf">if</span> s.std(ddof<span class="op">=</span><span class="dv">0</span>) <span class="cf">else</span> <span class="fl">1.0</span>))</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>display(df_trans.head(<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
+<section id="density-plots-visualise-transformations" class="level2">
+<h2 class="anchored" data-anchor-id="density-plots-visualise-transformations">7) Density Plots — Visualise Transformations</h2>
+<p>Let’s visualise how the distribution changes after transformations. We’ll use <strong>histograms with density=True</strong> (a simple density estimate) for one nutrient (e.g., Iron). You should see that the <strong>log transform</strong> often makes a right-skewed distribution more symmetric, and <strong>z-scores</strong> centre the data at 0 with unit variance.</p>
+<div id="density_plots" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose one nutrient to illustrate (fallback to first if Iron absent)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>nutrient_to_plot <span class="op">=</span> <span class="st">'Iron'</span> <span class="cf">if</span> <span class="st">'Iron'</span> <span class="kw">in</span> df[<span class="st">'Nutrient'</span>].unique() <span class="cf">else</span> df[<span class="st">'Nutrient'</span>].unique()[<span class="dv">0</span>]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>sub <span class="op">=</span> df_trans[df_trans[<span class="st">'Nutrient'</span>] <span class="op">==</span> nutrient_to_plot].copy()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Plotting distributions for nutrient: </span><span class="sc">{</span>nutrient_to_plot<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Original scale density (histogram)</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>sub[<span class="st">'Value'</span>].plot(kind<span class="op">=</span><span class="st">'hist'</span>, bins<span class="op">=</span><span class="dv">20</span>, density<span class="op">=</span><span class="va">True</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'</span><span class="sc">{</span>nutrient_to_plot<span class="sc">}</span><span class="ss">: Original Value (density)'</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Value'</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Density'</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Log-transformed density</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>sub[<span class="st">'Value_log'</span>].plot(kind<span class="op">=</span><span class="st">'hist'</span>, bins<span class="op">=</span><span class="dv">20</span>, density<span class="op">=</span><span class="va">True</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'</span><span class="sc">{</span>nutrient_to_plot<span class="sc">}</span><span class="ss">: Log(Value) (density)'</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'log(Value + ε)'</span>)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Density'</span>)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Z-score density</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>sub[<span class="st">'Value_z'</span>].plot(kind<span class="op">=</span><span class="st">'hist'</span>, bins<span class="op">=</span><span class="dv">20</span>, density<span class="op">=</span><span class="va">True</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'</span><span class="sc">{</span>nutrient_to_plot<span class="sc">}</span><span class="ss">: Z-score (density)'</span>)</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Z-score'</span>)</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Density'</span>)</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="bonus-time-based-and-rolling-transforms" class="level2">
-<h2 class="anchored" data-anchor-id="bonus-time-based-and-rolling-transforms">7) (Bonus) Time-based and Rolling Transforms</h2>
-<p>For longitudinal data (e.g., the same <code>ID</code> measured across <code>Year</code>), we can compute rolling means or deltas. This is illustrative if your dataset has multiple years per ID.</p>
-<div id="rolling_code" class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_roll <span class="op">=</span> (</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    df.sort_values([<span class="st">'ID'</span>,<span class="st">'Nutrient'</span>,<span class="st">'Year'</span>])</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>      .groupby([<span class="st">'ID'</span>,<span class="st">'Nutrient'</span>], as_index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      .<span class="bu">apply</span>(<span class="kw">lambda</span> g: g.assign(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>          Value_roll_mean<span class="op">=</span>g[<span class="st">'Value'</span>].rolling(window<span class="op">=</span><span class="dv">2</span>, min_periods<span class="op">=</span><span class="dv">1</span>).mean(),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>          Value_delta<span class="op">=</span>g[<span class="st">'Value'</span>].diff()</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      ))</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>display(df_roll.head(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h2 class="anchored" data-anchor-id="bonus-time-based-and-rolling-transforms">8) (Bonus) Time-based and Rolling Transforms</h2>
+<p>For longitudinal data (e.g., the same <code>ID</code> measured across <code>Year</code>), compute rolling means or deltas. This is illustrative if your dataset has multiple years per ID.</p>
+<div id="rolling_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df_roll <span class="op">=</span> (</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    df.sort_values([<span class="st">'ID'</span>,<span class="st">'Nutrient'</span>,<span class="st">'Year'</span>])</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>      .groupby([<span class="st">'ID'</span>,<span class="st">'Nutrient'</span>], as_index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>      .<span class="bu">apply</span>(<span class="kw">lambda</span> g: g.assign(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>          Value_roll_mean<span class="op">=</span>g[<span class="st">'Value'</span>].rolling(window<span class="op">=</span><span class="dv">2</span>, min_periods<span class="op">=</span><span class="dv">1</span>).mean(),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>          Value_delta<span class="op">=</span>g[<span class="st">'Value'</span>].diff()</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>      ))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>display(df_roll.head(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="exercise-1-grouped-summary" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-1-grouped-summary">🧪 Exercise 1 — Grouped Summary</h2>
 <p>Filter to <code>Nutrient == 'Vitamin_D'</code>, then compute <strong>median</strong> <code>Value</code> by <code>Sex</code> and <code>Year</code>. Present the result sorted by <code>Year</code> and then <code>Sex</code>.</p>
 <p><strong>Hints</strong>: - Filter: <code>df[df['Nutrient'] == 'Vitamin_D']</code> - Group and aggregate: <code>.groupby(['Sex','Year'])['Value'].median().reset_index()</code> - Sort: <code>.sort_values(['Year','Sex'])</code></p>
-<div id="exercise_1_answer_here" class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="exercise_1_answer_here" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="exercise-2-wide-long" class="level2">
@@ -370,21 +431,21 @@ Transforming data is like a hippo rearranging its snacks — same nutrients, bet
 <li>Convert that wide table <strong>back to long</strong> using <code>melt</code> with <code>Nutrient</code> and <code>Value</code> columns.</li>
 </ol>
 <p><strong>Hints</strong>: - <code>pivot_table(index=['ID','Year'], columns='Nutrient', values='Value', aggfunc='mean')</code> - <code>melt(id_vars=['ID','Year'], var_name='Nutrient', value_name='Value')</code></p>
-<div id="exercise_2_answer_here" class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="exercise_2_answer_here" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="exercise-3-transformations-for-modelling" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-3-transformations-for-modelling">🧪 Exercise 3 — Transformations for Modelling</h2>
 <p>Create a dataframe with these new columns on the <strong>Iron</strong> subset only: - <code>Value_log_iron</code> — log-transformed value with epsilon. - <code>Value_z_iron_by_sex</code> — z-score <strong>within Sex</strong>. - <code>Value_minmax_iron_by_year</code> — min–max scaling <strong>within Year</strong>.</p>
 <p><strong>Hints</strong>: - Filter: <code>(df['Nutrient'] == 'Iron')</code> - Group-wise transforms with <code>.groupby(...).transform(...)</code></p>
-<div id="exercise_3_answer_here" class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="exercise_3_answer_here" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="conclusion-next-steps" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion-next-steps">✅ Conclusion &amp; Next Steps</h2>
-<p>You’ve practised the core transformation tools: - Filtering and selecting for clear subsets. - Grouping and aggregating for summaries. - Reshaping between <strong>wide</strong> and <strong>long</strong> for tidy analysis. - Pivot tables for quick comparisons. - Numeric transformations: <strong>log</strong>, <strong>z-score</strong>, <strong>min–max</strong>, and <strong>group-wise</strong> standardisation.</p>
+<p>You’ve practised the core transformation tools: - Filtering and selecting for clear subsets. - <strong>Aggregation</strong> with <code>.groupby(...).agg(...)</code>, including named aggregations and why aggregation matters. - Reshaping between <strong>wide</strong> and <strong>long</strong> for tidy analysis. - Pivot tables for quick comparisons. - Numeric transformations: <strong>log</strong>, <strong>z-score</strong>, <strong>min–max</strong>, and <strong>group-wise</strong> standardisation — plus <strong>density plots</strong> to see the changes.</p>
 <p>👉 Next: <strong>3.5 Data Aggregation</strong> — robust summaries, grouped statistics, and combining pipelines for analysis-ready datasets.</p>
 <p><strong>Resources</strong>: - Pandas GroupBy: https://pandas.pydata.org/docs/user_guide/groupby.html - Reshaping (melt/pivot): https://pandas.pydata.org/docs/user_guide/reshaping.html - Working with dtypes: https://pandas.pydata.org/docs/user_guide/basics.html#basics-dtypes</p>
 </section>
