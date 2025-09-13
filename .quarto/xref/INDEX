@@ -301,5 +301,8 @@
   },
   "notebooks/06_qualitative/6.3_thematic_coding.ipynb": {
     "6.3_thematic_coding.html": "56fb3a9d"
+  },
+  "notebooks/10_mini_projects/10.9_fortran_nutrition.ipynb": {
+    "10.9_fortran_nutrition.html": "9a77e3df"
   }
 }
