@@ -10,7 +10,7 @@ This module covers basic qualitative research.
 
 - **Qualitative methods**  
   Introduction to qualitative research methods
-  [View HTML](6.1_intro_qualitative_research.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/06_qualitative/6.1_into_qualitative_research.ipynb)
+  [View HTML](6.1_intro_qualitative_research.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/06_qualitative/6.1_intro_qualitative_research.ipynb)
 
 - **Text analysis**  
   Conduct text analysis  
