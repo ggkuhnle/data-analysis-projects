@@ -18,7 +18,7 @@ This module covers basic qualitative research.
 
 - **Thematic Coding & Reliability**
   End-to-end thematic analysis workflow
-  [View HTML](6.3_thematic_coding.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-         ↪analysis-projects/blob/main/notebooks/06_qualitative/6.3_thematic_coding.ipynb)
+  [View HTML](6.3_thematic_coding.html) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ggkuhnle/data-analysis-projects/blob/main/notebooks/06_qualitative/6.3_thematic_coding.ipynb)
 
 ## Datasets
 
