@@ -304,5 +304,8 @@
   },
   "notebooks/10_mini_projects/10.9_fortran_nutrition.ipynb": {
     "10.9_fortran_nutrition.html": "9a77e3df"
+  },
+  "notebooks/10_mini_projects/ml_trustworthy_hippos.ipynb": {
+    "ml_trustworthy_hippos.html": "fe3c7b24"
   }
 }
