@@ -1,0 +1,300 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "id": "39bbb746",
+      "metadata": {},
+      "source": [
+        "# 10.6 • Artificial Intelligence Beyond Buzzwords (Hippo Edition)\n",
+        "\n",
+        "When you hear **AI**, they often think of **ChatGPT** or **Grok**. \n",
+        "But AI is a much bigger toolbox. Think of it like the different instruments in a lab:\n",
+        "\n",
+        "- **Search algorithms** → finding a path through possibilities, like a hippo feeder robot choosing a route through the reserve.\n",
+        "- **Probabilistic reasoning** → handling uncertainty, like guessing if a hippo’s cough comes from diet or infection.\n",
+        "- **Decision-making under uncertainty** → planning actions when outcomes are not certain, like crossing a muddy shortcut.\n",
+        "- **Machine learning** → fitting models from data (see Section 10.5).\n",
+        "\n",
+        "In this notebook we’ll explore small, tangible demos:\n",
+        "\n",
+        "1. **Search**: BFS vs A* on a hippo feeding map.\n",
+        "2. **Decisions under uncertainty (MDP)**: should the robot feeder risk the muddy shortcut?\n",
+        "3. **Probabilistic reasoning (Bayesian net)**: inferring diet from symptoms.\n",
+        "4. **Learning & LLMs**: how this connects back to ChatGPT and modern AI."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "914296b4",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "import numpy as np, heapq\n",
+        "import matplotlib.pyplot as plt\n",
+        "from collections import deque\n",
+        "\n",
+        "np.random.seed(11088)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "1eb03c50",
+      "metadata": {},
+      "source": [
+        "## 1) Problem-solving as search\n",
+        "\n",
+        "Imagine a **hippo feeder robot** navigating a zoo map.\n",
+        "\n",
+        "- Obstacles are walls and fences.\n",
+        "- The robot must find the shortest safe path to the hippos’ enclosure.\n",
+        "\n",
+        "We compare two algorithms:\n",
+        "\n",
+        "- **BFS**: explores in waves, ignoring how close it is to the goal.\n",
+        "- **A***: uses a heuristic (distance to goal) to guide exploration.\n",
+        "\n",
+        "**Key idea**: If the heuristic never overestimates, A* finds an optimal path faster than BFS."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "f7ef0d44",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "def bfs(grid, start, goal):\n",
+        "    H, W = grid.shape\n",
+        "    Q = deque([start]); came = {start: None}; vis = {start}\n",
+        "    while Q:\n",
+        "        r, c = Q.popleft()\n",
+        "        if (r, c) == goal: break\n",
+        "        for dr, dc in [(1,0),(-1,0),(0,1),(0,-1)]:\n",
+        "            nr, nc = r+dr, c+dc\n",
+        "            if 0 <= nr < H and 0 <= nc < W and grid[nr, nc] == 0 and (nr, nc) not in vis:\n",
+        "                came[(nr, nc)] = (r, c)\n",
+        "                vis.add((nr, nc))\n",
+        "                Q.append((nr, nc))\n",
+        "    path = []\n",
+        "    cur = goal\n",
+        "    while cur is not None:\n",
+        "        path.append(cur)\n",
+        "        cur = came.get(cur)\n",
+        "    return path[::-1]\n",
+        "\n",
+        "def astar(grid, start, goal):\n",
+        "    H, W = grid.shape\n",
+        "    def h(a, b): return abs(a[0]-b[0]) + abs(a[1]-b[1])  # Manhattan distance\n",
+        "    openq = [(h(start, goal), 0, start, None)]\n",
+        "    came = {}; g = {start: 0}; vis = set()\n",
+        "    while openq:\n",
+        "        f, cost, cur, par = heapq.heappop(openq)\n",
+        "        if cur in vis: continue\n",
+        "        vis.add(cur); came[cur] = par\n",
+        "        if cur == goal: break\n",
+        "        for d in [(1,0),(-1,0),(0,1),(0,-1)]:\n",
+        "            nr, nc = cur[0]+d[0], cur[1]+d[1]\n",
+        "            if 0 <= nr < H and 0 <= nc < W and grid[nr, nc] == 0:\n",
+        "                ng = cost + 1\n",
+        "                if ng < g.get((nr, nc), 1e9):\n",
+        "                    g[(nr, nc)] = ng\n",
+        "                    heapq.heappush(openq, (ng+h((nr,nc), goal), ng, (nr,nc), cur))\n",
+        "    path = []\n",
+        "    cur = goal\n",
+        "    while cur is not None:\n",
+        "        path.append(cur)\n",
+        "        cur = came.get(cur)\n",
+        "    return path[::-1]\n",
+        "\n",
+        "# Create a small map\n",
+        "grid = np.zeros((20,20), int)\n",
+        "grid[5:15,10] = 1\n",
+        "grid[10,10] = 0  # a gate\n",
+        "start, goal = (0,0), (19,19)\n",
+        "\n",
+        "p_bfs = bfs(grid, start, goal)\n",
+        "p_astar = astar(grid, start, goal)\n",
+        "\n",
+        "plt.figure(figsize=(5,5))\n",
+        "plt.imshow(grid, cmap='gray_r')\n",
+        "rb, cb = zip(*p_bfs)\n",
+        "ra, ca = zip(*p_astar)\n",
+        "plt.plot(cb, rb, 'b--', label='BFS')\n",
+        "plt.plot(ca, ra, 'r-', label='A*')\n",
+        "plt.legend(); plt.title('Hippo feeder robot: BFS vs A*'); plt.show()"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "2a0768b3",
+      "metadata": {},
+      "source": [
+        "**Observation**  \n",
+        "BFS finds *a* path but wastes time exploring irrelevant areas.  \n",
+        "A* heads straight toward the goal, expanding fewer nodes.\n",
+        "\n",
+        "👉 In AI, search underpins planning: routing delivery trucks, optimising lab sample flows, or navigating robots."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "689243c0",
+      "metadata": {},
+      "source": [
+        "## 2) Decisions under uncertainty: Markov Decision Processes (MDPs)\n",
+        "\n",
+        "Now our hippo feeder robot faces a choice:\n",
+        "\n",
+        "- **Shortcut through the mud**: shorter, but 10% chance of slipping and losing progress.\n",
+        "- **Long paved path**: safe but longer.\n",
+        "\n",
+        "This is a **Markov Decision Process (MDP)**: states, actions, transitions, rewards.\n",
+        "\n",
+        "We use **value iteration** to compute the optimal policy."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "d81adc1a",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "S = [(r,c) for r in range(3) for c in range(3)]\n",
+        "A = [(1,0), (-1,0), (0,1), (0,-1)]\n",
+        "goal = (2,2); gamma = 0.95\n",
+        "\n",
+        "def step(s, a, slip=0.1):\n",
+        "    r,c = s; dr,dc = a\n",
+        "    main = (r+dr,c+dc); slip_alt = (r+dc,c+dr)\n",
+        "    nxt = []\n",
+        "    for i, (nr,nc) in enumerate([main, slip_alt]):\n",
+        "        if 0 <= nr < 3 and 0 <= nc < 3:\n",
+        "            p = 1-slip if i==0 else slip\n",
+        "            nxt.append(((nr,nc), p))\n",
+        "        else:\n",
+        "            p = 1-slip if i==0 else slip\n",
+        "            nxt.append(((r,c), p))\n",
+        "    return nxt\n",
+        "\n",
+        "R = lambda s: 1.0 if s==goal else -0.04\n",
+        "\n",
+        "V = {s:0.0 for s in S}\n",
+        "for _ in range(200):\n",
+        "    V = {s: (0 if s==goal else max(sum(p*(R(s2)+gamma*V[s2]) for s2,p in step(s,a)) for a in A)) for s in S}\n",
+        "\n",
+        "Pi = {}\n",
+        "for s in S:\n",
+        "    if s == goal:\n",
+        "        Pi[s] = (0,0)\n",
+        "        continue\n",
+        "    Pi[s] = max(A, key=lambda a: sum(p*(R(s2)+gamma*V[s2]) for s2,p in step(s,a)))\n",
+        "\n",
+        "np.array([[Pi[(r,c)] for c in range(3)] for r in range(3)])"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "135d9ec4",
+      "metadata": {},
+      "source": [
+        "**Interpretation**  \n",
+        "The arrows show the robot’s policy. When slip risk is low, it takes shortcuts.  \n",
+        "If slip risk increases, it may prefer safer routes.\n",
+        "\n",
+        "👉 In health/nutrition: MDPs describe treatment planning, where each action has uncertain outcomes."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "843e97d1",
+      "metadata": {},
+      "source": [
+        "## 3) Probabilistic reasoning: a simple Bayesian network\n",
+        "\n",
+        "Suppose we model:\n",
+        "\n",
+        "- **High sugar diet (S)** can cause **hyperactivity (H)** and **dental issues (D)**.\n",
+        "\n",
+        "If we observe a hippo is hyperactive, how does this update our belief about sugar intake and dental risk?\n",
+        "\n",
+        "This is a **Bayesian network**: directed links between variables, with conditional probabilities."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "16530148",
+      "metadata": {},
+      "outputs": [],
+      "source": [
+        "P_S = {1:0.3, 0:0.7}  # prior: 30% high sugar\n",
+        "P_H_given_S = {1:{1:0.6, 0:0.4}, 0:{1:0.2, 0:0.8}}\n",
+        "P_D_given_S = {1:{1:0.5, 0:0.5}, 0:{1:0.1, 0:0.9}}\n",
+        "\n",
+        "# Observe H=1 (hyperactive)\n",
+        "unnorm = {s: P_H_given_S[s][1]*P_S[s] for s in [0,1]}\n",
+        "Z = sum(unnorm.values())\n",
+        "post_S = {s: unnorm[s]/Z for s in [0,1]}\n",
+        "\n",
+        "# Predictive for D given H=1\n",
+        "P_D1 = sum(P_D_given_S[s][1]*post_S[s] for s in [0,1])\n",
+        "\n",
+        "post_S, P_D1"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "4a29c834",
+      "metadata": {},
+      "source": [
+        "**Result**  \n",
+        "Observing hyperactivity makes a high sugar diet more likely, and thus increases the inferred risk of dental issues.\n",
+        "\n",
+        "👉 Bayesian reasoning is how AI systems combine noisy evidence into coherent probabilities (medical diagnosis, food safety monitoring, etc.)."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "id": "f43c7cee",
+      "metadata": {},
+      "source": [
+        "## 4) Where does ChatGPT fit in?\n",
+        "\n",
+        "- **Search** → Classical pathfinding and planning.\n",
+        "- **MDPs/RL** → Decisions under uncertainty, like treatment planning.\n",
+        "- **Bayesian nets** → Reasoning about hidden causes.\n",
+        "- **Machine learning (10.5)** → fitting predictive models from data.\n",
+        "\n",
+        "**Large Language Models (LLMs)** like ChatGPT belong to the *learning* family. They learn statistical patterns in text.  \n",
+        "But for safety-critical systems (e.g. medical decision support, diet planning, or autonomous feeders), we often combine LLMs with **search, reasoning, and decision frameworks** to ensure reliability.\n",
+        "\n",
+        "---\n",
+        "### Exercises\n",
+        "1. Change the A* heuristic to Euclidean distance. Is it still admissible? Compare the paths.\n",
+        "2. Increase slip in the MDP to 0.3. How does the policy change?\n",
+        "3. Extend the Bayes net with a variable `Exercise (E)` that reduces dental risk. Compute `P(D|H=1,E=1)`.\n",
+        "\n",
+        "### Takeaways\n",
+        "- **Search** = goal-directed behaviour.\n",
+        "- **Probabilistic inference** = reasoning under uncertainty.\n",
+        "- **Decision-making** = optimising actions with trade-offs.\n",
+        "- **Learning** = using data to fit models.\n",
+        "- Modern AI (LLMs) = powerful learners, but classical AI tools remain essential for trustworthy systems."
+      ]
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

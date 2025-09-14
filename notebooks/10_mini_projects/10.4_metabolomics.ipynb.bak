@@ -1,0 +1,656 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "title",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "# 🧪 Multivariate Analysis for Metabolomics — A Practical, Conceptual Toolkit\n",
+    "\n",
+    "This notebook is a guided mini-course in multivariate analysis for metabolomics (applies equally to other omics). We cover:\n",
+    "\n",
+    "- **PCA** (unsupervised): eigenvalues/eigenvectors, *Eigenfactors*, scree/broken-stick, loadings, scores, **Hotelling’s T²**, **Q-residuals (SPE)**, leverage, outlier logic.\n",
+    "- **PLS-DA** (supervised): cross-validation, **R²X/R²Y/Q²**, **VIP scores**, permutation testing to guard against overfitting.\n",
+    "- **Bayesian PPCA** with PyMC: uncertainty-aware dimensionality reduction.\n",
+    "- **ML add-on**: Random Forest with **permutation importance** (less biased than Gini impurity) and nested CV.\n",
+    "\n",
+    "We use a synthetic LC–MS–like dataset (n≈1,000; p≈200 features; two classes; mild batch drift), or load `data/metabolomics_dataset.csv` if present.\n",
+    "\n",
+    "> **Learning outcomes**: interpret PCA/PLS-DA rigorously; compute and explain Eigenfactors; diagnose outliers; quantify model performance honestly; extract candidate biomarkers responsibly.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "env",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Environment & Reproducibility\n",
+    "Uncomment the installs if needed (Colab/clean venv). Random seed fixed for reproducibility."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "imports",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "%pip install numpy pandas matplotlib seaborn scipy scikit-learn statsmodels pymc arviz\n",
+    "from pathlib import Path\n",
+    "import numpy as np, pandas as pd\n",
+    "import matplotlib.pyplot as plt, seaborn as sns\n",
+    "from scipy import stats\n",
+    "from scipy.stats import chi2, f\n",
+    "from sklearn.decomposition import PCA\n",
+    "from sklearn.preprocessing import StandardScaler\n",
+    "from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split, GridSearchCV\n",
+    "from sklearn.metrics import accuracy_score, roc_auc_score, classification_report\n",
+    "from sklearn.cross_decomposition import PLSRegression\n",
+    "from sklearn.ensemble import RandomForestClassifier\n",
+    "from sklearn.inspection import permutation_importance\n",
+    "import numpy.linalg as la\n",
+    "import pymc as pm\n",
+    "import arviz as az\n",
+    "\n",
+    "sns.set_context('notebook'); sns.set_style('whitegrid')\n",
+    "RANDOM_SEED = 11088\n",
+    "rng = np.random.default_rng(RANDOM_SEED)\n",
+    "DATA_DIR = Path('data'); DATA_DIR.mkdir(exist_ok=True)\n",
+    "DATA_PATH = DATA_DIR / 'metabolomics_dataset.csv'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "simulate_hdr",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Load or Simulate a Metabolomics Dataset\n",
+    "We load `data/metabolomics_dataset.csv` if present. Otherwise we simulate:\n",
+    "- 1,000 samples, 200 metabolites (some correlated by latent pathways),\n",
+    "- two classes (balanced),\n",
+    "- mild batch drift on ~10% features,\n",
+    "- continuous *severity* score.\n",
+    "\n",
+    "We inject class signal into 20 features and weak signal into 40, the rest noise/correlated redundancy (realistic for LC–MS)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "simulate",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def simulate_metabolomics(n=1000, p=200, seed=RANDOM_SEED):\n",
+    "    rng = np.random.default_rng(seed)\n",
+    "    # Latent pathways: 6 blocks with correlated features\n",
+    "    blocks = [40, 40, 30, 30, 30, 30]\n",
+    "    assert sum(blocks) == p\n",
+    "    # Class labels\n",
+    "    y = rng.integers(0, 2, size=n)\n",
+    "    # Base matrix (Gaussian noise)\n",
+    "    X = rng.normal(0, 1, size=(n, p))\n",
+    "    # Add pathway correlation: each block driven by a latent factor\n",
+    "    start = 0\n",
+    "    for b, k in enumerate(blocks):\n",
+    "        z = rng.normal(0, 1, size=(n, 1))  # latent factor per block\n",
+    "        load = rng.normal(0.6, 0.05, size=(1, k))  # moderate correlation\n",
+    "        X[:, start:start+k] += z @ load\n",
+    "        start += k\n",
+    "    # Inject class signal: 20 strong, 40 weak features spread across blocks\n",
+    "    strong_idx = rng.choice(p, size=20, replace=False)\n",
+    "    weak_candidates = np.setdiff1d(np.arange(p), strong_idx)\n",
+    "    weak_idx = rng.choice(weak_candidates, size=40, replace=False)\n",
+    "    effect = (y*2 - 1)[:, None]  # -1 or +1\n",
+    "    X[:, strong_idx] += effect * rng.normal(1.0, 0.1, size=(n, 20))\n",
+    "    X[:, weak_idx]   += effect * rng.normal(0.3, 0.05, size=(n, 40))\n",
+    "    # Batch drift on 10% features\n",
+    "    drift_idx = rng.choice(p, size=int(0.1*p), replace=False)\n",
+    "    drift_trend = np.linspace(-0.8, 0.8, n)[:, None]\n",
+    "    X[:, drift_idx] += drift_trend * rng.normal(0.4, 0.05, size=(1, len(drift_idx)))\n",
+    "    # Severity (continuous outcome) driven by a few PCs + noise\n",
+    "    sev = (0.5*effect.squeeze() + 0.2*rng.normal(0,1,n) + 0.1*X[:, strong_idx].mean(axis=1))\n",
+    "    # Shift to positive space and log-spread (like intensities)\n",
+    "    X = np.exp( X / 2 ) * 1000\n",
+    "    cols = [f'Metabolite_{i+1}' for i in range(p)]\n",
+    "    df = pd.DataFrame(X, columns=cols)\n",
+    "    df['Label'] = y\n",
+    "    df['Severity'] = (sev - sev.min())/(sev.max()-sev.min()) * 10\n",
+    "    return df\n",
+    "\n",
+    "if DATA_PATH.exists():\n",
+    "    df = pd.read_csv(DATA_PATH)\n",
+    "else:\n",
+    "    df = simulate_metabolomics()\n",
+    "    df.to_csv(DATA_PATH, index=False)\n",
+    "df.head(3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "prep_scaling",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Preprocessing & Scaling (Why it matters in metabolomics)\n",
+    "Raw LC–MS intensities are typically **right-skewed** and vary in scale by orders of magnitude. Common choices:\n",
+    "\n",
+    "- **Autoscaling (UV)**: centre to mean 0, scale to unit variance — emphasises low-variance features (can amplify noise).\n",
+    "- **Pareto scaling**: divide by √SD — middle ground; widely used in metabolomics.\n",
+    "- **Log or log-Pareto**: stabilises variance, reduces skew.\n",
+    "\n",
+    "Below we provide helpers; you can switch scaling by changing `SCALING_MODE`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "scaling_helpers",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "X = df.filter(like='Metabolite_').astype(float).values\n",
+    "y = df['Label'].astype(int).values\n",
+    "sev = df['Severity'].values\n",
+    "\n",
+    "def autoscale(X):\n",
+    "    m = X.mean(axis=0); s = X.std(axis=0, ddof=1); s[s==0]=1\n",
+    "    return (X - m)/s\n",
+    "\n",
+    "def pareto(X):\n",
+    "    m = X.mean(axis=0); s = np.sqrt(X.std(axis=0, ddof=1)); s[s==0]=1\n",
+    "    return (X - m)/s\n",
+    "\n",
+    "def log_pareto(X):\n",
+    "    Xl = np.log1p(X)\n",
+    "    return pareto(Xl)\n",
+    "\n",
+    "SCALING_MODE = 'log_pareto'  # 'autoscale' | 'pareto' | 'log_pareto'\n",
+    "if SCALING_MODE=='autoscale':\n",
+    "    Xs = autoscale(X)\n",
+    "elif SCALING_MODE=='pareto':\n",
+    "    Xs = pareto(X)\n",
+    "else:\n",
+    "    Xs = log_pareto(X)\n",
+    "Xs[:2, :4]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "pca_concepts",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## PCA — Core Concepts (Eigenvalues, Eigenvectors, *Eigenfactors*)\n",
+    "\n",
+    "Let \\(\\mathbf{X}\\in\\mathbb{R}^{n\\times p}\\) be column-centred (after scaling). PCA finds orthonormal directions (**eigenvectors**) \\(\\mathbf{v}_k\\) of the covariance matrix \\(\\mathbf{S} = \\frac{1}{n-1}\\mathbf{X}^T\\mathbf{X}\\), with **eigenvalues** \\(\\lambda_k\\) (variance explained by PC\\(k\\)).\n",
+    "\n",
+    "- **Scores** (sample coordinates) on PC\\(k\\): \\(\\mathbf{t}_k = \\mathbf{X}\\,\\mathbf{v}_k\\).\n",
+    "- **Loadings** (feature weights) are the eigenvectors \\(\\mathbf{v}_k\\).\n",
+    "- **Explained variance** of PC\\(k\\): \\(\\lambda_k / \\sum_j \\lambda_j\\).\n",
+    "- **Hotelling’s T²** for sample *i*: \\(T^2_i = \\sum_{k=1}^a \\frac{t_{ik}^2}{\\lambda_k}\\) over the first \\(a\\) PCs.\n",
+    "- **Q-residuals/SPE**: squared residual after projecting onto the first \\(a\\) PCs: \\(Q_i = \\lVert \\mathbf{x}_i - \\hat{\\mathbf{x}}_i \\rVert^2\\).\n",
+    "\n",
+    "### *Eigenfactors* — what are they?\n",
+    "In chemometrics/metabolomics teaching, *Eigenfactors* are often used as an intuitive term for the **eigen-decomposition factors** that drive PCA: the eigenvalues (variance magnitudes) and eigenvectors (directional weights) together. They determine (i) how much each PC *matters* (eigenvalue), and (ii) how features combine to form that PC (eigenvector). In short: *Eigenfactors* = the **principal axes** (loadings) and their **importance** (eigenvalues). Reporting them correctly (plus cumulative variance) is crucial.\n",
+    "\n",
+    "We’ll compute all of these and show **scree** and **broken-stick** criteria for choosing PCs."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "pca_fit",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "pca = PCA(n_components=min(Xs.shape[0], Xs.shape[1]), svd_solver='full', random_state=RANDOM_SEED)\n",
+    "scores = pca.fit_transform(Xs)\n",
+    "loadings = pca.components_.T  # p x PCs\n",
+    "eigvals = pca.explained_variance_  # lambda_k\n",
+    "expl_var = pca.explained_variance_ratio_\n",
+    "cum_var = np.cumsum(expl_var)\n",
+    "\n",
+    "# Broken-stick model (expected proportion under null of random variance)\n",
+    "p_ = Xs.shape[1]\n",
+    "broken = np.array([sum(1/np.arange(k, p_+1)) / p_ for k in range(1, p_+1)])\n",
+    "\n",
+    "plt.figure(figsize=(7,4))\n",
+    "plt.plot(np.arange(1, 11), expl_var[:10], marker='o', label='Explained variance (PC1..10)')\n",
+    "plt.plot(np.arange(1, 11), broken[:10], marker='x', linestyle='--', label='Broken-stick expectation')\n",
+    "plt.xlabel('PC'); plt.ylabel('Proportion of variance'); plt.title('Scree & Broken-stick (first 10 PCs)'); plt.legend(); plt.tight_layout(); plt.show()\n",
+    "\n",
+    "print(f\"Cumulative variance PC1..5: {cum_var[4]:.2%}; PC1..10: {cum_var[9]:.2%}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "pca_plot_with_t2_q",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### PCA Scores, Hotelling’s T² Ellipse, and Q-Residuals\n",
+    "We’ll plot PC1–PC2 with a **95% Hotelling’s T²** ellipse and flag samples with large **Q-residuals** (outside the model in orthogonal space)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "t2_qcalc",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "a = 2  # number of PCs to display\n",
+    "T = scores[:, :a]\n",
+    "Lambda = np.diag(eigvals[:a])\n",
+    "T2 = np.sum(T @ la.inv(Lambda) * T, axis=1)  # rowwise\n",
+    "\n",
+    "# F-approximation for T² limit (Jackson, 1991):\n",
+    "n = Xs.shape[0]\n",
+    "alpha = 0.05\n",
+    "T2_lim = (a*(n-1)/(n-a)) * f.ppf(1-alpha, a, n-a)\n",
+    "\n",
+    "# Q-residuals (SPE):\n",
+    "P = loadings[:, :a]  # p x a\n",
+    "Xhat = T @ P.T\n",
+    "E = Xs - Xhat\n",
+    "Q = np.sum(E**2, axis=1)\n",
+    "# Heuristic Q limit via percentiles (for teaching); robust methods use Jackson’s Q-stat or permutation\n",
+    "Q_lim = np.percentile(Q, 95)\n",
+    "\n",
+    "# Ellipse for T² in score space (PC1/PC2)\n",
+    "cov_scores = np.cov(T, rowvar=False)\n",
+    "eigvals_s, eigvecs_s = la.eigh(cov_scores)\n",
+    "order = np.argsort(eigvals_s)[::-1]\n",
+    "eigvals_s, eigvecs_s = eigvals_s[order], eigvecs_s[:, order]\n",
+    "theta = np.linspace(0, 2*np.pi, 200)\n",
+    "radii = np.sqrt(T2_lim) * np.sqrt(eigvals_s)\n",
+    "ellipse = (eigvecs_s @ np.diag(radii) @ np.vstack([np.cos(theta), np.sin(theta)])).T + T.mean(axis=0)\n",
+    "\n",
+    "plt.figure(figsize=(7,6))\n",
+    "plt.scatter(T[:,0], T[:,1], c=y, cmap='viridis', alpha=0.7, s=18, label='Samples')\n",
+    "plt.plot(ellipse[:,0], ellipse[:,1], 'k--', lw=1.5, label=\"95% T² ellipse\")\n",
+    "out_t2 = T2 > T2_lim\n",
+    "out_q  = Q  > Q_lim\n",
+    "plt.scatter(T[out_t2,0], T[out_t2,1], edgecolor='r', facecolor='none', s=80, label='T² outliers')\n",
+    "plt.scatter(T[out_q,0], T[out_q,1], edgecolor='orange', facecolor='none', s=80, label='Q outliers')\n",
+    "plt.xlabel('PC1'); plt.ylabel('PC2'); plt.title('PCA Scores with T² & Q outliers'); plt.legend(); plt.tight_layout(); plt.show()\n",
+    "\n",
+    "print(f\"T² limit: {T2_lim:.2f}; Q 95th pct: {Q_lim:.2f}; #T² outliers: {out_t2.sum()}, #Q outliers: {out_q.sum()}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "loading_biplot",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Interpreting Loadings (Eigenvectors) — Which metabolites drive each PC?\n",
+    "We’ll show the top absolute loadings on PC1/PC2. Remember: **loadings = Eigenfactor directions**; their magnitudes indicate each metabolite’s contribution to that PC. Always interpret together with scaling choice."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "top_loadings",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "feat_names = df.filter(like='Metabolite_').columns\n",
+    "for k in [0,1]:\n",
+    "    idx = np.argsort(np.abs(loadings[:,k]))[::-1][:10]\n",
+    "    tab = pd.DataFrame({'Feature': feat_names[idx], 'Loading': loadings[idx,k]}).reset_index(drop=True)\n",
+    "    print(f\"Top contributors to PC{k+1}\")\n",
+    "    display(tab)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "plsda_intro",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## PLS-DA — Supervised Discrimination\n",
+    "PLS-DA projects \\(\\mathbf{X}\\) to latent components that **maximise covariance** with \\(\\mathbf{Y}\\) (class). In metabolomics we report:\n",
+    "- **R²X**: variance in \\(\\mathbf{X}\\) explained by the components,\n",
+    "- **R²Y**: variance in \\(\\mathbf{Y}\\) explained,\n",
+    "- **Q²**: cross-validated predictive ability.\n",
+    "\n",
+    "⚠️ **Caution**: PLS-DA is prone to overfitting in high-p/low-n regimes. Always use stratified CV and **permutation testing**."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "plsda_fit",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "Xdf = df.filter(like='Metabolite_').astype(float)\n",
+    "Xs_pls = log_pareto(Xdf.values)  # keep consistent scaling\n",
+    "y_bin = df['Label'].astype(int).values  # binary 0/1\n",
+    "\n",
+    "n_comp = 2\n",
+    "pls = PLSRegression(n_components=n_comp)\n",
+    "pls.fit(Xs_pls, y_bin)\n",
+    "\n",
+    "# Scores for plotting\n",
+    "scores_pls = pls.x_scores_[:, :2]\n",
+    "plt.figure(figsize=(7,6))\n",
+    "plt.scatter(scores_pls[:,0], scores_pls[:,1], c=y_bin, cmap='viridis', alpha=0.8)\n",
+    "plt.xlabel('PLS-DA LV1'); plt.ylabel('PLS-DA LV2'); plt.title('PLS-DA Scores'); plt.tight_layout(); plt.show()\n",
+    "\n",
+    "# Simple CV accuracy (stratified 5-fold)\n",
+    "cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_SEED)\n",
+    "preds = np.zeros_like(y_bin, dtype=float)\n",
+    "for tr, te in cv.split(Xs_pls, y_bin):\n",
+    "    m = PLSRegression(n_components=n_comp)\n",
+    "    m.fit(Xs_pls[tr], y_bin[tr])\n",
+    "    preds[te] = m.predict(Xs_pls[te]).ravel()\n",
+    "acc = ((preds>0.5)==y_bin).mean()\n",
+    "auc = roc_auc_score(y_bin, preds)\n",
+    "print(f\"5-fold CV accuracy≈{acc:.3f}, AUC≈{auc:.3f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "vip_explain",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### VIP Scores — Variable Importance in Projection\n",
+    "VIP summarises a feature’s overall contribution to the PLS components (weighted by explained \\(Y\\) variance). A common threshold is **VIP > 1**.\n",
+    "\n",
+    "VIP for variable *j*:\n",
+    "\\[ \\mathrm{VIP}_j = \\sqrt{ \\frac{p \\sum_{a=1}^A w_{ja}^2 \\cdot SSY_a }{\\sum_{a=1}^A SSY_a} } \\]\n",
+    "where \\(w_{ja}\\) are weights and \\(SSY_a\\) the sum of squares in \\(Y\\) explained by component *a*.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "vip_calc",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def vip_scores(pls):\n",
+    "    \"\"\"\n",
+    "    Compute Variable Importance in Projection (VIP) scores\n",
+    "    for scikit-learn PLSRegression.\n",
+    "\n",
+    "    Returns\n",
+    "    -------\n",
+    "    vips : (p,) array of VIP scores for X variables in column order.\n",
+    "    \"\"\"\n",
+    "    T = pls.x_scores_        # (n, A)\n",
+    "    W = pls.x_weights_       # (p, A)\n",
+    "    Q = pls.y_loadings_      # (n_targets, A)\n",
+    "\n",
+    "    p = W.shape[0]\n",
+    "    # SSY per component (works for single or multi-target)\n",
+    "    t_ss  = np.sum(T**2, axis=0)        # (A,)\n",
+    "    q_ss  = np.sum(Q**2, axis=0)        # (A,)\n",
+    "    SSY   = t_ss * q_ss                 # (A,)\n",
+    "\n",
+    "    # Normalise weights per component\n",
+    "    wnorm2 = np.sum(W**2, axis=0)       # (A,)\n",
+    "    wnorm2 = np.where(wnorm2 == 0, 1e-12, wnorm2)\n",
+    "\n",
+    "    # Contribution matrix: (p, A)\n",
+    "    contrib = (W**2 / wnorm2) * SSY     # broadcasts SSY over rows\n",
+    "\n",
+    "    denom = SSY.sum()\n",
+    "    denom = denom if denom > 0 else 1e-12\n",
+    "\n",
+    "    vips = np.sqrt(p * contrib.sum(axis=1) / denom)  # (p,)\n",
+    "    return vips\n",
+    "\n",
+    "vips = vip_scores(pls)\n",
+    "vip_top = (pd.DataFrame({'Feature': Xdf.columns, 'VIP': vips})\n",
+    "           .sort_values('VIP', ascending=False)\n",
+    "           .head(15))\n",
+    "display(vip_top)\n",
+    "\n",
+    "plt.figure(figsize=(7,4))\n",
+    "sns.barplot(data=vip_top, x='VIP', y='Feature')\n",
+    "plt.axvline(1, ls='--')     # VIP>1 often treated as important\n",
+    "plt.title('Top VIP features')\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "perm_test",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Permutation Test (Essential sanity check)\n",
+    "We permute class labels (break real association), refit PLS-DA, and recompute CV AUC. If the observed AUC is not better than the null distribution, the model likely overfits.\n",
+    "\n",
+    "> For speed we use 100 permutations (increase to 1,000 for publication-grade)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "perm_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def cv_auc_pls(X, y, a=2, seed=RANDOM_SEED):\n",
+    "    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=seed)\n",
+    "    preds = np.zeros_like(y, dtype=float)\n",
+    "    for tr, te in cv.split(X, y):\n",
+    "        m = PLSRegression(n_components=a)\n",
+    "        m.fit(X[tr], y[tr])\n",
+    "        preds[te] = m.predict(X[te]).ravel()\n",
+    "    return roc_auc_score(y, preds)\n",
+    "\n",
+    "obs_auc = cv_auc_pls(Xs_pls, y_bin, a=n_comp)\n",
+    "null_aucs = []\n",
+    "for b in range(100):\n",
+    "    yperm = rng.permutation(y_bin)\n",
+    "    null_aucs.append(cv_auc_pls(Xs_pls, yperm, a=n_comp, seed=RANDOM_SEED+b+1))\n",
+    "p_perm = (np.sum(np.array(null_aucs) >= obs_auc) + 1) / (len(null_aucs)+1)\n",
+    "print(f\"Observed CV AUC={obs_auc:.3f}; permutation p≈{p_perm:.3f}\")\n",
+    "plt.figure(figsize=(7,4)); sns.histplot(null_aucs, bins=20, kde=False); plt.axvline(obs_auc, c='red'); plt.title('Permutation null AUCs (PLS-DA)'); plt.xlabel('AUC'); plt.tight_layout(); plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bayes_ppca_intro",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Bayesian PPCA (PyMC) — Uncertainty-aware PCA\n",
+    "**Probabilistic PCA (PPCA)** assumes \\(\\mathbf{x}_i = \\mathbf{W}\\mathbf{z}_i + \\boldsymbol\\mu + \\boldsymbol\\epsilon_i\\), with \\(\\mathbf{z}_i\\sim\\mathcal{N}(0,\\mathbf{I})\\) and \\(\\boldsymbol\\epsilon_i\\sim\\mathcal{N}(0,\\sigma^2\\mathbf{I})\\). It yields PCs similar to PCA but within a generative model. The Bayesian version gives **posterior uncertainty** for loadings and noise.\n",
+    "\n",
+    "We model 2 latent dimensions for illustration (adjust as needed). We’ll use a subset of 400 samples × 80 features for speed during teaching."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bayes_ppca_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "sub_n, sub_p = 400, 80\n",
+    "idx = rng.choice(Xs.shape[0], size=sub_n, replace=False)\n",
+    "jdx = rng.choice(Xs.shape[1], size=sub_p, replace=False)\n",
+    "Xpp = Xs[np.ix_(idx, jdx)]\n",
+    "\n",
+    "A = 2  # latent dims\n",
+    "with pm.Model() as ppca:\n",
+    "    mu = pm.Normal('mu', mu=0, sigma=1, shape=sub_p)\n",
+    "    W = pm.Normal('W', mu=0, sigma=1, shape=(sub_p, A))\n",
+    "    z = pm.Normal('z', mu=0, sigma=1, shape=(sub_n, A))\n",
+    "    sigma = pm.HalfNormal('sigma', sigma=1)\n",
+    "    Xhat = mu + pm.math.dot(z, W.T)\n",
+    "    pm.Normal('X', mu=Xhat, sigma=sigma, observed=Xpp)\n",
+    "    trace_ppca = pm.sample(1000, tune=1000, target_accept=0.9, random_seed=RANDOM_SEED, return_inferencedata=True)\n",
+    "\n",
+    "az.plot_forest(trace_ppca, var_names=['sigma'], combined=True); plt.show()\n",
+    "print(az.summary(trace_ppca, var_names=['sigma'], hdi_prob=0.95))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "rf_intro",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Random Forest (ML add-on) with Permutation Importance\n",
+    "We add a non-linear classifier and compute **permutation importance**, which is less biased towards high-cardinality features than Gini importance. We use **nested CV** for honest performance."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "rf_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "Xrf = Xs\n",
+    "yrf = y_bin\n",
+    "outer = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_SEED)\n",
+    "inner = StratifiedKFold(n_splits=3, shuffle=True, random_state=RANDOM_SEED)\n",
+    "rf = RandomForestClassifier(random_state=RANDOM_SEED)\n",
+    "grid = {'n_estimators':[200,400], 'max_features':['sqrt','log2'], 'max_depth':[None, 8]}\n",
+    "clf = GridSearchCV(rf, grid, scoring='roc_auc', cv=inner, n_jobs=-1)\n",
+    "auc_outer = []\n",
+    "for tr, te in outer.split(Xrf, yrf):\n",
+    "    clf.fit(Xrf[tr], yrf[tr])\n",
+    "    proba = clf.predict_proba(Xrf[te])[:,1]\n",
+    "    auc_outer.append(roc_auc_score(yrf[te], proba))\n",
+    "print(f\"Nested CV ROC AUC (mean±SD): {np.mean(auc_outer):.3f} ± {np.std(auc_outer):.3f}\")\n",
+    "\n",
+    "# Permutation importance on full data with best model (illustrative)\n",
+    "best = clf.best_estimator_\n",
+    "best.fit(Xrf, yrf)\n",
+    "perm = permutation_importance(best, Xrf, yrf, n_repeats=20, random_state=RANDOM_SEED)\n",
+    "imp = perm.importances_mean\n",
+    "top = np.argsort(imp)[-15:][::-1]\n",
+    "feat = df.filter(like='Metabolite_').columns[top]\n",
+    "plt.figure(figsize=(7,5)); sns.barplot(x=imp[top], y=feat); plt.title('Permutation importance (top 15)'); plt.tight_layout(); plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "regression_pc",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Using PCs for Regression on Severity (Optional)\n",
+    "Illustrates PCA as a feature extractor for continuous outcomes."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "pc_regression",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "pca2 = PCA(n_components=5, svd_solver='full', random_state=RANDOM_SEED)\n",
+    "T5 = pca2.fit_transform(Xs)\n",
+    "from sklearn.linear_model import LinearRegression\n",
+    "lr = LinearRegression().fit(T5, sev)\n",
+    "pred = lr.predict(T5)\n",
+    "r = np.corrcoef(sev, pred)[0,1]\n",
+    "plt.figure(figsize=(6,5)); plt.scatter(sev, pred, alpha=0.5); plt.plot([sev.min(), sev.max()],[sev.min(), sev.max()], 'r--'); plt.xlabel('True severity'); plt.ylabel('Predicted'); plt.title(f'PC(5)→LR (r={r:.2f})'); plt.tight_layout(); plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "reporting",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Reporting Checklist (what students should include)\n",
+    "- **Data & scaling**: log/Pareto/autoscale choice and justification.\n",
+    "- **PCA**: scree + broken-stick; cumulative variance; **Eigenfactors** (top loadings) and biological plausibility; **T²** and **Q** outlier handling rules.\n",
+    "- **PLS-DA**: CV scheme; **R²X/R²Y/Q²** if computed (here: CV AUC as main metric); **VIP > 1** table; **permutation test** p-value.\n",
+    "- **ML**: nested CV; permutation importance not Gini; caveats.\n",
+    "- **Limitations**: class imbalance, batch effects, leakage risks, multiple testing control if moving to univariate follow-ups.\n",
+    "\n",
+    "### Short Exercises\n",
+    "1. Switch scaling (UV vs Pareto) and re-run PCA. How do **Eigenfactors** (loadings, variance explained) shift?\n",
+    "2. Increase PLS-DA components to 3 and repeat permutation test. Does p-value worsen (hint: overfitting risk)?\n",
+    "3. In VIP plot, annotate features overlapping PCA PC1 top loadings — are they consistent drivers?\n",
+    "4. For Bayesian PPCA, increase latent dims to 3 and inspect posterior for `sigma` — what does this say about residual noise?\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "appendix_math",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Appendix — Maths Nuggets\n",
+    "**Eigen-decomposition**: \\(\\mathbf{S}\\mathbf{v}_k = \\lambda_k \\mathbf{v}_k\\), \\(\\mathbf{v}_k^T\\mathbf{v}_k=1\\). Scores \\(\\mathbf{T} = \\mathbf{X}\\mathbf{V}\\). Reconstruction with first \\(a\\) PCs: \\(\\hat{\\mathbf{X}} = \\mathbf{T}_a \\mathbf{V}_a^T\\). **Eigenfactors** = \\((\\lambda_k, \\mathbf{v}_k)\\) pairs; scree compares \\(\\lambda_k\\) to broken-stick expectation. \n",
+    "\n",
+    "**Hotelling’s T² limit**: \\(T^2_{\\alpha} = \\frac{a(n-1)}{n-a} F_{a, n-a; 1-\\alpha}\\). **Q-residuals** use residual space; formal limits can be approximated (Jackson’s method) — here we used a 95th percentile heuristic for pedagogy.\n",
+    "\n",
+    "**VIP**: see formula above; report top VIPs with CI if bootstrapping.\n",
+    "\n",
+    "**Permutation test** for supervised models: preserves \\(X\\) structure while destroying \\(X\\)–\\(Y\\) relation; controls Type I error under complex correlation.\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "venv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

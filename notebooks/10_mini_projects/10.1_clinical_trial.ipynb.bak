@@ -1,0 +1,567 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "title",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "# 🧪 Clinical Trial: Hipponol Intervention Study\n",
+    "\n",
+    "Simulated 2-year RCT of **Hipponol** vs **placebo** (n=1000). Primary: 2-year survival. Secondary: SBP change. Notebook follows a lean **CONSORT-like** workflow with frequentist and Bayesian analyses. Fully self-contained: it loads a CSV if present, otherwise **simulates** the dataset (seed=11088).\n",
+    "\n",
+    "💡 *Teaching aims*: trial data structure, Table 1, survival analysis (KM, log-rank, Cox), logistic regression, ANCOVA/OLS, and Bayesian counterparts."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "setup-notes",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Environment & Packages\n",
+    "Works in Colab or locally. If a package is missing, uncomment the installs below."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "imports",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "%pip install pandas numpy matplotlib seaborn scipy lifelines statsmodels pymc arviz\n",
+    "\n",
+    "from pathlib import Path\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns\n",
+    "from scipy import stats\n",
+    "from scipy.stats import ttest_ind, chi2_contingency\n",
+    "from lifelines import KaplanMeierFitter, CoxPHFitter\n",
+    "from lifelines.statistics import logrank_test\n",
+    "import statsmodels.api as sm\n",
+    "import statsmodels.formula.api as smf\n",
+    "import pymc as pm\n",
+    "import arviz as az\n",
+    "\n",
+    "sns.set_context(\"notebook\"); sns.set_style(\"whitegrid\")\n",
+    "RANDOM_SEED = 11088\n",
+    "rng = np.random.default_rng(RANDOM_SEED)\n",
+    "\n",
+    "DATA_DIR = Path(\"data\"); DATA_DIR.mkdir(exist_ok=True)\n",
+    "DATA_PATH = DATA_DIR / \"hipponol_trial_data.csv\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "simulate",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Data Loading / Simulation\n",
+    "If `data/hipponol_trial_data.csv` exists, we load it. Otherwise we **simulate**: balanced randomisation; realistic age/SBP; group effect on survival and SBP; time-to-event with censoring."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "load-or-sim",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def simulate_trial(n=1000, seed=RANDOM_SEED):\n",
+    "    rng = np.random.default_rng(seed)\n",
+    "    # Design\n",
+    "    group = rng.choice([\"Control\", \"Hipponol\"], size=n, replace=True)\n",
+    "    age = rng.normal(55, 8, size=n).clip(40, 80)\n",
+    "    sex = rng.choice([\"Female\", \"Male\"], size=n)\n",
+    "    smoking = rng.choice([\"Non-smoker\", \"Smoker\"], p=[0.7, 0.3], size=n)\n",
+    "\n",
+    "    # Baseline SBP (mmHg)\n",
+    "    base_sbp = rng.normal(135, 15, size=n)\n",
+    "\n",
+    "    # Follow-up SBP with treatment effect (−4 mmHg average)\n",
+    "    trt_effect_sbp = np.where(group == \"Hipponol\", -4.0, 0.0)\n",
+    "    follow_sbp = base_sbp + trt_effect_sbp + rng.normal(0, 8, size=n)\n",
+    "\n",
+    "    # Survival: logit model for 2y survival probability\n",
+    "    # Higher age & smoker worsen survival; Hipponol improves odds modestly\n",
+    "    x_hip = (group == \"Hipponol\").astype(int)\n",
+    "    x_smoke = (smoking == \"Smoker\").astype(int)\n",
+    "    x_male = (sex == \"Male\").astype(int)\n",
+    "    logit_p = (2.0 \n",
+    "               + 0.35 * x_hip \n",
+    "               - 0.035 * (age - 55) \n",
+    "               - 0.45 * x_smoke \n",
+    "               - 0.10 * x_male)\n",
+    "    p_surv = 1 / (1 + np.exp(-logit_p))\n",
+    "    survival = rng.binomial(1, p_surv, size=n)  # 1=survived, 0=died\n",
+    "\n",
+    "    # Time-to-event (months): shorter if death; censored at 24m\n",
+    "    # Hazard modulated by same risk factors; draw from exponential\n",
+    "    base_hazard = 0.04  # per month approximate\n",
+    "    linpred = (-0.35 * x_hip + 0.04*(age-55) + 0.4*x_smoke + 0.1*x_male)\n",
+    "    rate = base_hazard * np.exp(linpred)\n",
+    "    t = rng.exponential(1/np.maximum(rate, 1e-6))\n",
+    "    time_to_event = np.minimum(t, 24.0)  # months\n",
+    "\n",
+    "    # For those marked survived=1, ensure censored at 24 often\n",
+    "    censored_mask = (survival == 1)\n",
+    "    time_to_event[censored_mask] = np.maximum(time_to_event[censored_mask], 24.0)\n",
+    "    time_to_event = np.minimum(time_to_event, 24.0)\n",
+    "\n",
+    "    df = pd.DataFrame({\n",
+    "        \"ID\": np.arange(1, n+1),\n",
+    "        \"Group\": group,\n",
+    "        \"Age\": age.round(1),\n",
+    "        \"Sex\": sex,\n",
+    "        \"SmokingStatus\": smoking,\n",
+    "        \"Baseline_SBP\": base_sbp.round(1),\n",
+    "        \"Followup_SBP\": follow_sbp.round(1),\n",
+    "        \"Survival\": survival.astype(int),  # 1=alive at 24m\n",
+    "        \"Time_to_Event\": time_to_event.round(2) # months\n",
+    "    })\n",
+    "    return df\n",
+    "\n",
+    "if DATA_PATH.exists():\n",
+    "    df = pd.read_csv(DATA_PATH)\n",
+    "else:\n",
+    "    df = simulate_trial()\n",
+    "    df.to_csv(DATA_PATH, index=False)\n",
+    "    print(f\"Simulated dataset saved to {DATA_PATH}\")\n",
+    "\n",
+    "# Basic validation\n",
+    "required = {\"Group\",\"Age\",\"Sex\",\"SmokingStatus\",\"Baseline_SBP\",\"Followup_SBP\",\"Survival\",\"Time_to_Event\"}\n",
+    "missing = required - set(df.columns)\n",
+    "assert not missing, f\"Dataset missing columns: {missing}\"\n",
+    "\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "table1",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Baseline: Table 1\n",
+    "Summarise randomisation balance at baseline (Age, Baseline SBP; Sex, Smoking)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "table1-fn",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def create_table1(data, group_col=\"Group\",\n",
+    "                  numeric_cols=(\"Age\",\"Baseline_SBP\"),\n",
+    "                  cat_cols=(\"Sex\",\"SmokingStatus\")):\n",
+    "    g = data[group_col].unique()\n",
+    "    assert len(g)==2, \"This Table1 assumes exactly two groups.\"\n",
+    "    g1,g2 = sorted(g)\n",
+    "    rows = []\n",
+    "    # continuous\n",
+    "    for col in numeric_cols:\n",
+    "        v1 = data.loc[data[group_col]==g1, col].dropna()\n",
+    "        v2 = data.loc[data[group_col]==g2, col].dropna()\n",
+    "        t,p = ttest_ind(v1, v2, equal_var=False)\n",
+    "        rows.append({\n",
+    "            \"Variable\": col,\n",
+    "            f\"{g1} (mean±SD)\": f\"{v1.mean():.1f} ± {v1.std():.1f}\",\n",
+    "            f\"{g2} (mean±SD)\": f\"{v2.mean():.1f} ± {v2.std():.1f}\",\n",
+    "            \"p\": f\"{p:.3f}\"\n",
+    "        })\n",
+    "    # categorical\n",
+    "    for col in cat_cols:\n",
+    "        ct = pd.crosstab(data[col], data[group_col])\n",
+    "        chi2, p, _, _ = chi2_contingency(ct)\n",
+    "        for i, level in enumerate(ct.index):\n",
+    "            row = {\n",
+    "                \"Variable\": f\"{col} = {level}\",\n",
+    "                f\"{g1} (n,%)\": f\"{ct.loc[level, g1]} ({ct.loc[level,g1]/ct[g1].sum()*100:.1f}%)\",\n",
+    "                f\"{g2} (n,%)\": f\"{ct.loc[level, g2]} ({ct.loc[level,g2]/ct[g2].sum()*100:.1f}%)\",\n",
+    "                \"p\": f\"{p:.3f}\" if i==0 else \"\"\n",
+    "            }\n",
+    "            rows.append(row)\n",
+    "    return pd.DataFrame(rows)\n",
+    "\n",
+    "table1 = create_table1(df)\n",
+    "table1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "dist-plots",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Distributions (Age & Baseline SBP)\n",
+    "Visual checks support randomisation and test choices."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "plots-baseline",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1,2, figsize=(11,4))\n",
+    "sns.histplot(df, x=\"Age\", hue=\"Group\", kde=True, bins=20, ax=ax[0])\n",
+    "ax[0].set_title(\"Age by Group\")\n",
+    "sns.boxplot(df, x=\"Group\", y=\"Baseline_SBP\", ax=ax[1])\n",
+    "ax[1].set_title(\"Baseline SBP by Group\")\n",
+    "plt.tight_layout(); plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "primary",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Primary Endpoint: 2-year Survival\n",
+    "Binary survival indicator at 24 months (`Survival`: 1=alive, 0=died)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "chi2-surv",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "cont = pd.crosstab(df[\"Group\"], df[\"Survival\"])  # columns: 0=dead,1=alive\n",
+    "chi2, p, dof, exp = chi2_contingency(cont)\n",
+    "print(\"Contingency (Group x Survival)\")\n",
+    "print(cont)\n",
+    "print(f\"Chi-squared p-value: {p:.4f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "logit",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Logistic Regression (unadjusted & adjusted)\n",
+    "Odds ratios with CIs; adjusted for age, sex, smoking."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "logit-fit",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df[\"Group\"] = df[\"Group\"].astype(\"category\")\n",
+    "m1 = smf.logit(\"Survival ~ C(Group)\", data=df).fit(disp=False)\n",
+    "m2 = smf.logit(\"Survival ~ C(Group) + Age + C(Sex) + C(SmokingStatus)\", data=df).fit(disp=False)\n",
+    "\n",
+    "def or_table(res):\n",
+    "    out = pd.DataFrame(np.column_stack([\n",
+    "        np.exp(res.params),\n",
+    "        np.exp(res.conf_int()[0]),\n",
+    "        np.exp(res.conf_int()[1])\n",
+    "    ]), index=res.params.index, columns=[\"OR\",\"2.5%\",\"97.5%\"])\n",
+    "    return out\n",
+    "\n",
+    "print(\"Unadjusted ORs\\n\", or_table(m1))\n",
+    "print(\"\\nAdjusted ORs\\n\", or_table(m2))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bayes-logit",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Bayesian Logistic Regression\n",
+    "Weakly-informative priors; posterior on treatment effect and OR."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bayes-logit-code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# Binary predictors/outcomes\n",
+    "X = (df[\"Group\"] == \"Hipponol\").astype(int).to_numpy()\n",
+    "y = df[\"Survival\"].astype(int).to_numpy()\n",
+    "\n",
+    "with pm.Model() as blr:\n",
+    "    x = pm.Data(\"x\", X)  # v5: define data once; use x directly\n",
+    "    intercept = pm.Normal(\"Intercept\", 0, 2.5)\n",
+    "    beta = pm.Normal(\"Beta_Group\", 0, 2.5)\n",
+    "\n",
+    "    logit_p = intercept + beta * x\n",
+    "    p = pm.Deterministic(\"p\", pm.math.sigmoid(logit_p))\n",
+    "\n",
+    "    pm.Bernoulli(\"y_obs\", p=p, observed=y)  # pass observed array directly\n",
+    "\n",
+    "    trace_b = pm.sample(\n",
+    "        draws=2000, tune=1000, target_accept=0.9,\n",
+    "        return_inferencedata=True, random_seed=RANDOM_SEED\n",
+    "    )\n",
+    "\n",
+    "# --- Posterior for log-odds (beta) ---\n",
+    "az.plot_posterior(trace_b, var_names=[\"Beta_Group\"], ref_val=0)\n",
+    "plt.title(\"Posterior (log-odds) for Hipponol vs Control\")\n",
+    "plt.show()\n",
+    "\n",
+    "# --- Odds Ratio = exp(beta) using plain NumPy samples ---\n",
+    "# Flatten [chain, draw] -> 1D array of samples to avoid xarray Dataset/DataArray quirks\n",
+    "beta_samples = trace_b.posterior[\"Beta_Group\"].values.reshape(-1)\n",
+    "or_samples = np.exp(beta_samples)\n",
+    "\n",
+    "az.plot_posterior(or_samples, ref_val=1)\n",
+    "plt.title(\"Posterior Odds Ratio: Hipponol / Control\")\n",
+    "plt.xlabel(\"OR\")\n",
+    "plt.show()\n",
+    "\n",
+    "# 95% HDI as simple floats\n",
+    "hdi_low, hdi_high = az.hdi(or_samples, hdi_prob=0.95)\n",
+    "print(f\"95% HDI for OR: [{hdi_low:.3f}, {hdi_high:.3f}]\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "km-cox",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Time-to-Event: KM, Log-rank, Cox\n",
+    "⚠️ `lifelines` expects `event_observed=1` for **event = death**. Our `Survival` is 1=alive, so we define `Event = 1 - Survival`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "km-fit",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df = df.copy()\n",
+    "df[\"Event\"] = 1 - df[\"Survival\"]  # 1=death\n",
+    "kmf_c = KaplanMeierFitter(); kmf_h = KaplanMeierFitter()\n",
+    "dc = df.query(\"Group=='Control'\"); dh = df.query(\"Group=='Hipponol'\")\n",
+    "\n",
+    "plt.figure(figsize=(8,5))\n",
+    "kmf_c.fit(dc[\"Time_to_Event\"], event_observed=dc[\"Event\"], label=\"Control\")\n",
+    "kmf_c.plot_survival_function(ci_show=True)\n",
+    "kmf_h.fit(dh[\"Time_to_Event\"], event_observed=dh[\"Event\"], label=\"Hipponol\")\n",
+    "kmf_h.plot_survival_function(ci_show=True)\n",
+    "plt.title(\"Kaplan–Meier Survival\"); plt.xlabel(\"Months\"); plt.ylabel(\"S(t)\"); plt.tight_layout(); plt.show()\n",
+    "\n",
+    "res = logrank_test(dc[\"Time_to_Event\"], dh[\"Time_to_Event\"],\n",
+    "                   event_observed_A=dc[\"Event\"], event_observed_B=dh[\"Event\"])\n",
+    "print(f\"Log-rank p-value: {res.p_value:.4f}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cox-fit",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# Cox PH (one-hot, drop_first to set references: Female, Non-smoker, Control)\n",
+    "cox_df = pd.get_dummies(df[[\"Age\",\"Sex\",\"SmokingStatus\",\"Group\",\"Time_to_Event\",\"Event\"]], drop_first=True)\n",
+    "cph = CoxPHFitter()\n",
+    "cph.fit(cox_df, duration_col=\"Time_to_Event\", event_col=\"Event\")\n",
+    "cph.print_summary()  # includes HRs and CIs\n",
+    "\n",
+    "# PH assumption check (plots in notebooks)\n",
+    "cph.check_assumptions(cox_df, p_value_threshold=0.05, show_plots=True)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "secondary",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Secondary: SBP Change\n",
+    "`SBP_Change = Followup_SBP − Baseline_SBP` (negative = reduction)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "sbp-change",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df[\"SBP_Change\"] = df[\"Followup_SBP\"] - df[\"Baseline_SBP\"]\n",
+    "fig, ax = plt.subplots(1,3, figsize=(13,4))\n",
+    "sns.kdeplot(df, x=\"Baseline_SBP\", hue=\"Group\", fill=True, common_norm=False, alpha=0.4, ax=ax[0]); ax[0].set_title(\"Baseline SBP\")\n",
+    "sns.kdeplot(df, x=\"Followup_SBP\", hue=\"Group\", fill=True, common_norm=False, alpha=0.4, ax=ax[1]); ax[1].set_title(\"Follow-up SBP\")\n",
+    "sns.kdeplot(df, x=\"SBP_Change\", hue=\"Group\", fill=True, common_norm=False, alpha=0.4, ax=ax[2]); ax[2].axvline(0, ls=\"--\", c=\"k\"); ax[2].set_title(\"Change (Δ)\")\n",
+    "plt.tight_layout(); plt.show()\n",
+    "\n",
+    "hip = df.loc[df.Group==\"Hipponol\",\"SBP_Change\"]\n",
+    "con = df.loc[df.Group==\"Control\",\"SBP_Change\"]\n",
+    "t_stat, p_val = stats.ttest_ind(hip, con, equal_var=False)\n",
+    "diff = hip.mean() - con.mean()\n",
+    "se = np.sqrt(hip.var(ddof=1)/len(hip) + con.var(ddof=1)/len(con))\n",
+    "dfree = (len(hip)+len(con)-2)\n",
+    "ci = stats.t.interval(0.95, df=dfree, loc=diff, scale=se)\n",
+    "print(f\"Mean difference (Hipponol − Control): {diff:.2f} mmHg\")\n",
+    "print(f\"95% CI: ({ci[0]:.2f}, {ci[1]:.2f}) | p={p_val:.4f}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ancova",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### ANCOVA / OLS\n",
+    "Estimate ΔSBP difference with adjustment (Age, Sex, Smoking)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ols-ancova",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "df[\"Treatment\"] = (df[\"Group\"]==\"Hipponol\").astype(int)\n",
+    "ols = smf.ols(\"SBP_Change ~ Treatment\", data=df).fit()\n",
+    "print(ols.summary())\n",
+    "\n",
+    "ancova = smf.ols(\"SBP_Change ~ Treatment + Age + C(Sex) + C(SmokingStatus)\", data=df).fit()\n",
+    "print(ancova.summary())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bayes-sbp",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Bayesian Regression (SBP Change)\n",
+    "Posterior on treatment effect with weakly-informative priors; age standardised."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bayes-sbp-code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# --- Design matrix (unchanged logic) ---\n",
+    "df_enc = pd.get_dummies(df[[\"SBP_Change\",\"Age\",\"Sex\",\"SmokingStatus\",\"Group\"]], drop_first=True)\n",
+    "\n",
+    "# standardise age\n",
+    "df_enc[\"Age_std\"] = (df_enc[\"Age\"] - df_enc[\"Age\"].mean()) / df_enc[\"Age\"].std()\n",
+    "\n",
+    "predictors = [\"Age_std\",\"Sex_Male\",\"SmokingStatus_Smoker\",\"Group_Hipponol\"]\n",
+    "X = df_enc[predictors].astype(float).to_numpy()\n",
+    "y = df_enc[\"SBP_Change\"].astype(float).to_numpy()\n",
+    "\n",
+    "# coords give nice names to dimensions in the posterior\n",
+    "coords = {\n",
+    "    \"obs\": np.arange(X.shape[0]),\n",
+    "    \"predictor\": predictors,\n",
+    "}\n",
+    "\n",
+    "with pm.Model(coords=coords) as blm:\n",
+    "    X_data = pm.Data(\"X\", X, dims=(\"obs\", \"predictor\"))   # use directly; no pm.get_data\n",
+    "    y_data = pm.Data(\"y\", y, dims=(\"obs\",))\n",
+    "\n",
+    "    intercept = pm.Normal(\"Intercept\", 0, 5)\n",
+    "    beta = pm.Normal(\"Beta\", 0, 2, dims=(\"predictor\",))\n",
+    "    sigma = pm.HalfNormal(\"Sigma\", 5)\n",
+    "\n",
+    "    mu = intercept + pm.math.dot(X_data, beta)            # use X_data directly\n",
+    "    pm.Normal(\"y_obs\", mu=mu, sigma=sigma, observed=y_data)\n",
+    "\n",
+    "    trace_lm = pm.sample(\n",
+    "        draws=2000, tune=1000, target_accept=0.9,\n",
+    "        return_inferencedata=True, random_seed=RANDOM_SEED\n",
+    "    )\n",
+    "\n",
+    "# Forest plot for coefficients (uses predictor names automatically)\n",
+    "az.plot_forest(trace_lm, var_names=[\"Beta\"], combined=True)\n",
+    "plt.title(\"Posterior 95% HDIs for coefficients\")\n",
+    "plt.show()\n",
+    "\n",
+    "print(az.summary(trace_lm, var_names=[\"Intercept\",\"Beta\",\"Sigma\"], hdi_prob=0.95))#"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "wrap",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Summary (for the simulated data)\n",
+    "- **Survival**: hipponol typically improves 2-year survival (logistic OR>1; KM separation; Cox HR<1).  \n",
+    "- **SBP**: hipponol lowers SBP on average; effects evident by t-test/OLS/ANCOVA and confirmed under Bayesian model.\n",
+    "\n",
+    "### Notes\n",
+    "- Missing data: example uses listwise deletion.  \n",
+    "- Diagnostics to consider in real studies: influential points (OLS), residual checks, PH tests (Cox), prior sensitivity (Bayes)."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

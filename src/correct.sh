@@ -48,7 +48,7 @@ for cell in nb.get("cells", []):
     # Replace leading '---'
     if i < len(lines) and lines[i].strip() == "---":
         nl = "\n" if lines[i].endswith("\n") else ""
-        lines[i] = "<hr />" + nl
+        lines[i] = "***\n\n""<hr />" 
         cell["source"] = lines
         changed = True
 

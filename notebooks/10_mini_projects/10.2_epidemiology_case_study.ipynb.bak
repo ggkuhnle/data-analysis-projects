@@ -1,0 +1,697 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "title",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "# 🥗📊 Epidemiology in Nutrition: Cross-Sectional & Prospective Analyses\n",
+    "\n",
+    "**Design**: large observational cohort (n≈25,000; age 45–80) with baseline + 2/4/6-year follow-up.\n",
+    "\n",
+    "**Variables**: sex, smoking, physical activity, UK social class (A/B/C1/C2/D/E), BMI (baseline, 2y, 4y, 6y), BP, sugar intake, SFA intake, time-to-CVD and CVD incidence (event), random missingness.\n",
+    "\n",
+    "**Endpoints**\n",
+    "- Cross-sectional: baseline BMI.\n",
+    "- Survival: incident CVD.\n",
+    "- Prospective: BMI trajectories and prospective CVD prediction.\n",
+    "\n",
+    "This notebook **loads a CSV if present** or **simulates** a realistic dataset (seed=11088). It then runs frequentist and Bayesian models with compact explanations suitable for reuse in student projects."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "env",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Environment\n",
+    "Uncomment installs if running in a fresh environment."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "imports",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "%pip install pandas numpy matplotlib seaborn scipy statsmodels lifelines pymc arviz lifelines\n",
+    "from pathlib import Path\n",
+    "import numpy as np, pandas as pd\n",
+    "import matplotlib.pyplot as plt, seaborn as sns\n",
+    "from scipy import stats\n",
+    "import statsmodels.api as sm\n",
+    "import statsmodels.formula.api as smf\n",
+    "from lifelines import CoxPHFitter\n",
+    "from lifelines.statistics import proportional_hazard_test\n",
+    "import pymc as pm\n",
+    "import arviz as az\n",
+    "import pytensor.tensor as pt\n",
+    "\n",
+    "sns.set_context('notebook'); sns.set_style('whitegrid')\n",
+    "RANDOM_SEED = 11088\n",
+    "rng = np.random.default_rng(RANDOM_SEED)\n",
+    "DATA_DIR = Path('data'); DATA_DIR.mkdir(exist_ok=True)\n",
+    "DATA_PATH = DATA_DIR / 'epidemiological_study.csv'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "simulate",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Load or Simulate Data\n",
+    "If `data/epidemiological_study.csv` is absent, we simulate a cohort with plausible associations:\n",
+    "- Higher sugar → BMI up over time; higher SFA → higher CVD hazard; smoking/age → higher CVD hazard; activity → lower BMI/CVD.\n",
+    "- Missingness: MCAR ~ 5–10% per variable.\n",
+    "\n",
+    "You can reduce `n` (e.g. 10_000) if RAM is tight."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "load_or_sim",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def simulate_epidemiology(n=25_000, seed=RANDOM_SEED):\n",
+    "    rng = np.random.default_rng(seed)\n",
+    "    age = rng.normal(62, 8.5, n).clip(45, 85)\n",
+    "    sex = rng.choice(['Female','Male'], n)\n",
+    "    smoking = rng.choice(['Non-smoker','Smoker'], n, p=[0.7,0.3])\n",
+    "    activity = rng.choice(['Low','Medium','High'], n, p=[0.3,0.45,0.25])\n",
+    "    social = rng.choice(['A','B','C1','C2','D','E'], n, p=[0.08,0.15,0.22,0.22,0.2,0.13])\n",
+    "    sugar = rng.normal(90, 35, n).clip(10, 250)  # g/day\n",
+    "    sfa = rng.normal(28, 10, n).clip(5, 80)      # g/day\n",
+    "\n",
+    "    # Baseline BMI influenced by age/sex/activity/sugar\n",
+    "    x_smoke = (smoking=='Smoker').astype(int)\n",
+    "    x_male = (sex=='Male').astype(int)\n",
+    "    x_act = pd.Series(activity).map({'Low':0,'Medium':1,'High':2}).values\n",
+    "    baseline_bmi = (rng.normal(27, 3.5, n)\n",
+    "                    + 0.08*(age-62) + 0.6*x_male - 0.5*x_act\n",
+    "                    + 0.015*(sugar-90))\n",
+    "    bp_base = rng.normal(132, 14, n) + 0.12*(age-62) + 3*x_smoke + 1.2*(baseline_bmi-27)\n",
+    "\n",
+    "    # Longitudinal BMI changes (drift up with sugar, down with activity)\n",
+    "    def next_bmi(prev):\n",
+    "        drift = 0.04*(sugar-90) - 0.25*x_act + rng.normal(0, 0.9, n)\n",
+    "        return prev + drift\n",
+    "    bmi_y2 = next_bmi(baseline_bmi)\n",
+    "    bmi_y4 = next_bmi(bmi_y2)\n",
+    "    bmi_y6 = next_bmi(bmi_y4)\n",
+    "\n",
+    "    # CVD time-to-event (months), Weibull AFT with covariates; censor at 72 months (6y)\n",
+    "    # log(T) = mu + sigma * EVd; encode higher hazard for age/smoke/sfa, protective activity\n",
+    "    # Implement via Weibull(scale=lambda, shape=alpha); larger lambda => longer survival\n",
+    "    alpha = 1.4  # shape\n",
+    "    lp = (3.9  # baseline log-scale\n",
+    "          - 0.025*(age-62)\n",
+    "          - 0.30*x_smoke\n",
+    "          - 0.018*(sfa-28)\n",
+    "          + 0.10*x_act\n",
+    "          - 0.02*(baseline_bmi-27))\n",
+    "    lam = np.exp(lp)  # scale\n",
+    "    u = rng.uniform(0,1,n)\n",
+    "    t_true = lam * (-np.log(u))**(1/alpha)   # Weibull inverse CDF (months)\n",
+    "    censor_time = np.full(n, 72.0)\n",
+    "    time_to_cvd = np.minimum(t_true, censor_time)\n",
+    "    event = (t_true <= censor_time).astype(int)\n",
+    "\n",
+    "    df = pd.DataFrame({\n",
+    "        'ID': np.arange(1, n+1),\n",
+    "        'Age': age.round(1), 'Sex': sex, 'Smoking': smoking,\n",
+    "        'Physical_Activity': activity, 'Social_Class': social,\n",
+    "        'Sugar_Intake': sugar.round(1), 'SFA_Intake': sfa.round(1),\n",
+    "        'BMI_Baseline': baseline_bmi.round(2),\n",
+    "        'BMI_Year2': bmi_y2.round(2), 'BMI_Year4': bmi_y4.round(2), 'BMI_Year6': bmi_y6.round(2),\n",
+    "        'BP_Baseline': bp_base.round(1),\n",
+    "        'Time_to_CVD': time_to_cvd.round(2), 'CVD_Incidence': event.astype(int)\n",
+    "    })\n",
+    "    # Inject MCAR missingness 5–10%\n",
+    "    miss_cols = ['Sugar_Intake','SFA_Intake','Physical_Activity','Social_Class','BMI_Baseline','BMI_Year2','BMI_Year4','BMI_Year6','BP_Baseline']\n",
+    "    for c in miss_cols:\n",
+    "        m = rng.random(n) < rng.uniform(0.05,0.10)\n",
+    "        df.loc[m, c] = np.nan\n",
+    "    return df\n",
+    "\n",
+    "if DATA_PATH.exists():\n",
+    "    data = pd.read_csv(DATA_PATH)\n",
+    "else:\n",
+    "    data = simulate_epidemiology()\n",
+    "    data.to_csv(DATA_PATH, index=False)\n",
+    "    print(f\"Simulated and saved to {DATA_PATH}\")\n",
+    "\n",
+    "# Light QA\n",
+    "assert {'ID','Age','Sex','Smoking','Physical_Activity','Social_Class','Sugar_Intake','SFA_Intake','BMI_Baseline','BMI_Year2','BMI_Year4','BMI_Year6','BP_Baseline','Time_to_CVD','CVD_Incidence'} <= set(data.columns)\n",
+    "data.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "table1",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Table 1 — Baseline Characteristics\n",
+    "Overall and (optionally) stratified summaries."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "table1_fn",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "def table1(df, group=None):\n",
+    "    num_cols = ['Age','BMI_Baseline','BP_Baseline','Sugar_Intake','SFA_Intake']\n",
+    "    cat_cols = ['Sex','Smoking','Physical_Activity','Social_Class']\n",
+    "    if group is None:\n",
+    "        cont = df[num_cols].agg(['mean','std','median','min','max','count']).T.round(2)\n",
+    "        cats = {}\n",
+    "        for c in cat_cols:\n",
+    "            vc = df[c].value_counts(dropna=False)\n",
+    "            p = (vc/vc.sum()*100).round(1)\n",
+    "            cats[c] = pd.DataFrame({'n': vc, '%': p})\n",
+    "        return cont, cats\n",
+    "    else:\n",
+    "        gvals = df[group].dropna().unique()\n",
+    "        cont = df.groupby(group)[num_cols].agg(['mean','std','count']).round(2)\n",
+    "        cats = {c: pd.crosstab(df[c], df[group], dropna=False) for c in cat_cols}\n",
+    "        cats_pct = {c: (tab / tab.sum(axis=0) * 100).round(1) for c, tab in cats.items()}\n",
+    "        return cont, cats, cats_pct\n",
+    "\n",
+    "cont_overall, cats_overall = table1(data)\n",
+    "cont_overall"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "missingness",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Missing Data — Extent & Pattern"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "missingness_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "miss_pct = data.isna().mean().sort_values(ascending=False)*100\n",
+    "miss_df = miss_pct[miss_pct>0].round(2).to_frame('Missing_%')\n",
+    "display(miss_df)\n",
+    "plt.figure(figsize=(10,5))\n",
+    "sns.heatmap(data.sample(min(2000, len(data))).isna(), cbar=False)\n",
+    "plt.title('Missingness heatmap (sample rows)'); plt.xlabel('Variables'); plt.ylabel('Participants'); plt.tight_layout(); plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "xsec",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Cross-Sectional: Baseline BMI\n",
+    "Predictors: age, sex, smoking, physical activity, social class, sugar, SFA.\n",
+    "\n",
+    "Encoding via one-hot (reference: Female, Non-smoker, Medium activity, Social class C1). Simple **mean imputation** for teaching clarity; consider **multiple imputation** in real analyses."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "xsec_prep",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "xsec = data[['BMI_Baseline','Age','Sex','Smoking','Physical_Activity','Social_Class','Sugar_Intake','SFA_Intake']].copy()\n",
+    "xsec['Physical_Activity'] = xsec['Physical_Activity'].astype('category').cat.set_categories(['Low','Medium','High'])\n",
+    "xsec['Social_Class'] = xsec['Social_Class'].astype('category').cat.set_categories(['A','B','C1','C2','D','E'])\n",
+    "\n",
+    "# Mean impute numeric, mode impute categoricals\n",
+    "for c in ['Age','Sugar_Intake','SFA_Intake','BMI_Baseline']:\n",
+    "    xsec[c] = xsec[c].fillna(xsec[c].mean())\n",
+    "for c in ['Sex','Smoking','Physical_Activity','Social_Class']:\n",
+    "    xsec[c] = xsec[c].fillna(xsec[c].mode().iloc[0])\n",
+    "\n",
+    "# OLS with categorical references\n",
+    "formula = 'BMI_Baseline ~ Age + C(Sex) + C(Smoking) + C(Physical_Activity, Treatment(reference=\"Medium\")) + C(Social_Class, Treatment(reference=\"C1\")) + Sugar_Intake + SFA_Intake'\n",
+    "ols_xsec = smf.ols(formula, data=xsec).fit()\n",
+    "print(ols_xsec.summary())\n",
+    "\n",
+    "# Tidy table of estimates with 95% CI\n",
+    "ci = ols_xsec.conf_int(); ci.columns = ['2.5%','97.5%']\n",
+    "est = ols_xsec.params.to_frame('coef').join(ci).round(3)\n",
+    "est"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "xsec_bayes",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Bayesian Linear Regression (vectorised)\n",
+    "Weakly-informative priors; standardise numeric predictors for better geometry."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "xsec_bayes_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# --- Design matrix: dummies + standardise numeric cols (only if present) ---\n",
+    "x_dum = pd.get_dummies(xsec.drop(columns=['BMI_Baseline']), drop_first=True)\n",
+    "\n",
+    "num_cols = ['Age', 'Sugar_Intake', 'SFA_Intake']\n",
+    "present = [c for c in num_cols if c in x_dum.columns]\n",
+    "if present:\n",
+    "    sub = x_dum[present]\n",
+    "    # standardise safely (avoid chained indexing)\n",
+    "    x_dum.loc[:, present] = (sub - sub.mean()) / sub.std(ddof=0)\n",
+    "\n",
+    "names = x_dum.columns.tolist()\n",
+    "X = x_dum.astype(float).to_numpy()\n",
+    "y = xsec['BMI_Baseline'].astype(float).to_numpy()\n",
+    "\n",
+    "coords = {\n",
+    "    \"obs\": np.arange(X.shape[0]),\n",
+    "    \"predictor\": names,\n",
+    "}\n",
+    "\n",
+    "with pm.Model(coords=coords) as blm:\n",
+    "    X_data = pm.Data('X', X, dims=('obs', 'predictor'))\n",
+    "    y_data = pm.Data('y', y, dims=('obs',))\n",
+    "\n",
+    "    intercept = pm.Normal('Intercept', 0, 5)\n",
+    "    beta = pm.Normal('Beta', 0, 1.5, dims=('predictor',))\n",
+    "    sigma = pm.HalfNormal('Sigma', 3)\n",
+    "\n",
+    "    mu = intercept + pm.math.dot(X_data, beta)\n",
+    "    pm.Normal('y_obs', mu=mu, sigma=sigma, observed=y_data)\n",
+    "\n",
+    "    trace_blm = pm.sample(\n",
+    "        draws=1500, tune=1000, target_accept=0.9,\n",
+    "        random_seed=RANDOM_SEED, return_inferencedata=True\n",
+    "    )\n",
+    "\n",
+    "# Coefficient forest plot with proper names\n",
+    "az.plot_forest(trace_blm, var_names=['Beta'], combined=True)\n",
+    "plt.title('Cross-sectional BMI: posterior 95% HDIs')\n",
+    "plt.show()\n",
+    "\n",
+    "print(az.summary(trace_blm, var_names=['Intercept','Beta','Sigma'], hdi_prob=0.95))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "surv",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Survival: Incident CVD (Frequentist & Bayesian)\n",
+    "We treat `Time_to_CVD` (months) with event indicator `CVD_Incidence` (1=event, 0=censored)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cox",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "surv = data[['Time_to_CVD','CVD_Incidence','Age','Sex','Smoking','Physical_Activity','Social_Class','Sugar_Intake','SFA_Intake','BMI_Baseline']].copy()\n",
+    "for c in ['Age','Sugar_Intake','SFA_Intake','BMI_Baseline']:\n",
+    "    surv[c] = surv[c].fillna(surv[c].mean())\n",
+    "for c in ['Sex','Smoking','Physical_Activity','Social_Class']:\n",
+    "    surv[c] = surv[c].fillna(surv[c].mode().iloc[0])\n",
+    "surv_d = pd.get_dummies(surv, drop_first=True)\n",
+    "cph = CoxPHFitter()\n",
+    "cph.fit(surv_d, duration_col='Time_to_CVD', event_col='CVD_Incidence')\n",
+    "cph.print_summary()\n",
+    "\n",
+    "# PH assumption check (global test)\n",
+    "pht = proportional_hazard_test(cph, surv_d, time_transform='rank')\n",
+    "print(pht.summary)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bayes_surv",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Bayesian Weibull AFT with Censoring (PyMC)\n",
+    "We specify a Weibull(shape=α, scale=λ_i), where log(λ_i) = β·x_i. For **events** we use log f(t_i), for **censored** we use log S(t_i)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bayes_surv_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "\n",
+    "# --- Design matrix: dummies + standardise continuous predictors ---\n",
+    "bx = surv.copy()\n",
+    "\n",
+    "bx_dum = pd.get_dummies(\n",
+    "    bx[[\"Age\",\"Sex\",\"Smoking\",\"Physical_Activity\",\"Social_Class\",\n",
+    "        \"Sugar_Intake\",\"SFA_Intake\",\"BMI_Baseline\"]],\n",
+    "    drop_first=True\n",
+    ")\n",
+    "\n",
+    "conts = [\"Age\",\"Sugar_Intake\",\"SFA_Intake\",\"BMI_Baseline\"]\n",
+    "present = [c for c in conts if c in bx_dum.columns]\n",
+    "if present:\n",
+    "    sub = bx_dum[present]\n",
+    "    bx_dum.loc[:, present] = (sub - sub.mean()) / sub.std(ddof=0)\n",
+    "\n",
+    "names = bx_dum.columns.tolist()\n",
+    "X = bx_dum.astype(float).to_numpy()\n",
+    "t = surv[\"Time_to_CVD\"].astype(float).to_numpy()\n",
+    "d = surv[\"CVD_Incidence\"].astype(int).to_numpy()\n",
+    "\n",
+    "# Coords for nice labels in the posterior\n",
+    "coords = {\"obs\": np.arange(X.shape[0]), \"predictor\": names}\n",
+    "\n",
+    "with pm.Model(coords=coords) as wb_aft:\n",
+    "    # v5-style data containers (no MutableData, no get_data)\n",
+    "    X_data = pm.Data(\"X\", X, dims=(\"obs\",\"predictor\"))\n",
+    "    t_data = pm.Data(\"t\", t, dims=(\"obs\",))\n",
+    "    d_data = pm.Data(\"d\", d, dims=(\"obs\",))\n",
+    "\n",
+    "    # Priors\n",
+    "    intercept = pm.Normal(\"Intercept\", 0, 2)\n",
+    "    beta = pm.Normal(\"Beta\", 0, 1.5, dims=(\"predictor\",))\n",
+    "    alpha = pm.LogNormal(\"Alpha\", mu=np.log(1.2), sigma=0.4)   # shape > 0\n",
+    "\n",
+    "    # AFT linear predictor: log(lambda) = intercept + X beta  => lambda = exp(...)\n",
+    "    log_lambda = intercept + pm.math.dot(X_data, beta)\n",
+    "    lam = pm.Deterministic(\"Lambda\", pm.math.exp(log_lambda))\n",
+    "\n",
+    "    # Weibull event-time likelihood (custom): \n",
+    "    #   log f(t) = log(alpha) - log(lam) + (alpha-1)[log t - log lam] - (t/lam)^alpha\n",
+    "    #   log S(t) = -(t/lam)^alpha\n",
+    "    # Combine events (d=1) and right-censored (d=0):\n",
+    "    #   ll = sum( d*log f(t) + (1-d)*log S(t) )\n",
+    "    z = (t_data / lam) ** alpha\n",
+    "    logf = pt.log(alpha) - pt.log(lam) + (alpha - 1.0) * (pt.log(t_data) - pt.log(lam)) - z\n",
+    "    logS = -z\n",
+    "    ll = pt.sum(d_data * logf + (1 - d_data) * logS)\n",
+    "    pm.Potential(\"loglike\", ll)\n",
+    "\n",
+    "    trace_wb = pm.sample(\n",
+    "        draws=1500, tune=1000, target_accept=0.9,\n",
+    "        random_seed=RANDOM_SEED, return_inferencedata=True\n",
+    "    )\n",
+    "\n",
+    "# Coefficients come out already named by \"predictor\"\n",
+    "az.plot_forest(trace_wb, var_names=[\"Beta\"], combined=True)\n",
+    "plt.title(\"Weibull AFT (CVD): posterior 95% HDIs\")\n",
+    "plt.show()\n",
+    "\n",
+    "print(az.summary(trace_wb, var_names=[\"Intercept\",\"Beta\",\"Alpha\"], hdi_prob=0.95))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "prospective_prep",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Prospective: BMI Trajectories\n",
+    "Long format with random intercepts by participant."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "prospective_long",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "long = pd.melt(\n",
+    "    data,\n",
+    "    id_vars=['ID','Age','Sex','Smoking','Physical_Activity','Social_Class','Sugar_Intake','SFA_Intake'],\n",
+    "    value_vars=['BMI_Baseline','BMI_Year2','BMI_Year4','BMI_Year6'],\n",
+    "    var_name='Time', value_name='BMI'\n",
+    ")\n",
+    "long['Time'] = long['Time'].map({'BMI_Baseline':0,'BMI_Year2':2,'BMI_Year4':4,'BMI_Year6':6})\n",
+    "for c in ['Age','Sugar_Intake','SFA_Intake','BMI','Time']:\n",
+    "    long[c] = long[c].astype(float)\n",
+    "for c in ['Sex','Smoking','Physical_Activity','Social_Class']:\n",
+    "    long[c] = long[c].fillna(long[c].mode().iloc[0])\n",
+    "for c in ['Age','Sugar_Intake','SFA_Intake','BMI']:\n",
+    "    long[c] = long[c].fillna(long[c].mean())\n",
+    "\n",
+    "# Frequentist mixed effects: random intercept by ID\n",
+    "mix = smf.mixedlm('BMI ~ Time + Age + C(Sex) + C(Smoking) + C(Physical_Activity) + C(Social_Class) + Sugar_Intake + SFA_Intake',\n",
+    "                  long, groups=long['ID'])\n",
+    "mix_res = mix.fit()\n",
+    "print(mix_res.summary())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "prospective_bayes",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Bayesian Mixed-Effects (Random Intercepts)\n",
+    "Efficient hierarchical model with per-participant intercepts."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "prospective_bayes_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "# --- Encode IDs and build design matrix ---\n",
+    "ids = long['ID'].astype('category')\n",
+    "id_idx = ids.cat.codes.to_numpy()\n",
+    "id_levels = ids.cat.categories.tolist()\n",
+    "N_id = len(id_levels)\n",
+    "\n",
+    "Xd = pd.get_dummies(long[['Sex','Smoking','Physical_Activity','Social_Class']], drop_first=True)\n",
+    "\n",
+    "Xc = long[['Time','Age','Sugar_Intake','SFA_Intake']].astype(float)\n",
+    "Xc = (Xc - Xc.mean()) / Xc.std(ddof=0)  # stable std\n",
+    "\n",
+    "X_all = pd.concat([Xc, Xd], axis=1).astype(float)\n",
+    "X_mat = X_all.to_numpy()\n",
+    "y_bmi = long['BMI'].astype(float).to_numpy()\n",
+    "predictors = X_all.columns.tolist()\n",
+    "\n",
+    "coords = {\n",
+    "    \"obs\": np.arange(X_mat.shape[0]),\n",
+    "    \"id\": id_levels,              # nice labels for random intercepts\n",
+    "    \"predictor\": predictors,      # nice labels for Betas\n",
+    "}\n",
+    "\n",
+    "with pm.Model(coords=coords) as hm:\n",
+    "    # Data containers\n",
+    "    X_data    = pm.Data(\"X\", X_mat, dims=(\"obs\",\"predictor\"))\n",
+    "    id_data   = pm.Data(\"id_idx\", id_idx, dims=(\"obs\",))\n",
+    "    y_data    = pm.Data(\"y\", y_bmi, dims=(\"obs\",))\n",
+    "\n",
+    "    # Fixed effects\n",
+    "    Beta      = pm.Normal(\"Beta\", 0, 1.5, dims=(\"predictor\",))\n",
+    "\n",
+    "    # Random intercepts (non-centred parameterisation)\n",
+    "    mu_a      = pm.Normal(\"mu_a\", 0, 5)\n",
+    "    sigma_a   = pm.HalfNormal(\"sigma_a\", 5)\n",
+    "    a_offset  = pm.Normal(\"a_offset\", 0, 1, dims=(\"id\",))\n",
+    "    a         = pm.Deterministic(\"a\", mu_a + a_offset * sigma_a, dims=(\"id\",))\n",
+    "\n",
+    "    # Observation noise\n",
+    "    Sigma     = pm.HalfNormal(\"Sigma\", 5)\n",
+    "\n",
+    "    # Linear predictor\n",
+    "    mu        = a[id_data] + pm.math.dot(X_data, Beta)\n",
+    "\n",
+    "    pm.Normal(\"y_obs\", mu=mu, sigma=Sigma, observed=y_data)\n",
+    "\n",
+    "    trace_hm = pm.sample(\n",
+    "        draws=1500, tune=1000, target_accept=0.9,\n",
+    "        random_seed=RANDOM_SEED, return_inferencedata=True\n",
+    "    )\n",
+    "\n",
+    "# Fixed effects (already named by 'predictor')\n",
+    "az.plot_forest(trace_hm, var_names=[\"Beta\"], combined=True)\n",
+    "plt.title(\"BMI trajectory: fixed-effect posteriors\")\n",
+    "plt.show()\n",
+    "\n",
+    "print(az.summary(trace_hm, var_names=[\"mu_a\",\"sigma_a\",\"Beta\",\"Sigma\"], hdi_prob=0.95))\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "prospective_cvd",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Prospective CVD (Logistic)\n",
+    "Aggregate BMI over follow-up and predict CVD incidence (teaching-oriented simplification)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "prospective_cvd_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "agg = long.groupby('ID').agg({\n",
+    "    'BMI':'mean','Age':'first','Sex':'first','Smoking':'first','Physical_Activity':'first','Social_Class':'first','Sugar_Intake':'first','SFA_Intake':'first'\n",
+    "}).merge(data[['ID','CVD_Incidence']], on='ID', how='left')\n",
+    "# Impute any residual missing\n",
+    "for c in ['BMI','Age','Sugar_Intake','SFA_Intake']:\n",
+    "    agg[c] = agg[c].fillna(agg[c].mean())\n",
+    "for c in ['Sex','Smoking','Physical_Activity','Social_Class']:\n",
+    "    agg[c] = agg[c].fillna(agg[c].mode().iloc[0])\n",
+    "\n",
+    "logit_df = pd.get_dummies(agg, drop_first=True)\n",
+    "y = logit_df['CVD_Incidence'].values\n",
+    "X = logit_df.drop(columns=['CVD_Incidence','ID']).astype(float)\n",
+    "X = sm.add_constant(X)\n",
+    "logit = sm.Logit(y, X).fit(disp=False)\n",
+    "or_tab = pd.DataFrame({\n",
+    "    'OR': np.exp(logit.params),\n",
+    "    '2.5%': np.exp(logit.conf_int()[0]),\n",
+    "    '97.5%': np.exp(logit.conf_int()[1])\n",
+    "}).round(3)\n",
+    "or_tab"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "prospective_cvd_bayes",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Bayesian Logistic (Prospective CVD)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "prospective_cvd_bayes_code",
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "RANDOM_SEED = 11088\n",
+    "\n",
+    "# --- design matrix (as before) ---\n",
+    "Xb = logit_df.drop(columns=['CVD_Incidence','ID']).copy()\n",
+    "const_cols = Xb.columns[Xb.nunique(dropna=False) <= 1]\n",
+    "if len(const_cols):\n",
+    "    print(\"Dropping constant columns:\", list(const_cols))\n",
+    "    Xb = Xb.drop(columns=const_cols)\n",
+    "\n",
+    "Xb = Xb.astype(float)\n",
+    "Xb = (Xb - Xb.mean()) / Xb.std(ddof=0)\n",
+    "Xb = Xb.fillna(0.0)\n",
+    "\n",
+    "X_mat = Xb.to_numpy()\n",
+    "y_vec = np.asarray(y).astype(int)\n",
+    "\n",
+    "coords = {\"coef\": Xb.columns}\n",
+    "\n",
+    "with pm.Model(coords=coords) as blog:\n",
+    "    beta0 = pm.Normal(\"Intercept\", 0, 2)\n",
+    "    beta  = pm.Normal(\"Beta\", 0, 1.5, dims=(\"coef\",))\n",
+    "    logit = beta0 + pm.math.dot(X_mat, beta)   # X_mat used directly\n",
+    "    pm.Bernoulli(\"y_obs\", logit_p=logit, observed=y_vec)\n",
+    "\n",
+    "    trace_blog = pm.sample(\n",
+    "        1500, tune=1000, target_accept=0.9,\n",
+    "        random_seed=RANDOM_SEED, return_inferencedata=True\n",
+    "    )\n",
+    "\n",
+    "az.plot_forest(trace_blog, var_names=[\"Beta\"], combined=True)\n",
+    "plt.title(\"Prospective CVD: log-odds posteriors\"); plt.show()\n",
+    "\n",
+    "az.summary(trace_blog, var_names=[\"Intercept\",\"Beta\"], hdi_prob=0.95)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "wrap",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## Take-aways (from simulated data)\n",
+    "- **Cross-sectional BMI**: increases with sugar, male sex; lower with higher activity; effect sizes align with data-generating process.\n",
+    "- **CVD risk**: age, smoking, SFA raise risk; activity protective. Cox and Bayesian AFT agree qualitatively.\n",
+    "- **BMI trajectories**: rise with sugar; participant heterogeneity captured via random intercepts.\n",
+    "\n",
+    "**Teaching notes**: Replace mean/mode imputation with **multiple imputation** for realism; examine **interactions** (e.g., age×SFA), **non-linearity** (splines), PH diagnostics, and **prior sensitivity**."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
