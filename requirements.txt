@@ -141,3 +141,4 @@ wrapt==1.17.2
 xarray==2024.7.0
 xarray-einstats==0.7.0
 zipp==3.21.0
+pyyaml

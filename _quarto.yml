@@ -1,46 +1,72 @@
 project:
   output-dir: _site
-
 book:
-  title: "Data Analysis Toolkit for Food and Nutrition Sciences"
+  title: Data Analysis Toolkit for Food and Nutrition Sciences
   chapters:
-    - index.qmd
-    - syllabus.qmd
-    - notebooks/01_infrastructure/index.qmd
-    - notebooks/01_infrastructure/0_getting_started.ipynb
-    - notebooks/01_infrastructure/1.1_what_is_data_science_env.ipynb
-    - notebooks/01_infrastructure/1.2_python_vs_r.ipynb
-    - notebooks/01_infrastructure/1.3_intro_to_git.ipynb
-    - notebooks/01_infrastructure/1.4_quarto_basics.ipynb
-    - notebooks/02_programming_basics/index.qmd
-    - notebooks/02_programming_basics/2.1_syntax_variables_comments.ipynb
-    - notebooks/02_programming_basics/2.2_data_types_conversion.ipynb
-    - notebooks/02_programming_basics/2.3_functions_loops.ipynb
-    - notebooks/02_programming_basics/2.4_data_structures.ipynb
-    - notebooks/02_programming_basics/2.5_oop_basics.ipynb
-    - notebooks/03_data_handling/index.qmd
-    - notebooks/03_data_handling/3.1_what_is_data.ipynb
-    - notebooks/03_data_handling/3.2_importing_data.ipynb
-    - notebooks/03_data_handling/3.3_data_cleaning.ipynb
-    - notebooks/03_data_handling/3.4_data_transformation.ipynb
-    - notebooks/03_data_handling/3.5_data_aggregation.ipynb
-    - notebooks/04_data_analysis/index.qmd
-    - notebooks/04_data_analysis/4.1_distributions_visualisation.ipynb
-    - notebooks/04_data_analysis/4.2_exploratory_data_analysis.ipynb
-    - notebooks/04_data_analysis/4.3_correlation_analysis.ipynb
-    - notebooks/04_data_analysis/4.4_statistical_testing.ipynb
-    - notebooks/04_data_analysis/4.5_regression_modelling.ipynb
-    - notebooks/04_data_analysis/4.6_logistic_survival.ipynb
-    - notebooks/05_advanced/index.qmd
-    - notebooks/05_advanced/5.1_bayesian_methods.ipynb
-    - notebooks/05_advanced/5.2_workflow_automation.ipynb
-    - notebooks/05_advanced/5.3_advanced_bayesian.ipynb
-    - notebooks/05_advanced/5.4_databases_sql.ipynb
-    - notebooks/05_advanced/5.5_dashboards.ipynb
-    - notebooks/06_qualitative/index.qmd
-    - notebooks/06_qualitative/6.1_intro_qualitative_research.ipynb
-    - notebooks/06_qualitative/6.2_text_analysis.ipynb
-
+  - file: index.qmd
+  - file: syllabus.qmd
+  - part: Infrastructure
+    chapters:
+    - file: notebooks/01_infrastructure/0_getting_started.ipynb
+    - file: notebooks/01_infrastructure/1.1_what_is_data_science_env.ipynb
+    - file: notebooks/01_infrastructure/1.2_python_vs_r.ipynb
+    - file: notebooks/01_infrastructure/1.3_intro_to_git.ipynb
+    - file: notebooks/01_infrastructure/1.4_quarto_basics.ipynb
+    - file: notebooks/01_infrastructure/index.qmd
+  - part: Programming Basics
+    chapters:
+    - file: notebooks/02_programming_basics/2.0_intro_to_programming.ipynb
+    - file: notebooks/02_programming_basics/2.1_programming_fundamentals.ipynb
+    - file: notebooks/02_programming_basics/2.2_data_types_conversion.ipynb
+    - file: notebooks/02_programming_basics/2.3_functions_loops.ipynb
+    - file: notebooks/02_programming_basics/2.4_data_structures.ipynb
+    - file: notebooks/02_programming_basics/2.5_oop_basics.ipynb
+    - file: notebooks/02_programming_basics/index.qmd
+  - part: Data Handling
+    chapters:
+    - file: notebooks/03_data_handling/3.1_what_is_data.ipynb
+    - file: notebooks/03_data_handling/3.2_importing_data.ipynb
+    - file: notebooks/03_data_handling/3.3_data_cleaning.ipynb
+    - file: notebooks/03_data_handling/3.4_data_transformation.ipynb
+    - file: notebooks/03_data_handling/3.5_data_aggregation.ipynb
+    - file: notebooks/03_data_handling/index.qmd
+  - part: Data Analysis
+    chapters:
+    - file: notebooks/04_data_analysis/4.1_distributions_visualisation.ipynb
+    - file: notebooks/04_data_analysis/4.2_exploratory_data_analysis.ipynb
+    - file: notebooks/04_data_analysis/4.3_correlation_analysis.ipynb
+    - file: notebooks/04_data_analysis/4.4_statistical_testing.ipynb
+    - file: notebooks/04_data_analysis/4.5_regression_modelling.ipynb
+    - file: notebooks/04_data_analysis/4.6_logistic_and_survival.ipynb
+    - file: notebooks/04_data_analysis/4.7_clinical_trial_analysis.ipynb
+    - file: notebooks/04_data_analysis/index.qmd
+  - part: Advanced
+    chapters:
+    - file: notebooks/05_advanced/5.1_bayesian_methods.ipynb
+    - file: notebooks/05_advanced/5.2_workflow_automation.ipynb
+    - file: notebooks/05_advanced/5.3_adcanced_bayesian.ipynb
+    - file: notebooks/05_advanced/5.4_databases_sql.ipynb
+    - file: notebooks/05_advanced/5.5_dashboards.ipynb
+    - file: notebooks/05_advanced/index.qmd
+  - part: Qualitative
+    chapters:
+    - file: notebooks/06_qualitative/6.1_intro_qualitative_research.ipynb
+    - file: notebooks/06_qualitative/6.2_text_analysis.ipynb
+    - file: notebooks/06_qualitative/6.3_thematic_coding.ipynb
+    - file: notebooks/06_qualitative/index.qmd
+  - part: Mini Projects
+    chapters:
+    - file: notebooks/10_mini_projects/10.1_clinical_trial.ipynb
+    - file: notebooks/10_mini_projects/10.2_epidemiology_case_study.ipynb
+    - file: notebooks/10_mini_projects/10.3_handling_missing_data.ipynb
+    - file: notebooks/10_mini_projects/10.4_metabolomics.ipynb
+    - file: notebooks/10_mini_projects/10.5_machine_learning.ipynb
+    - file: notebooks/10_mini_projects/10.6_ai.ipynb
+    - file: notebooks/10_mini_projects/10.7_llm.ipynb
+    - file: notebooks/10_mini_projects/10.8_Bayesian_vs_Frequentist.ipynb
+    - file: notebooks/10_mini_projects/10.9_rosetta.ipynb
+    - file: notebooks/10_mini_projects/index.qmd
+    - file: notebooks/10_mini_projects/ml_trustworthy_hippos.ipynb
 format:
   html:
     theme: cosmo
