@@ -3,11 +3,9 @@ on:
   push:
     branches:
       - main
-      - groks-revisions  # Trigger on pushes to main or groks-revisions
   pull_request:
     branches:
       - main
-      - groks-revisions  # Trigger on PRs to these branches
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
