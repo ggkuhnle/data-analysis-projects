@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>oop_basics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="2.5_oop_basics_files/libs/clipboard/clipboard.min.js"></script>
+<script src="2.5_oop_basics_files/libs/quarto-html/quarto.js"></script>
+<script src="2.5_oop_basics_files/libs/quarto-html/popper.min.js"></script>
+<script src="2.5_oop_basics_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="2.5_oop_basics_files/libs/quarto-html/anchor.min.js"></script>
+<link href="2.5_oop_basics_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="2.5_oop_basics_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="2.5_oop_basics_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="2.5_oop_basics_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="2.5_oop_basics_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#object-oriented-programming-oop-basics" id="toc-object-oriented-programming-oop-basics" class="nav-link active" data-scroll-target="#object-oriented-programming-oop-basics">🧑‍💻 2.5 Object-Oriented Programming (OOP) Basics</a>
+  <ul class="collapse">
+  <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives">🎯 Objectives</a></li>
+  <li><a href="#why-object-oriented-programming" id="toc-why-object-oriented-programming" class="nav-link" data-scroll-target="#why-object-oriented-programming">🧠 Why Object-Oriented Programming?</a></li>
+  <li><a href="#what-is-oop" id="toc-what-is-oop" class="nav-link" data-scroll-target="#what-is-oop">🧰 What Is OOP?</a></li>
+  <li><a href="#example-from-nutrition" id="toc-example-from-nutrition" class="nav-link" data-scroll-target="#example-from-nutrition">🧪 Example from Nutrition</a></li>
+  <li><a href="#what-youll-learn-in-this-notebook" id="toc-what-youll-learn-in-this-notebook" class="nav-link" data-scroll-target="#what-youll-learn-in-this-notebook">🛠 What You’ll Learn in This Notebook</a></li>
+  </ul></li>
+  <li><a href="#python-classes-a-practical-introduction" id="toc-python-classes-a-practical-introduction" class="nav-link" data-scroll-target="#python-classes-a-practical-introduction">🧱 Python Classes: A Practical Introduction</a>
+  <ul class="collapse">
+  <li><a href="#what-is-a-class" id="toc-what-is-a-class" class="nav-link" data-scroll-target="#what-is-a-class">🧠 What Is a Class?</a></li>
+  <li><a href="#defining-a-basic-class" id="toc-defining-a-basic-class" class="nav-link" data-scroll-target="#defining-a-basic-class">📦 Defining a Basic Class</a></li>
+  <li><a href="#creating-and-using-an-object" id="toc-creating-and-using-an-object" class="nav-link" data-scroll-target="#creating-and-using-an-object">🍏 Creating and Using an Object</a></li>
+  <li><a href="#exercise-define-your-own-class" id="toc-exercise-define-your-own-class" class="nav-link" data-scroll-target="#exercise-define-your-own-class">🧪 Exercise: Define Your Own Class</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">🧭 Summary</a></li>
+  </ul></li>
+  <li><a href="#adding-methods-and-attributes-in-python-classes" id="toc-adding-methods-and-attributes-in-python-classes" class="nav-link" data-scroll-target="#adding-methods-and-attributes-in-python-classes">🛠️ Adding Methods and Attributes in Python Classes</a>
+  <ul class="collapse">
+  <li><a href="#example-extending-the-food-class" id="toc-example-extending-the-food-class" class="nav-link" data-scroll-target="#example-extending-the-food-class">🧃 Example: Extending the <code>Food</code> Class</a></li>
+  <li><a href="#best-practices" id="toc-best-practices" class="nav-link" data-scroll-target="#best-practices">🧠 Best Practices</a></li>
+  </ul></li>
+  <li><a href="#inheritance-in-python-food-and-diet-classes" id="toc-inheritance-in-python-food-and-diet-classes" class="nav-link" data-scroll-target="#inheritance-in-python-food-and-diet-classes">🥗 Inheritance in Python: Food and Diet Classes</a>
+  <ul class="collapse">
+  <li><a href="#step-by-step-building-the-food-class" id="toc-step-by-step-building-the-food-class" class="nav-link" data-scroll-target="#step-by-step-building-the-food-class">🍎 Step-by-Step: Building the <code>Food</code> Class</a></li>
+  <li><a href="#creating-a-subclass-diet" id="toc-creating-a-subclass-diet" class="nav-link" data-scroll-target="#creating-a-subclass-diet">🌿 Creating a Subclass: <code>Diet</code></a>
+  <ul class="collapse">
+  <li><a href="#whats-going-on-here" id="toc-whats-going-on-here" class="nav-link" data-scroll-target="#whats-going-on-here">🧠 What’s Going On Here?</a></li>
+  </ul></li>
+  <li><a href="#testing-the-subclass" id="toc-testing-the-subclass" class="nav-link" data-scroll-target="#testing-the-subclass">🧪 Testing the Subclass</a></li>
+  <li><a href="#summary-1" id="toc-summary-1" class="nav-link" data-scroll-target="#summary-1">✅ Summary</a></li>
+  </ul></li>
+  <li><a href="#summary-object-oriented-programming-in-python" id="toc-summary-object-oriented-programming-in-python" class="nav-link" data-scroll-target="#summary-object-oriented-programming-in-python">🧾 Summary: Object-Oriented Programming in Python</a>
+  <ul class="collapse">
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">🧪 Exercises</a>
+  <ul class="collapse">
+  <li><a href="#custom-food-class" id="toc-custom-food-class" class="nav-link" data-scroll-target="#custom-food-class">1. Custom Food Class</a></li>
+  <li><a href="#composite-object" id="toc-composite-object" class="nav-link" data-scroll-target="#composite-object">2. Composite Object</a></li>
+  <li><a href="#describe-all" id="toc-describe-all" class="nav-link" data-scroll-target="#describe-all">3. Describe All</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">✅ Conclusion</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="object-oriented-programming-oop-basics" class="level1">
+<h1>🧑‍💻 2.5 Object-Oriented Programming (OOP) Basics</h1>
+<p>Welcome to the final notebook in the <strong>Programming Basics</strong> module! In this session, we’ll explore the fundamentals of <strong>Object-Oriented Programming (OOP)</strong>, a powerful approach to writing code that is <strong>organised</strong>, <strong>modular</strong>, and <strong>reusable</strong>.</p>
+<hr>
+<section id="objectives" class="level2">
+<h2 class="anchored" data-anchor-id="objectives">🎯 Objectives</h2>
+<p>By the end of this notebook, you should be able to:</p>
+<ul>
+<li>Understand the <strong>core concepts</strong> of OOP: classes, objects, attributes, methods, and inheritance.</li>
+<li>Write your own classes to model nutrition-related entities like foods, nutrients, and diets.</li>
+<li>Apply OOP principles to create clean, readable, and maintainable code.</li>
+</ul>
+<hr>
+</section>
+<section id="why-object-oriented-programming" class="level2">
+<h2 class="anchored" data-anchor-id="why-object-oriented-programming">🧠 Why Object-Oriented Programming?</h2>
+<p>In the real world, data isn’t flat—it’s structured and interconnected.</p>
+<p>In nutrition science, for example, you might deal with:</p>
+<ul>
+<li>Foods that have a name, nutrient profile, and cost.</li>
+<li>Nutrients that have a name, units, and dietary recommendations.</li>
+<li>Diets that contain multiple foods and require specific calculations.</li>
+</ul>
+<p>These aren’t just isolated data points—they are <strong>related entities</strong>. OOP helps you mirror these real-world relationships in your code.</p>
+<p>Instead of managing a mess of separate variables and functions, you can <strong>bundle everything into a single unit</strong> (a class) and then create <strong>instances</strong> of that unit (objects) with unique data.</p>
+<hr>
+</section>
+<section id="what-is-oop" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-oop">🧰 What Is OOP?</h2>
+<p>Object-Oriented Programming is based on the idea of <strong>“objects”</strong>—which combine <strong>data</strong> (called attributes) and <strong>behaviours</strong> (called methods). You define a <strong>class</strong> as a blueprint, then create multiple <strong>objects</strong> (instances) from it.</p>
+<p>This makes it easy to:</p>
+<ul>
+<li>Keep related information together</li>
+<li>Reuse code through inheritance</li>
+<li>Extend or update functionality without rewriting everything</li>
+</ul>
+<hr>
+</section>
+<section id="example-from-nutrition" class="level2">
+<h2 class="anchored" data-anchor-id="example-from-nutrition">🧪 Example from Nutrition</h2>
+<p>Imagine a <code>Food</code> class:</p>
+<div id="cell-1" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Food:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calories <span class="op">=</span> calories</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can now create specific food items:</p>
+<div id="cell-3" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>apple <span class="op">=</span> Food(<span class="st">"Apple"</span>, <span class="dv">95</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>banana <span class="op">=</span> Food(<span class="st">"Banana"</span>, <span class="dv">120</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Each <code>Food</code> object carries its own <code>name</code> and <code>calories</code>, and you can easily create new ones without writing new functions or variables each time.</p>
+<hr>
+<details>
+<summary>
+🐘 Fun Fact
+</summary>
+<p>Think of OOP like a hippo’s diet log—each <strong>food</strong> entry is an object, and the <strong>diet</strong> is a class that keeps it all neat and trackable!<br>
+Just like real-life items (e.g.&nbsp;hippos, food, nutrients) have <strong>attributes</strong> (like colour, energy, or weight) and <strong>actions</strong> (like eat, swim, or digest), objects in Python do too!</p>
+</details>
+<hr>
+</section>
+<section id="what-youll-learn-in-this-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="what-youll-learn-in-this-notebook">🛠 What You’ll Learn in This Notebook</h2>
+<p>We’ll cover the core building blocks of OOP in Python:</p>
+<ul>
+<li><strong>Classes and Objects</strong>: How to define and use them</li>
+<li><strong>Attributes and Methods</strong>: How to store and interact with data</li>
+<li><strong>Inheritance</strong>: How to reuse code by creating child classes</li>
+<li><strong>Best Practices</strong>: Naming, structure, and readability</li>
+</ul>
+<p>You’ll also practise applying OOP principles to realistic nutrition problems—think <code>Nutrient</code>, <code>Meal</code>, or <code>DietPlan</code> classes.</p>
+<div id="colab_setup" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup for Google Colab: Ensure environment is ready</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: This module (Programming Basics) does not require datasets</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'No dataset required for this notebook 🦛'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for this notebook</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Python environment ready.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="python-classes-a-practical-introduction" class="level1">
+<h1>🧱 Python Classes: A Practical Introduction</h1>
+<p>This section introduces the idea of classes in Python — the foundation of Object-Oriented Programming (OOP). In the context of food and nutrition science, classes allow us to model foods, nutrients, meals, and other complex entities in a structured and reusable way.</p>
+<hr>
+<section id="what-is-a-class" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-class">🧠 What Is a Class?</h2>
+<p>A <strong>class</strong> is a blueprint for creating objects. Think of it as a cookie cutter — it defines the shape, and you can make as many cookies (objects) as you want from it.</p>
+<p>Each object created from a class is called an <strong>instance</strong>. The instance has <strong>attributes</strong> (data) and <strong>methods</strong> (functions it can perform).</p>
+<hr>
+</section>
+<section id="defining-a-basic-class" class="level2">
+<h2 class="anchored" data-anchor-id="defining-a-basic-class">📦 Defining a Basic Class</h2>
+<p>Here’s a simple example of a class that represents a <code>FoodItem</code>.</p>
+<div id="cell-7" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> FoodItem:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calories <span class="op">=</span> calories</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> describe(<span class="va">self</span>):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f'</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss"> contains </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calories<span class="sc">}</span><span class="ss"> kcal per serving.'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><code>__init__</code> is the <em>constructor</em>, a special method used to initialise the object.</li>
+<li><code>self</code> refers to the current instance being created.</li>
+<li><code>.describe()</code> is a method that returns a string description of the food item.</li>
+</ul>
+<hr>
+</section>
+<section id="creating-and-using-an-object" class="level2">
+<h2 class="anchored" data-anchor-id="creating-and-using-an-object">🍏 Creating and Using an Object</h2>
+<p>Let’s create an instance of <code>FoodItem</code>.</p>
+<div id="cell-9" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>apple <span class="op">=</span> FoodItem(<span class="st">"Apple"</span>, <span class="dv">95</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(apple.describe())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Output:</p>
+<pre><code>Apple contains 95 kcal per serving.</code></pre>
+<hr>
+</section>
+<section id="exercise-define-your-own-class" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-define-your-own-class">🧪 Exercise: Define Your Own Class</h2>
+<p>Create a class called <code>Drink</code> with attributes: - <code>name</code> (e.g., “Orange Juice”) - <code>volume_ml</code> (e.g., 250) - <code>sugar_g</code> (e.g., 22)</p>
+<p>Add a method <code>sugar_concentration()</code> that returns grams of sugar per 100 mL.</p>
+<div id="a889e054" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your code here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<details>
+<summary>
+💡 Show Answer
+</summary>
+<p>Solution code below:</p>
+<div id="cell-13" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Drink:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, volume_ml, sugar_g):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.volume_ml <span class="op">=</span> volume_ml</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.sugar_g <span class="op">=</span> sugar_g</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> sugar_concentration(<span class="va">self</span>):</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (<span class="va">self</span>.sugar_g <span class="op">/</span> <span class="va">self</span>.volume_ml) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>juice <span class="op">=</span> Drink(<span class="st">"Orange Juice"</span>, <span class="dv">250</span>, <span class="dv">22</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>juice<span class="sc">.</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>juice<span class="sc">.</span>sugar_concentration()<span class="sc">:.1f}</span><span class="ss"> g sugar per 100 mL'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</details>
+<hr>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">🧭 Summary</h2>
+<ul>
+<li>A <strong>class</strong> is a way to bundle data and functionality together.</li>
+<li>Each <strong>object</strong> is an instance of a class.</li>
+<li>Use <code>__init__</code> to define how each object is constructed.</li>
+<li>Add <strong>methods</strong> to define behaviours.</li>
+<li>OOP helps you organise code better, especially in complex projects.</li>
+</ul>
+<p>In the next part, we’ll explore <strong>methods</strong>, <strong>attributes</strong>, and <strong>inheritance</strong> in more detail.</p>
+</section>
+</section>
+<section id="adding-methods-and-attributes-in-python-classes" class="level1">
+<h1>🛠️ Adding Methods and Attributes in Python Classes</h1>
+<p>Once you’ve defined a basic class, you can add more functionality by defining <strong>methods</strong> (functions inside classes) and <strong>attributes</strong> (data stored in each object). This makes your classes more useful and more descriptive.</p>
+<hr>
+<section id="example-extending-the-food-class" class="level2">
+<h2 class="anchored" data-anchor-id="example-extending-the-food-class">🧃 Example: Extending the <code>Food</code> Class</h2>
+<p>Let’s take our basic <code>Food</code> class and add:</p>
+<ul>
+<li>A new <strong>attribute</strong> for category (e.g., ‘Fruit’, ‘Vegetable’)</li>
+<li>A <strong>method</strong> to update the calorie value based on serving size</li>
+</ul>
+<div id="cell-16" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Food:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories, category):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calories <span class="op">=</span> calories</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.category <span class="op">=</span> category  <span class="co"># new attribute</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> describe(<span class="va">self</span>):</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>category<span class="sc">}</span><span class="ss">) has </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calories<span class="sc">}</span><span class="ss"> calories per serving."</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> scale_calories(<span class="va">self</span>, factor):</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calories <span class="op">=</span> <span class="bu">int</span>(<span class="va">self</span>.calories <span class="op">*</span> factor)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"Updated </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss"> to </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calories<span class="sc">}</span><span class="ss"> calories."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let’s create and use some objects:</p>
+<div id="cell-18" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>carrot <span class="op">=</span> Food(<span class="st">"Carrot"</span>, <span class="dv">41</span>, <span class="st">"Vegetable"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mango <span class="op">=</span> Food(<span class="st">"Mango"</span>, <span class="dv">60</span>, <span class="st">"Fruit"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(carrot.describe())     <span class="co"># Carrot (Vegetable) has 41 calories per serving.</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mango.describe())      <span class="co"># Mango (Fruit) has 60 calories per serving.</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Scale the calorie value</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(carrot.scale_calories(<span class="dv">2</span>))  <span class="co"># Updated Carrot to 82 calories.</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(carrot.describe())         <span class="co"># Carrot (Vegetable) has 82 calories per serving.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="best-practices" class="level2">
+<h2 class="anchored" data-anchor-id="best-practices">🧠 Best Practices</h2>
+<ul>
+<li>Add <strong>only the attributes and methods you need</strong>—not everything!</li>
+<li>Try to keep your class <strong>focused</strong> on one concept.</li>
+<li>Use <strong>meaningful method names</strong> like <code>describe</code>, <code>scale_calories</code>, <code>increase_amount</code>, etc.</li>
+<li>Add a <strong>docstring</strong> to methods if they are not self-explanatory.</li>
+</ul>
+<hr>
+<details>
+<summary>
+🔍 Hidden Tip: Why use methods instead of changing attributes directly?
+</summary>
+<p>Using a method like <code>scale_calories()</code> lets you <strong>control and validate</strong> how attributes are changed, and makes the code more readable. It also makes it easier to maintain or adjust later.</p>
+</details>
+</section>
+</section>
+<section id="inheritance-in-python-food-and-diet-classes" class="level1">
+<h1>🥗 Inheritance in Python: Food and Diet Classes</h1>
+<p>In Object-Oriented Programming (OOP), <strong>inheritance</strong> is a powerful concept where one class (called the <em>child</em> or <em>subclass</em>) derives properties and behaviour (methods and attributes) from another class (called the <em>parent</em> or <em>base class</em>).</p>
+<p>This helps you avoid writing the same code again, making your code more organised and modular.</p>
+<hr>
+<section id="step-by-step-building-the-food-class" class="level2">
+<h2 class="anchored" data-anchor-id="step-by-step-building-the-food-class">🍎 Step-by-Step: Building the <code>Food</code> Class</h2>
+<p>First, we define a general class that represents any food item:</p>
+<div id="cell-21" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parent class</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Food:</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories, category):</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.name <span class="op">=</span> name</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.calories <span class="op">=</span> calories</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.category <span class="op">=</span> category</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> describe(<span class="va">self</span>):</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f'</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>category<span class="sc">}</span><span class="ss">) has </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calories<span class="sc">}</span><span class="ss"> calories per serving.'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><code>__init__</code> is the <em>constructor</em>. It runs when an object is created.</li>
+<li><code>self.name</code>, <code>self.calories</code>, and <code>self.category</code> are <strong>attributes</strong> that belong to a specific object.</li>
+<li>The method <code>describe</code> returns a string that summarises the object.</li>
+</ul>
+<hr>
+</section>
+<section id="creating-a-subclass-diet" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-subclass-diet">🌿 Creating a Subclass: <code>Diet</code></h2>
+<p>Now let’s say we want to add an extra piece of information for some foods that are part of a <strong>diet plan</strong>, such as <code>"Low-Carb"</code> or <code>"Keto"</code>. Instead of rewriting the whole <code>Food</code> class, we create a child class <code>Diet</code> that inherits from it.</p>
+<div id="cell-23" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Child class that inherits from Food</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Diet(Food):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, name, calories, category, diet_type):</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># super() refers to the parent class (Food) and calls its constructor</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(name, calories, category)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.diet_type <span class="op">=</span> diet_type</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Overriding the describe method to include diet_type</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> describe(<span class="va">self</span>):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f'</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>name<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>category<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>diet_type<span class="sc">}</span><span class="ss">) has </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>calories<span class="sc">}</span><span class="ss"> calories per serving.'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="whats-going-on-here" class="level3">
+<h3 class="anchored" data-anchor-id="whats-going-on-here">🧠 What’s Going On Here?</h3>
+<ul>
+<li><code>Diet(Food)</code> means: <em>Diet is a subclass of Food</em>.</li>
+<li><code>super().__init__(...)</code> calls the parent class’s <code>__init__</code> method so we don’t have to retype the <code>name</code>, <code>calories</code>, and <code>category</code> assignments. This is good practice and prevents duplication.</li>
+<li>We then add a new attribute <code>diet_type</code> specific to the <code>Diet</code> class.</li>
+<li>We also <strong>override</strong> the <code>describe</code> method to include the diet type.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="testing-the-subclass" class="level2">
+<h2 class="anchored" data-anchor-id="testing-the-subclass">🧪 Testing the Subclass</h2>
+<div id="cell-25" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>keto_avocado <span class="op">=</span> Diet(<span class="st">"Avocado"</span>, <span class="dv">160</span>, <span class="st">"Fruit"</span>, <span class="st">"Keto"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(keto_avocado.describe())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<pre><code>Avocado (Fruit, Keto) has 160 calories per serving.</code></pre>
+<p>This shows that the new class works just like <code>Food</code>, but with extra features.</p>
+<hr>
+</section>
+<section id="summary-1" class="level2">
+<h2 class="anchored" data-anchor-id="summary-1">✅ Summary</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 84%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>class</code></td>
+<td>A blueprint for creating objects</td>
+</tr>
+<tr class="even">
+<td><code>__init__</code></td>
+<td>A constructor that runs when the object is created</td>
+</tr>
+<tr class="odd">
+<td><code>super()</code></td>
+<td>A function that gives access to the parent class’s methods</td>
+</tr>
+<tr class="even">
+<td>Inheritance</td>
+<td>A way for one class to reuse or extend another class’s code</td>
+</tr>
+<tr class="odd">
+<td>Override</td>
+<td>Redefining a method in the child class to change its behaviour</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="summary-object-oriented-programming-in-python" class="level1">
+<h1>🧾 Summary: Object-Oriented Programming in Python</h1>
+<p>By now, you’ve learned the foundational concepts of Object-Oriented Programming (OOP), including:</p>
+<ul>
+<li><strong>Classes</strong>: Blueprints for creating objects (like templates for food items).</li>
+<li><strong>Objects</strong>: Instances of classes with their own data (attributes) and actions (methods).</li>
+<li><strong>Attributes</strong>: Variables that belong to a class/object.</li>
+<li><strong>Methods</strong>: Functions that belong to a class/object and operate on its data.</li>
+<li><strong>Inheritance</strong>: Allows a new class to inherit methods and attributes from an existing class, promoting code reuse.</li>
+</ul>
+<hr>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">🧪 Exercises</h2>
+<section id="custom-food-class" class="level3">
+<h3 class="anchored" data-anchor-id="custom-food-class">1. Custom Food Class</h3>
+<p>Create a <code>Snack</code> class that inherits from <code>Food</code> and includes: - A new attribute <code>snack_type</code> (e.g., ‘sweet’, ‘salty’) - A method <code>is_healthy()</code> that returns <code>True</code> if calories are below 200.</p>
+<p>Test it with examples like:</p>
+<div id="cell-28" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>popcorn <span class="op">=</span> Snack(<span class="st">'Popcorn'</span>, <span class="dv">150</span>, <span class="st">'Grain'</span>, <span class="st">'salty'</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(popcorn.is_healthy())  <span class="co"># Should return True</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="composite-object" class="level3">
+<h3 class="anchored" data-anchor-id="composite-object">2. Composite Object</h3>
+<p>Create a <code>Meal</code> class that: - Takes a list of <code>Food</code> or <code>Diet</code> objects - Has a method <code>total_calories()</code> that sums their calories</p>
+<hr>
+</section>
+<section id="describe-all" class="level3">
+<h3 class="anchored" data-anchor-id="describe-all">3. Describe All</h3>
+<p>Create a function <code>describe_meal(meal)</code> that loops through the foods in a <code>Meal</code> object and prints their descriptions.</p>
+<hr>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">✅ Conclusion</h2>
+<p>Object-Oriented Programming makes your Python code: - Easier to organise - More reusable - Cleaner and more intuitive</p>
+<p>You can now model real-world nutrition problems in a structured and scalable way.</p>
+<details>
+<summary>
+🔍 Advanced: Magic Methods and Encapsulation
+</summary>
+<ul>
+<li><strong>Magic methods</strong> like <code>__str__</code> or <code>__repr__</code> let you control how objects are printed.</li>
+<li><strong>Encapsulation</strong> helps you protect internal states with naming conventions (e.g., <code>_private</code>, <code>__very_private</code>).</li>
+<li>You can also use <code>@property</code> decorators to create computed attributes.</li>
+</ul>
+</details>
+<p>🎉 Well done! You’re ready to tackle real-world nutrition modelling using OOP!</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

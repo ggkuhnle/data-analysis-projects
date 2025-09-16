@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>🧩📊 Handling Missing Data in Nutrition Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="10.3_handling_missing_data_files/libs/clipboard/clipboard.min.js"></script>
+<script src="10.3_handling_missing_data_files/libs/quarto-html/quarto.js"></script>
+<script src="10.3_handling_missing_data_files/libs/quarto-html/popper.min.js"></script>
+<script src="10.3_handling_missing_data_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="10.3_handling_missing_data_files/libs/quarto-html/anchor.min.js"></script>
+<link href="10.3_handling_missing_data_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="10.3_handling_missing_data_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="10.3_handling_missing_data_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="10.3_handling_missing_data_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="10.3_handling_missing_data_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#environment" id="toc-environment" class="nav-link active" data-scroll-target="#environment">Environment</a></li>
+  <li><a href="#load-or-simulate-dataset" id="toc-load-or-simulate-dataset" class="nav-link" data-scroll-target="#load-or-simulate-dataset">Load or Simulate Dataset</a></li>
+  <li><a href="#step-1-explore-missingness" id="toc-step-1-explore-missingness" class="nav-link" data-scroll-target="#step-1-explore-missingness">Step 1 — Explore Missingness</a></li>
+  <li><a href="#step-2-prepare-model-matrices" id="toc-step-2-prepare-model-matrices" class="nav-link" data-scroll-target="#step-2-prepare-model-matrices">Step 2 — Prepare Model Matrices</a></li>
+  <li><a href="#step-3-listwise-deletion" id="toc-step-3-listwise-deletion" class="nav-link" data-scroll-target="#step-3-listwise-deletion">Step 3 — Listwise Deletion</a></li>
+  <li><a href="#step-4-meanmode-imputation" id="toc-step-4-meanmode-imputation" class="nav-link" data-scroll-target="#step-4-meanmode-imputation">Step 4 — Mean/Mode Imputation</a></li>
+  <li><a href="#step-5-multiple-imputation-m5-with-rubins-rules" id="toc-step-5-multiple-imputation-m5-with-rubins-rules" class="nav-link" data-scroll-target="#step-5-multiple-imputation-m5-with-rubins-rules">Step 5 — Multiple Imputation (m=5) with Rubin’s Rules</a></li>
+  <li><a href="#step-6-bayesian-joint-model-with-latent-missing-values" id="toc-step-6-bayesian-joint-model-with-latent-missing-values" class="nav-link" data-scroll-target="#step-6-bayesian-joint-model-with-latent-missing-values">Step 6 — Bayesian Joint Model with Latent Missing Values</a></li>
+  <li><a href="#step-7-compare-estimates-across-methods" id="toc-step-7-compare-estimates-across-methods" class="nav-link" data-scroll-target="#step-7-compare-estimates-across-methods">Step 7 — Compare Estimates Across Methods</a></li>
+  <li><a href="#learning-points" id="toc-learning-points" class="nav-link" data-scroll-target="#learning-points">Learning Points</a>
+  <ul class="collapse">
+  <li><a href="#extensions-for-students" id="toc-extensions-for-students" class="nav-link" data-scroll-target="#extensions-for-students">Extensions for students</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">🧩📊 Handling Missing Data in Nutrition Science</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We’ll use a large cohort (n≈25,000; age 45–80) to explore missingness and compare four approaches on the same target model:</p>
+<p><strong>Outcome</strong>: <code>BMI_Baseline</code></p>
+<p><strong>Predictors</strong>: Age, Sex, Smoking, Physical_Activity, Social_Class (UK A/B/C1/C2/D/E), Sugar_Intake, SFA_Intake</p>
+<p>Methods compared: 1) Listwise deletion 2) Mean/Mode imputation 3) Multiple Imputation (m=5) with Rubin’s rules 4) Bayesian joint model (numeric missings latent; weakly-informative priors)</p>
+<p>The notebook loads <code>data/epidemiological_study.csv</code> <strong>or simulates</strong> a realistic dataset (seed=11088).</p>
+<section id="environment" class="level2">
+<h2 class="anchored" data-anchor-id="environment">Environment</h2>
+<p>Uncomment installs if needed.</p>
+<div id="imports" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>pip install pandas numpy matplotlib seaborn scipy scikit<span class="op">-</span>learn statsmodels pymc arviz</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt, seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.experimental <span class="im">import</span> enable_iterative_imputer  <span class="co"># noqa: F401</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> IterativeImputer</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytensor.tensor <span class="im">as</span> pt</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>sns.set_context(<span class="st">'notebook'</span>)<span class="op">;</span> sns.set_style(<span class="st">'whitegrid'</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>RANDOM_SEED <span class="op">=</span> <span class="dv">11088</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(RANDOM_SEED)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>DATA_DIR <span class="op">=</span> Path(<span class="st">'data'</span>)<span class="op">;</span> DATA_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>DATA_PATH <span class="op">=</span> DATA_DIR <span class="op">/</span> <span class="st">'epidemiological_study.csv'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-or-simulate-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="load-or-simulate-dataset">Load or Simulate Dataset</h2>
+<p>If the CSV is missing, we simulate a cohort with ~5–10% MCAR per variable and plausible nutrition/CVD structure.</p>
+<div id="simulate" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_epidemiology(n<span class="op">=</span><span class="dv">25_000</span>, seed<span class="op">=</span>RANDOM_SEED):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    age <span class="op">=</span> rng.normal(<span class="dv">62</span>, <span class="fl">8.5</span>, n).clip(<span class="dv">45</span>, <span class="dv">85</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    sex <span class="op">=</span> rng.choice([<span class="st">'Female'</span>,<span class="st">'Male'</span>], n)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    smoking <span class="op">=</span> rng.choice([<span class="st">'Non-smoker'</span>,<span class="st">'Smoker'</span>], n, p<span class="op">=</span>[<span class="fl">0.7</span>,<span class="fl">0.3</span>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    activity <span class="op">=</span> rng.choice([<span class="st">'Low'</span>,<span class="st">'Medium'</span>,<span class="st">'High'</span>], n, p<span class="op">=</span>[<span class="fl">0.3</span>,<span class="fl">0.45</span>,<span class="fl">0.25</span>])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    social <span class="op">=</span> rng.choice([<span class="st">'A'</span>,<span class="st">'B'</span>,<span class="st">'C1'</span>,<span class="st">'C2'</span>,<span class="st">'D'</span>,<span class="st">'E'</span>], n, p<span class="op">=</span>[<span class="fl">0.08</span>,<span class="fl">0.15</span>,<span class="fl">0.22</span>,<span class="fl">0.22</span>,<span class="fl">0.2</span>,<span class="fl">0.13</span>])</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    sugar <span class="op">=</span> rng.normal(<span class="dv">90</span>, <span class="dv">35</span>, n).clip(<span class="dv">10</span>, <span class="dv">250</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    sfa <span class="op">=</span> rng.normal(<span class="dv">28</span>, <span class="dv">10</span>, n).clip(<span class="dv">5</span>, <span class="dv">80</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    x_male <span class="op">=</span> (sex<span class="op">==</span><span class="st">'Male'</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    x_act <span class="op">=</span> pd.Series(activity).<span class="bu">map</span>({<span class="st">'Low'</span>:<span class="dv">0</span>,<span class="st">'Medium'</span>:<span class="dv">1</span>,<span class="st">'High'</span>:<span class="dv">2</span>}).values</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    bmi0 <span class="op">=</span> (rng.normal(<span class="dv">27</span>, <span class="fl">3.5</span>, n) <span class="op">+</span> <span class="fl">0.08</span><span class="op">*</span>(age<span class="op">-</span><span class="dv">62</span>) <span class="op">+</span> <span class="fl">0.6</span><span class="op">*</span>x_male <span class="op">-</span> <span class="fl">0.5</span><span class="op">*</span>x_act <span class="op">+</span> <span class="fl">0.015</span><span class="op">*</span>(sugar<span class="op">-</span><span class="dv">90</span>))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    bp0 <span class="op">=</span> rng.normal(<span class="dv">132</span>, <span class="dv">14</span>, n) <span class="op">+</span> <span class="fl">0.12</span><span class="op">*</span>(age<span class="op">-</span><span class="dv">62</span>) <span class="op">+</span> <span class="fl">1.2</span><span class="op">*</span>(bmi0<span class="op">-</span><span class="dv">27</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">'ID'</span>: np.arange(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>), <span class="st">'Age'</span>: age.<span class="bu">round</span>(<span class="dv">1</span>), <span class="st">'Sex'</span>: sex, <span class="st">'Smoking'</span>: smoking,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Physical_Activity'</span>: activity, <span class="st">'Social_Class'</span>: social,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">'Sugar_Intake'</span>: sugar.<span class="bu">round</span>(<span class="dv">1</span>), <span class="st">'SFA_Intake'</span>: sfa.<span class="bu">round</span>(<span class="dv">1</span>),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">'BMI_Baseline'</span>: bmi0.<span class="bu">round</span>(<span class="dv">2</span>), <span class="st">'BP_Baseline'</span>: bp0.<span class="bu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    miss_cols <span class="op">=</span> [<span class="st">'Sugar_Intake'</span>,<span class="st">'SFA_Intake'</span>,<span class="st">'Physical_Activity'</span>,<span class="st">'Social_Class'</span>,<span class="st">'BMI_Baseline'</span>,<span class="st">'BP_Baseline'</span>,<span class="st">'Age'</span>]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> miss_cols:</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> rng.random(<span class="bu">len</span>(df)) <span class="op">&lt;</span> rng.uniform(<span class="fl">0.05</span>,<span class="fl">0.10</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        df.loc[m, c] <span class="op">=</span> np.nan</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> DATA_PATH.exists():</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.read_csv(DATA_PATH)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> simulate_epidemiology()</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    data.to_csv(DATA_PATH, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Simulated and saved to </span><span class="sc">{</span>DATA_PATH<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-1-explore-missingness" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-explore-missingness">Step 1 — Explore Missingness</h2>
+<div id="missingness_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>miss_pct <span class="op">=</span> (data.isna().mean()<span class="op">*</span><span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>display(miss_pct[miss_pct<span class="op">&gt;</span><span class="dv">0</span>].to_frame(<span class="st">'Missing_%'</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">6</span>))<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>sns.heatmap(data.sample(<span class="bu">min</span>(<span class="dv">2000</span>,<span class="bu">len</span>(data))).isna(), cbar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Missingness heatmap (sample rows)'</span>)<span class="op">;</span> plt.xlabel(<span class="st">'Variables'</span>)<span class="op">;</span> plt.ylabel(<span class="st">'Participants'</span>)<span class="op">;</span> plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-2-prepare-model-matrices" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-prepare-model-matrices">Step 2 — Prepare Model Matrices</h2>
+<p>Target model (for all methods):</p>
+<p><strong>BMI_Baseline ~ Age + Sex + Smoking + Physical_Activity + Social_Class + Sugar_Intake + SFA_Intake</strong></p>
+<p>We avoid <code>LabelEncoder</code>; we’ll either use a formula with <code>C()</code> or one-hot dummies with references.</p>
+<div id="prep_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">'BMI_Baseline'</span>,<span class="st">'Age'</span>,<span class="st">'Sex'</span>,<span class="st">'Smoking'</span>,<span class="st">'Physical_Activity'</span>,<span class="st">'Social_Class'</span>,<span class="st">'Sugar_Intake'</span>,<span class="st">'SFA_Intake'</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dfm <span class="op">=</span> data[cols].copy()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># set explicit category orders (stable references)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dfm[<span class="st">'Physical_Activity'</span>] <span class="op">=</span> dfm[<span class="st">'Physical_Activity'</span>].astype(<span class="st">'category'</span>).cat.set_categories([<span class="st">'Low'</span>,<span class="st">'Medium'</span>,<span class="st">'High'</span>])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>dfm[<span class="st">'Social_Class'</span>] <span class="op">=</span> dfm[<span class="st">'Social_Class'</span>].astype(<span class="st">'category'</span>).cat.set_categories([<span class="st">'A'</span>,<span class="st">'B'</span>,<span class="st">'C1'</span>,<span class="st">'C2'</span>,<span class="st">'D'</span>,<span class="st">'E'</span>])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>dfm.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-3-listwise-deletion" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-listwise-deletion">Step 3 — Listwise Deletion</h2>
+<p>Drop rows with any missing in the model variables; fit OLS by formula (gives CIs).</p>
+<div id="listwise_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lw <span class="op">=</span> dfm.dropna().copy()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>formula <span class="op">=</span> <span class="st">'BMI_Baseline ~ Age + C(Sex) + C(Smoking) + C(Physical_Activity, Treatment(reference="Medium")) + C(Social_Class, Treatment(reference="C1")) + Sugar_Intake + SFA_Intake'</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ols_lw <span class="op">=</span> smf.ols(formula, data<span class="op">=</span>lw).fit()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Rows kept: </span><span class="sc">{</span><span class="bu">len</span>(lw)<span class="sc">}</span><span class="ss"> / </span><span class="sc">{</span><span class="bu">len</span>(dfm)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>lw_tab <span class="op">=</span> pd.concat([ols_lw.params, ols_lw.conf_int()], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>lw_tab.columns <span class="op">=</span> [<span class="st">'coef'</span>,<span class="st">'2.5%'</span>,<span class="st">'97.5%'</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>lw_tab.<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-4-meanmode-imputation" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-meanmode-imputation">Step 4 — Mean/Mode Imputation</h2>
+<p>Mean for numeric; mode for categoricals. Then OLS by formula.</p>
+<div id="meanmode_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>mm <span class="op">=</span> dfm.copy()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">'BMI_Baseline'</span>,<span class="st">'Age'</span>,<span class="st">'Sugar_Intake'</span>,<span class="st">'SFA_Intake'</span>]:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    mm[c] <span class="op">=</span> mm[c].fillna(mm[c].mean())</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">'Sex'</span>,<span class="st">'Smoking'</span>,<span class="st">'Physical_Activity'</span>,<span class="st">'Social_Class'</span>]:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    mm[c] <span class="op">=</span> mm[c].fillna(mm[c].mode().iloc[<span class="dv">0</span>])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ols_mm <span class="op">=</span> smf.ols(formula, data<span class="op">=</span>mm).fit()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>mm_tab <span class="op">=</span> pd.concat([ols_mm.params, ols_mm.conf_int()], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>mm_tab.columns <span class="op">=</span> [<span class="st">'coef'</span>,<span class="st">'2.5%'</span>,<span class="st">'97.5%'</span>]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>mm_tab.<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-5-multiple-imputation-m5-with-rubins-rules" class="level2">
+<h2 class="anchored" data-anchor-id="step-5-multiple-imputation-m5-with-rubins-rules">Step 5 — Multiple Imputation (m=5) with Rubin’s Rules</h2>
+<p>We use <code>IterativeImputer</code> with posterior sampling and different seeds to create m datasets, fit the <strong>same OLS</strong>, and pool estimates and variances.</p>
+<div id="mi_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> impute_once(df, seed):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Build a numeric-friendly frame: model.matrix via patsy formula</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use get_dummies for predictors; keep outcome separate to avoid dummying it</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    base <span class="op">=</span> df.copy()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Build dummy design with explicit references matching the formula</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    X_cat <span class="op">=</span> pd.get_dummies(base[[<span class="st">'Sex'</span>,<span class="st">'Smoking'</span>,<span class="st">'Physical_Activity'</span>,<span class="st">'Social_Class'</span>]], drop_first<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    X_num <span class="op">=</span> base[[<span class="st">'Age'</span>,<span class="st">'Sugar_Intake'</span>,<span class="st">'SFA_Intake'</span>]]</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> base[[<span class="st">'BMI_Baseline'</span>]]</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    Z <span class="op">=</span> pd.concat([y, X_num, X_cat], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    imp <span class="op">=</span> IterativeImputer(random_state<span class="op">=</span>seed, sample_posterior<span class="op">=</span><span class="va">True</span>, max_iter<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    Zi <span class="op">=</span> pd.DataFrame(imp.fit_transform(Z), columns<span class="op">=</span>Z.columns)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reconstruct a data frame close to original for formula fit</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> base.copy()</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    out[<span class="st">'BMI_Baseline'</span>] <span class="op">=</span> Zi[<span class="st">'BMI_Baseline'</span>]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    out[<span class="st">'Age'</span>] <span class="op">=</span> Zi[<span class="st">'Age'</span>]<span class="op">;</span> out[<span class="st">'Sugar_Intake'</span>] <span class="op">=</span> Zi[<span class="st">'Sugar_Intake'</span>]<span class="op">;</span> out[<span class="st">'SFA_Intake'</span>] <span class="op">=</span> Zi[<span class="st">'SFA_Intake'</span>]</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># For categoricals, fallback to original with any remaining missings filled by mode (IterativeImputer worked on dummies only)</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> [<span class="st">'Sex'</span>,<span class="st">'Smoking'</span>,<span class="st">'Physical_Activity'</span>,<span class="st">'Social_Class'</span>]:</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        out[c] <span class="op">=</span> out[c].fillna(out[c].mode().iloc[<span class="dv">0</span>])</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rubins_rules(estimates, covs):</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># estimates: list of params Series; covs: list of covariance DataFrames</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> estimates[<span class="dv">0</span>].index</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> <span class="bu">len</span>(estimates)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    Qbar <span class="op">=</span> pd.concat(estimates, axis<span class="op">=</span><span class="dv">1</span>).mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    Ubar <span class="op">=</span> <span class="bu">sum</span>(covs)<span class="op">/</span>m</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> pd.concat([(e <span class="op">-</span> Qbar).to_frame() <span class="cf">for</span> e <span class="kw">in</span> estimates], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    B <span class="op">=</span> (B.<span class="bu">pow</span>(<span class="dv">2</span>)).mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    T <span class="op">=</span> Ubar.values.diagonal() <span class="op">+</span> (<span class="dv">1</span> <span class="op">+</span> <span class="dv">1</span><span class="op">/</span>m) <span class="op">*</span> B.values</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    se <span class="op">=</span> np.sqrt(T)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    pooled <span class="op">=</span> pd.DataFrame({<span class="st">'coef'</span>: Qbar, <span class="st">'SE'</span>: se}, index<span class="op">=</span>params)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    pooled[<span class="st">'2.5%'</span>] <span class="op">=</span> pooled[<span class="st">'coef'</span>] <span class="op">-</span> <span class="fl">1.96</span><span class="op">*</span>pooled[<span class="st">'SE'</span>]</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    pooled[<span class="st">'97.5%'</span>] <span class="op">=</span> pooled[<span class="st">'coef'</span>] <span class="op">+</span> <span class="fl">1.96</span><span class="op">*</span>pooled[<span class="st">'SE'</span>]</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pooled</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>ests, covs <span class="op">=</span> [], []</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(M):</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    seed <span class="op">=</span> RANDOM_SEED <span class="op">+</span> i</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    mi_df <span class="op">=</span> impute_once(dfm, seed)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    fit <span class="op">=</span> smf.ols(formula, data<span class="op">=</span>mi_df).fit()</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    ests.append(fit.params)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    covs.append(fit.cov_params())</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>mi_tab <span class="op">=</span> rubins_rules(ests, covs).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>mi_tab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-6-bayesian-joint-model-with-latent-missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="step-6-bayesian-joint-model-with-latent-missing-values">Step 6 — Bayesian Joint Model with Latent Missing Values</h2>
+<p>We fit a Bayesian linear model for BMI with <strong>weakly informative priors</strong>. For <em>numeric</em> predictors (<code>Age</code>, <code>Sugar_Intake</code>, <code>SFA_Intake</code>, and <code>BMI_Baseline</code> if needed), we treat missing entries as latent variables.</p>
+<p>Categorical missings are imputed with mode for simplicity (students can extend to categorical models). Numeric predictors are standardised to help sampling geometry.</p>
+<div id="bayes_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Design matrix (categoricals -&gt; dummies; numeric kept for latent imputation) ---</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>bx <span class="op">=</span> dfm.copy()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">'Sex'</span>,<span class="st">'Smoking'</span>,<span class="st">'Physical_Activity'</span>,<span class="st">'Social_Class'</span>]:</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    bx[c] <span class="op">=</span> bx[c].fillna(bx[c].mode().iloc[<span class="dv">0</span>])</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>X_dum <span class="op">=</span> pd.get_dummies(</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    bx[[<span class="st">'Sex'</span>,<span class="st">'Smoking'</span>,<span class="st">'Physical_Activity'</span>,<span class="st">'Social_Class'</span>]],</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    drop_first<span class="op">=</span><span class="va">True</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Numeric arrays with NaNs preserved for latent imputation</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>age   <span class="op">=</span> dfm[<span class="st">'Age'</span>].to_numpy(dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>sugar <span class="op">=</span> dfm[<span class="st">'Sugar_Intake'</span>].to_numpy(dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>sfa   <span class="op">=</span> dfm[<span class="st">'SFA_Intake'</span>].to_numpy(dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>y_bmi <span class="op">=</span> dfm[<span class="st">'BMI_Baseline'</span>].to_numpy(dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardise with NaN support; guard zero variance</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> z_with_nan(x):</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> np.nanmean(x)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> np.nanstd(x)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> np.isfinite(s) <span class="kw">or</span> s <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        s <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (x <span class="op">-</span> m) <span class="op">/</span> s, (m, s)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>age_z,   age_stats   <span class="op">=</span> z_with_nan(age)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>sugar_z, sugar_stats <span class="op">=</span> z_with_nan(sugar)</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>sfa_z,   sfa_stats   <span class="op">=</span> z_with_nan(sfa)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>X_fix   <span class="op">=</span> X_dum.astype(<span class="bu">float</span>).to_numpy()</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>fix_names <span class="op">=</span> X_dum.columns.tolist()</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> X_fix.shape[<span class="dv">0</span>]</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>coords <span class="op">=</span> {<span class="st">"obs"</span>: np.arange(N), <span class="st">"fix"</span>: fix_names}</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model(coords<span class="op">=</span>coords) <span class="im">as</span> bim:</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fixed (non-imputed) design part for categoricals</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    X_fix_data <span class="op">=</span> pm.Data(<span class="st">'X_fix'</span>, X_fix, dims<span class="op">=</span>(<span class="st">'obs'</span>,<span class="st">'fix'</span>))</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Latent z-scores for missing numeric predictors (length N each)</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    age_lat   <span class="op">=</span> pm.Normal(<span class="st">'Age_z'</span>,   mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>, dims<span class="op">=</span>(<span class="st">'obs'</span>,))</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    sugar_lat <span class="op">=</span> pm.Normal(<span class="st">'Sugar_z'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>, dims<span class="op">=</span>(<span class="st">'obs'</span>,))</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    sfa_lat   <span class="op">=</span> pm.Normal(<span class="st">'SFA_z'</span>,   mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>, dims<span class="op">=</span>(<span class="st">'obs'</span>,))</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use observed z-scores where available; otherwise latent</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    age_obs   <span class="op">=</span> pt.as_tensor_variable(age_z)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    sugar_obs <span class="op">=</span> pt.as_tensor_variable(sugar_z)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    sfa_obs   <span class="op">=</span> pt.as_tensor_variable(sfa_z)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    age_use   <span class="op">=</span> pt.where(pt.isnan(age_obs),   age_lat,   age_obs)</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    sugar_use <span class="op">=</span> pt.where(pt.isnan(sugar_obs), sugar_lat, sugar_obs)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    sfa_use   <span class="op">=</span> pt.where(pt.isnan(sfa_obs),   sfa_lat,   sfa_obs)</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Priors</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>    beta0     <span class="op">=</span> pm.Normal(<span class="st">'Intercept'</span>, <span class="dv">27</span>, <span class="dv">5</span>)</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>    beta_age  <span class="op">=</span> pm.Normal(<span class="st">'b_age'</span>,   <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>    beta_sug  <span class="op">=</span> pm.Normal(<span class="st">'b_sugar'</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>    beta_sfa  <span class="op">=</span> pm.Normal(<span class="st">'b_sfa'</span>,   <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>    beta_fix  <span class="op">=</span> pm.Normal(<span class="st">'Beta_fix'</span>, <span class="dv">0</span>, <span class="dv">1</span>, dims<span class="op">=</span>(<span class="st">'fix'</span>,))</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>    sigma     <span class="op">=</span> pm.HalfNormal(<span class="st">'Sigma'</span>, <span class="dv">3</span>)</span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Linear predictor</span></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> beta0 <span class="op">+</span> beta_age<span class="op">*</span>age_use <span class="op">+</span> beta_sug<span class="op">*</span>sugar_use <span class="op">+</span> beta_sfa<span class="op">*</span>sfa_use <span class="op">+</span> pm.math.dot(X_fix_data, beta_fix)</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Likelihood (allow missing y via masked array)</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>    y_masked <span class="op">=</span> np.ma.masked_invalid(y_bmi)</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>    pm.Normal(<span class="st">'y_obs'</span>, mu<span class="op">=</span>mu, sigma<span class="op">=</span>sigma, observed<span class="op">=</span>y_masked)</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>    trace_bim <span class="op">=</span> pm.sample(</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>        draws<span class="op">=</span><span class="dv">1500</span>, tune<span class="op">=</span><span class="dv">1000</span>, target_accept<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>        random_seed<span class="op">=</span>RANDOM_SEED, return_inferencedata<span class="op">=</span><span class="va">True</span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(az.summary(trace_bim, var_names<span class="op">=</span>[<span class="st">'Intercept'</span>,<span class="st">'b_age'</span>,<span class="st">'b_sugar'</span>,<span class="st">'b_sfa'</span>,<span class="st">'Beta_fix'</span>,<span class="st">'Sigma'</span>], hdi_prob<span class="op">=</span><span class="fl">0.95</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-7-compare-estimates-across-methods" class="level2">
+<h2 class="anchored" data-anchor-id="step-7-compare-estimates-across-methods">Step 7 — Compare Estimates Across Methods</h2>
+<p>We harmonise coefficients for shared terms across methods.</p>
+<div id="compare_code" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Frequentist tables (unchanged) ---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tidy(res):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> pd.concat([res.params, res.conf_int()], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    out.columns <span class="op">=</span> [<span class="st">'coef'</span>,<span class="st">'2.5%'</span>,<span class="st">'97.5%'</span>]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out.rename(index<span class="op">=</span>{<span class="st">'const'</span>: <span class="st">'Intercept'</span>})</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>lw_tab2 <span class="op">=</span> tidy(ols_lw)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>mm_tab2 <span class="op">=</span> tidy(ols_mm)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>mi_tab2 <span class="op">=</span> mi_tab[[<span class="st">'coef'</span>,<span class="st">'2.5%'</span>,<span class="st">'97.5%'</span>]].rename(index<span class="op">=</span>{<span class="st">'const'</span>:<span class="st">'Intercept'</span>})</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Bayesian table from raw samples (no ArviZ summary/HDI) ---</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> et_ci(samples, q<span class="op">=</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>)):</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Equal-tailed CI for 1D numpy samples."""</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    lo, hi <span class="op">=</span> np.quantile(samples, q)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">float</span>(lo), <span class="bu">float</span>(hi)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Scalars first</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> var, label <span class="kw">in</span> [</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Intercept'</span>,<span class="st">'Intercept'</span>),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'b_age'</span>,<span class="st">'Age'</span>),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'b_sugar'</span>,<span class="st">'Sugar_Intake'</span>),</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'b_sfa'</span>,<span class="st">'SFA_Intake'</span>),</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> trace_bim.posterior[var].values.reshape(<span class="op">-</span><span class="dv">1</span>)   <span class="co"># [chains*draws]</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> <span class="bu">float</span>(np.mean(s))</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    lo, hi <span class="op">=</span> et_ci(s)</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    rows.append((label, m, lo, hi))</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Vector of dummy/fixed effects: handle either 'Beta_fix' or 'Beta'</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>beta_var <span class="op">=</span> <span class="st">'Beta_fix'</span> <span class="cf">if</span> <span class="st">'Beta_fix'</span> <span class="kw">in</span> trace_bim.posterior.data_vars <span class="cf">else</span> <span class="st">'Beta'</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>beta_da  <span class="op">=</span> trace_bim.posterior[beta_var]                       <span class="co"># dims: chain, draw, &lt;coefdim&gt;</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>coefdim  <span class="op">=</span> [d <span class="cf">for</span> d <span class="kw">in</span> beta_da.dims <span class="cf">if</span> d <span class="kw">not</span> <span class="kw">in</span> (<span class="st">'chain'</span>,<span class="st">'draw'</span>)][<span class="dv">0</span>]</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>coef_idx <span class="op">=</span> beta_da[coefdim].values.tolist()                    <span class="co"># names</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co"># stack chains/draws -&gt; samples per coefficient</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>beta_samples <span class="op">=</span> (beta_da</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>                .stack(sample<span class="op">=</span>(<span class="st">'chain'</span>,<span class="st">'draw'</span>))                <span class="co"># dims: &lt;coefdim&gt;, sample</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>                .transpose(coefdim, <span class="st">'sample'</span>)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>                .values)                                       <span class="co"># shape: [n_coef, n_samples]</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>beta_mean <span class="op">=</span> beta_samples.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>beta_lo, beta_hi <span class="op">=</span> np.quantile(beta_samples, [<span class="fl">0.025</span>, <span class="fl">0.975</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, m, lo, hi <span class="kw">in</span> <span class="bu">zip</span>(coef_idx, beta_mean, beta_lo, beta_hi):</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    rows.append((name, <span class="bu">float</span>(m), <span class="bu">float</span>(lo), <span class="bu">float</span>(hi)))</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>bayes_tab <span class="op">=</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">'term'</span>,<span class="st">'coef'</span>,<span class="st">'2.5%'</span>,<span class="st">'97.5%'</span>]).set_index(<span class="st">'term'</span>)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Align and compare ---</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>common <span class="op">=</span> (lw_tab2.index</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>          .intersection(mm_tab2.index)</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>          .intersection(mi_tab2.index)</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>          .intersection(bayes_tab.index))</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span> <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Listwise'</span>:  lw_tab2.loc[common, <span class="st">'coef'</span>],</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mean/Mode'</span>: mm_tab2.loc[common, <span class="st">'coef'</span>],</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">'MI (m=5)'</span>:  mi_tab2.loc[common, <span class="st">'coef'</span>],</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Bayesian'</span>:  bayes_tab.loc[common, <span class="st">'coef'</span>],</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>}).sort_index()</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span>.<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="plot_cmp" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">6</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span>.plot(kind<span class="op">=</span><span class="st">'bar'</span>, figsize<span class="op">=</span>(<span class="dv">12</span>,<span class="dv">6</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Coefficient comparison across methods'</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Estimate'</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="learning-points" class="level2">
+<h2 class="anchored" data-anchor-id="learning-points">Learning Points</h2>
+<ul>
+<li><strong>Listwise deletion</strong>: simple, but reduces n and can bias if not MCAR.</li>
+<li><strong>Mean/Mode</strong>: preserves n but underestimates uncertainty and shrinks relationships.</li>
+<li><strong>Multiple Imputation</strong>: reflects imputation uncertainty; pooled CIs via Rubin’s rules.</li>
+<li><strong>Bayesian joint</strong>: treats missings as unknowns; returns posterior for model parameters and latent values.</li>
+</ul>
+<section id="extensions-for-students" class="level3">
+<h3 class="anchored" data-anchor-id="extensions-for-students">Extensions for students</h3>
+<ul>
+<li>Replace mean/mode for categoricals with multinomial imputation.</li>
+<li>Add <strong>interactions</strong> and <strong>non-linearities</strong> (splines) to the BMI model.</li>
+<li>Use diagnostics (e.g., posterior predictive checks) to assess imputation plausibility.</li>
+<li>Compare MI with different <code>m</code> and different imputation models.</li>
+</ul>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

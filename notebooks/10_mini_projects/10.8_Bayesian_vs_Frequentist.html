@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Frequentist vs Bayesian in Nutrition &amp; Food Science 🥗📊</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="10.8_Bayesian_vs_Frequentist_files/libs/clipboard/clipboard.min.js"></script>
+<script src="10.8_Bayesian_vs_Frequentist_files/libs/quarto-html/quarto.js"></script>
+<script src="10.8_Bayesian_vs_Frequentist_files/libs/quarto-html/popper.min.js"></script>
+<script src="10.8_Bayesian_vs_Frequentist_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="10.8_Bayesian_vs_Frequentist_files/libs/quarto-html/anchor.min.js"></script>
+<link href="10.8_Bayesian_vs_Frequentist_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="10.8_Bayesian_vs_Frequentist_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="10.8_Bayesian_vs_Frequentist_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="10.8_Bayesian_vs_Frequentist_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="10.8_Bayesian_vs_Frequentist_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-well-do" id="toc-what-well-do" class="nav-link active" data-scroll-target="#what-well-do">What we’ll do</a></li>
+  <li><a href="#what-the-two-camps-actually-compute" id="toc-what-the-two-camps-actually-compute" class="nav-link" data-scroll-target="#what-the-two-camps-actually-compute">1) What the two camps actually compute</a></li>
+  <li><a href="#frequentist-failure-modes-with-receipts" id="toc-frequentist-failure-modes-with-receipts" class="nav-link" data-scroll-target="#frequentist-failure-modes-with-receipts">2) Frequentist failure modes (with receipts)</a></li>
+  <li><a href="#a-simple-nutrition-rct-supplement-fasting-glucose-change" id="toc-a-simple-nutrition-rct-supplement-fasting-glucose-change" class="nav-link" data-scroll-target="#a-simple-nutrition-rct-supplement-fasting-glucose-change">3) A simple nutrition RCT (supplement → fasting glucose change)</a>
+  <ul class="collapse">
+  <li><a href="#frequentist-t-test-and-ci" id="toc-frequentist-t-test-and-ci" class="nav-link" data-scroll-target="#frequentist-t-test-and-ci">3.1 Frequentist t-test and CI</a></li>
+  <li><a href="#bayesian-model-with-prior-and-questions-that-matter" id="toc-bayesian-model-with-prior-and-questions-that-matter" class="nav-link" data-scroll-target="#bayesian-model-with-prior-and-questions-that-matter">3.2 Bayesian model (with prior), and questions that matter</a></li>
+  </ul></li>
+  <li><a href="#optional-stopping-why-bayes-stays-sane-and-nhst-doesnt" id="toc-optional-stopping-why-bayes-stays-sane-and-nhst-doesnt" class="nav-link" data-scroll-target="#optional-stopping-why-bayes-stays-sane-and-nhst-doesnt">4) Optional stopping: why Bayes stays sane and NHST doesn’t</a></li>
+  <li><a href="#decision-analysis-expected-utility-beats-p-values" id="toc-decision-analysis-expected-utility-beats-p-values" class="nav-link" data-scroll-target="#decision-analysis-expected-utility-beats-p-values">5) Decision analysis: expected utility beats p-values</a></li>
+  <li><a href="#multiplicity-the-garden-of-forking-paths-mini-demo" id="toc-multiplicity-the-garden-of-forking-paths-mini-demo" class="nav-link" data-scroll-target="#multiplicity-the-garden-of-forking-paths-mini-demo">6) Multiplicity &amp; the garden of forking paths (mini demo)</a></li>
+  <li><a href="#what-about-bayes-factors" id="toc-what-about-bayes-factors" class="nav-link" data-scroll-target="#what-about-bayes-factors">7) What about Bayes factors?</a></li>
+  <li><a href="#what-to-put-in-your-paper-or-sop" id="toc-what-to-put-in-your-paper-or-sop" class="nav-link" data-scroll-target="#what-to-put-in-your-paper-or-sop">8) What to put in your paper (or SOP)</a></li>
+  <li><a href="#bottom-line" id="toc-bottom-line" class="nav-link" data-scroll-target="#bottom-line">9) Bottom line</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Frequentist vs Bayesian in Nutrition &amp; Food Science 🥗📊</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p><strong>Thesis:</strong> In real nutrition science—small n, messy measurements, meta-analytic prior knowledge, sequential looks at data, multiple outcomes—the Bayesian workflow is not just philosophically nicer. It is <strong>operationally superior</strong>: clearer questions, honest uncertainty, principled sequential monitoring, and decisions framed by utility. Frequentist NHST is fine for idealised, single-shot experiments with large samples and fixed protocols. That’s rarely our world.</p>
+</blockquote>
+<section id="what-well-do" class="level3">
+<h3 class="anchored" data-anchor-id="what-well-do">What we’ll do</h3>
+<ol type="1">
+<li>Set the stage: what Frequentist and Bayesian actually compute.</li>
+<li>Show classic Frequentist traps: dichotomised p-values, misread CIs, optional stopping, multiplicity, and the garden of forking paths.</li>
+<li>Run a small <strong>clinical supplement</strong> example both ways.</li>
+<li>Do the <strong>Bayesian things Frequentists can’t</strong> (or won’t): posterior probability of clinically meaningful benefit, ROPE (practical equivalence), decision analysis, prior sensitivity, and sequential monitoring.</li>
+</ol>
+<p>You’ll leave with code patterns you can drop into real nutrition trials, cohort analyses, and metabolomics experiments.</p>
+<hr>
+</section>
+<section id="what-the-two-camps-actually-compute" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-two-camps-actually-compute">1) What the two camps actually compute</h2>
+<p><strong>Frequentist</strong>: Assume a fixed, unknown parameter; reason about hypothetical repetitions of the experiment. A <em>p</em>-value is (P( H_0)). A 95% CI is a random interval that <em>would</em> contain the true value in 95% of infinite repetitions. <strong>It is not</strong> the probability the parameter lies in that interval. NHST then dichotomises evidence at an arbitrary threshold.</p>
+<p><strong>Bayesian</strong>: Treat the parameter as uncertain; update beliefs with data. Compute a <strong>posterior</strong> (p()). A 95% <strong>credible interval</strong> <em>is</em> the set that contains the parameter with 95% probability. You can ask the question you actually care about: (P( &lt; -0.3, )), or expected utility.</p>
+<p><strong>Nutrition reality check</strong>: Small n (pilot trials), multiple endpoints (biomarkers), prior literature (meta-analyses), interim looks (DSMBs), heterogeneity (subgroups). Which paradigm fits this reality better?</p>
+</section>
+<section id="frequentist-failure-modes-with-receipts" class="level2">
+<h2 class="anchored" data-anchor-id="frequentist-failure-modes-with-receipts">2) Frequentist failure modes (with receipts)</h2>
+<ol type="1">
+<li><strong>Dichotomisation</strong>: “p&lt;0.05 = works, p&gt;0.05 = nothing there.” The world is graded; decisions aren’t binary.</li>
+<li><strong>CI misinterpretation</strong>: 95% CI is <em>not</em> a 95% probability statement. Students, reviewers, clinicians routinely misread it that way.</li>
+<li><strong>Optional stopping</strong>: Peeking at data until p&lt;0.05 <strong>inflates false positives</strong> unless special sequential methods are pre-registered. And almost nobody does that rigorously in small nutrition studies.</li>
+<li><strong>Multiplicity</strong>: Many outcomes, time points, subgroups → p-values explode without careful correction; power collapses. People cherry-pick.</li>
+<li><strong>No mechanism to use prior knowledge</strong>: Meta-analytic effect sizes? Mechanistic priors? With NHST, they stay on the sidelines.</li>
+</ol>
+<p>Bayesian analysis <strong>solves all five</strong> in a single, coherent calculus: posterior probabilities about quantities of interest, with built-in sequential updating and explicit priors.</p>
+<hr>
+</section>
+<section id="a-simple-nutrition-rct-supplement-fasting-glucose-change" class="level2">
+<h2 class="anchored" data-anchor-id="a-simple-nutrition-rct-supplement-fasting-glucose-change">3) A simple nutrition RCT (supplement → fasting glucose change)</h2>
+<p>Two arms, 25 per arm. - Control mean change: 0 (SD 0.3) - Treatment mean change: −0.4 mmol/L (SD 0.3) - Prior knowledge: meta-analysis suggests ≈ −0.5 ± 0.2 mmol/L benefit.</p>
+<p>We’ll run both <strong>Frequentist t-test</strong> and a <strong>Bayesian model</strong>; then we’ll ask the actually useful questions: <em>What’s the probability the effect is at least −0.3? What is the expected utility if we treat everyone?</em> We’ll also do a <strong>prior sensitivity</strong> check and a quick <strong>sequential monitoring</strong> demo that shows why peeking doesn’t break Bayes.</p>
+<div id="f0d199ad" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt, seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> ttest_ind, norm</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymc <span class="im">as</span> pm, arviz <span class="im">as</span> az</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>sns.set_style(<span class="st">'whitegrid'</span>)<span class="op">;</span> np.random.seed(<span class="dv">11088</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate trial</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">25</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>control <span class="op">=</span> np.random.normal(<span class="fl">0.0</span>, <span class="fl">0.3</span>, size<span class="op">=</span>n)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>treat   <span class="op">=</span> np.random.normal(<span class="op">-</span><span class="fl">0.4</span>, <span class="fl">0.3</span>, size<span class="op">=</span>n)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'group'</span>: [<span class="st">'Control'</span>]<span class="op">*</span>n <span class="op">+</span> [<span class="st">'Treatment'</span>]<span class="op">*</span>n,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'delta_glucose'</span>: np.r_[control, treat]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">4</span>))</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'group'</span>, y<span class="op">=</span><span class="st">'delta_glucose'</span>)<span class="op">;</span> plt.title(<span class="st">'Δ Fasting Glucose by Group'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">''</span>)<span class="op">;</span> plt.ylabel(<span class="st">'mmol/L'</span>)<span class="op">;</span> plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> treat.mean() <span class="op">-</span> control.mean()</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>diff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="frequentist-t-test-and-ci" class="level3">
+<h3 class="anchored" data-anchor-id="frequentist-t-test-and-ci">3.1 Frequentist t-test and CI</h3>
+<p>Note how we must <strong>contort</strong> interpretation to avoid saying what everyone wants to say (“there’s a 95% chance the true effect is in the interval…”). That sentence is <strong>Bayesian</strong>; it is <strong>not</strong> a valid Frequentist statement.</p>
+<div id="dbc547c4" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Two-sample t-test</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>t_stat, p <span class="op">=</span> ttest_ind(treat, control, equal_var<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>m_t, m_c <span class="op">=</span> treat.mean(), control.mean()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>se <span class="op">=</span> np.sqrt(np.var(treat, ddof<span class="op">=</span><span class="dv">1</span>)<span class="op">/</span>n <span class="op">+</span> np.var(control, ddof<span class="op">=</span><span class="dv">1</span>)<span class="op">/</span>n)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>ci <span class="op">=</span> ( (m_t <span class="op">-</span> m_c) <span class="op">-</span> <span class="fl">1.96</span><span class="op">*</span>se, (m_t <span class="op">-</span> m_c) <span class="op">+</span> <span class="fl">1.96</span><span class="op">*</span>se )</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"t=</span><span class="sc">{</span>t_stat<span class="sc">:.2f}</span><span class="ss">, p=</span><span class="sc">{</span>p<span class="sc">:.4f}</span><span class="ch">\n</span><span class="ss">Mean diff (T−C)=</span><span class="sc">{</span>m_t<span class="op">-</span>m_c<span class="sc">:.2f}</span><span class="ss"> mmol/L</span><span class="ch">\n</span><span class="ss">95% CI: [</span><span class="sc">{</span>ci[<span class="dv">0</span>]<span class="sc">:.2f}</span><span class="ss">, </span><span class="sc">{</span>ci[<span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">] mmol/L"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="bayesian-model-with-prior-and-questions-that-matter" class="level3">
+<h3 class="anchored" data-anchor-id="bayesian-model-with-prior-and-questions-that-matter">3.2 Bayesian model (with prior), and questions that matter</h3>
+<ul>
+<li>Priors: (_C N(0, 0.5)), (_T N(-0.5, 0.2)), common ((0.5))</li>
+<li>Posterior of (=_T-_C).</li>
+<li>Ask: (P(&lt; -0.3,|,)) (clinically meaningful benefit) and <strong>ROPE</strong>: (P(-0.1 &lt; &lt; 0.1)) (practical equivalence to no effect).</li>
+</ul>
+<div id="ee0ac970" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> m:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    mu_c <span class="op">=</span> pm.Normal(<span class="st">'mu_c'</span>, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    mu_t <span class="op">=</span> pm.Normal(<span class="st">'mu_t'</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.2</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pm.HalfNormal(<span class="st">'sigma'</span>, <span class="fl">0.5</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    pm.Normal(<span class="st">'y_c'</span>, mu_c, sigma, observed<span class="op">=</span>control)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    pm.Normal(<span class="st">'y_t'</span>, mu_t, sigma, observed<span class="op">=</span>treat)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    delta <span class="op">=</span> pm.Deterministic(<span class="st">'delta'</span>, mu_t <span class="op">-</span> mu_c)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    idata <span class="op">=</span> pm.sample(<span class="dv">1500</span>, tune<span class="op">=</span><span class="dv">1500</span>, target_accept<span class="op">=</span><span class="fl">0.9</span>, chains<span class="op">=</span><span class="dv">4</span>, random_seed<span class="op">=</span><span class="dv">11088</span>, return_inferencedata<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>az.plot_posterior(idata, var_names<span class="op">=</span>[<span class="st">'delta'</span>], ref_val<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Posterior of Treatment Effect (Δ mmol/L)'</span>)<span class="op">;</span> plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>post <span class="op">=</span> idata.posterior[<span class="st">'delta'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>p_benefit <span class="op">=</span> (post <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.3</span>).mean()</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>p_equiv <span class="op">=</span> ((post<span class="op">&gt;-</span><span class="fl">0.1</span>) <span class="op">&amp;</span> (post<span class="op">&lt;</span><span class="fl">0.1</span>)).mean()</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(Δ &lt; -0.3 | data) = </span><span class="sc">{</span>p_benefit<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(|Δ| &lt; 0.1 | data) (ROPE) = </span><span class="sc">{</span>p_equiv<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>This is the point:</strong> you just computed the probability your effect is clinically meaningful, and the probability it’s practically negligible. No contortions. No hypotheticals about infinite repetitions. Exactly the question clinicians ask.</p>
+<section id="prior-sensitivity-responsible-bayes" class="level4">
+<h4 class="anchored" data-anchor-id="prior-sensitivity-responsible-bayes">Prior sensitivity (responsible Bayes)</h4>
+<p>Critics say priors are subjective. We agree—so show robustness. Refit with a <strong>skeptical</strong> prior (_TN(0,0.5)) and a <strong>weakly informative</strong> prior (_TN(-0.5,0.5)), and compare (P(&lt;-0.3)). If conclusions are stable, you’ve earned credibility. If not, you’ve learned that the data don’t dominate (useful in itself).</p>
+<div id="ab13e3d0" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> posterior_prob_delta(treat, control, prior_mu_t, prior_sd_t):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pm.Model() <span class="im">as</span> m2:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        mu_c <span class="op">=</span> pm.Normal(<span class="st">'mu_c'</span>, <span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        mu_t <span class="op">=</span> pm.Normal(<span class="st">'mu_t'</span>, prior_mu_t, prior_sd_t)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        sigma <span class="op">=</span> pm.HalfNormal(<span class="st">'sigma'</span>, <span class="fl">0.5</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        pm.Normal(<span class="st">'y_c'</span>, mu_c, sigma, observed<span class="op">=</span>control)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        pm.Normal(<span class="st">'y_t'</span>, mu_t, sigma, observed<span class="op">=</span>treat)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        delta <span class="op">=</span> pm.Deterministic(<span class="st">'delta'</span>, mu_t <span class="op">-</span> mu_c)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        id_ <span class="op">=</span> pm.sample(<span class="dv">1200</span>, tune<span class="op">=</span><span class="dv">1200</span>, chains<span class="op">=</span><span class="dv">4</span>, target_accept<span class="op">=</span><span class="fl">0.9</span>, random_seed<span class="op">=</span><span class="dv">11088</span>, return_inferencedata<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    post <span class="op">=</span> id_.posterior[<span class="st">'delta'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (post <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.3</span>).mean()</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, mu, sd <span class="kw">in</span> [</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Informed'</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.2</span>),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Weakly inf'</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span>),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Skeptical'</span>,  <span class="fl">0.0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>]:</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, posterior_prob_delta(treat, control, mu, sd))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="optional-stopping-why-bayes-stays-sane-and-nhst-doesnt" class="level2">
+<h2 class="anchored" data-anchor-id="optional-stopping-why-bayes-stays-sane-and-nhst-doesnt">4) Optional stopping: why Bayes stays sane and NHST doesn’t</h2>
+<p>Optional stopping (peek every 5 participants, stop when p&lt;0.05) <strong>inflates false positives</strong> for standard t-tests. In contrast, <strong>Bayesian updating</strong> does not require correction: your posterior is your posterior, given the data, regardless of when you looked—<em>provided</em> your model is correct and you report the full posterior (don’t cherry-pick stopping rules to hack a decision threshold without a decision model).</p>
+<p>Let’s simulate under <strong>no true effect</strong> (Δ=0) and see how often we falsely declare success with optional stopping (Frequentist) vs.&nbsp;a Bayesian decision rule based on (P(&lt;−0.3)&gt;0.95). (Small simulation to keep runtime reasonable.)</p>
+<div id="5b00f5c2" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> frequentist_optional_stopping(alpha<span class="op">=</span><span class="fl">0.05</span>, max_n<span class="op">=</span><span class="dv">80</span>, step<span class="op">=</span><span class="dv">5</span>, reps<span class="op">=</span><span class="dv">300</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    fp<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(reps):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> np.random.normal(<span class="dv">0</span>,<span class="fl">0.3</span>,size<span class="op">=</span>max_n)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> np.random.normal(<span class="dv">0</span>,<span class="fl">0.3</span>,size<span class="op">=</span>max_n)  <span class="co"># no true effect</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        decided<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(step, max_n<span class="op">+</span><span class="dv">1</span>, step):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            p <span class="op">=</span> ttest_ind(t[:n], c[:n], equal_var<span class="op">=</span><span class="va">True</span>).pvalue</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> p<span class="op">&lt;</span>alpha:</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                fp<span class="op">+=</span><span class="dv">1</span><span class="op">;</span> decided<span class="op">=</span><span class="va">True</span><span class="op">;</span> <span class="cf">break</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if never crossed, no FP counted</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fp<span class="op">/</span>reps</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bayes_sequential(rule_p<span class="op">=</span><span class="fl">0.95</span>, thresh<span class="op">=-</span><span class="fl">0.3</span>, max_n<span class="op">=</span><span class="dv">80</span>, step<span class="op">=</span><span class="dv">5</span>, reps<span class="op">=</span><span class="dv">150</span>):</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    fp<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(reps):</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        c_full <span class="op">=</span> np.random.normal(<span class="dv">0</span>,<span class="fl">0.3</span>,size<span class="op">=</span>max_n)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        t_full <span class="op">=</span> np.random.normal(<span class="dv">0</span>,<span class="fl">0.3</span>,size<span class="op">=</span>max_n)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        decided<span class="op">=</span><span class="va">False</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(step, max_n<span class="op">+</span><span class="dv">1</span>, step):</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>            c <span class="op">=</span> c_full[:n]<span class="op">;</span> t <span class="op">=</span> t_full[:n]</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> pm.Model() <span class="im">as</span> m:</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>                mu_c <span class="op">=</span> pm.Normal(<span class="st">'mu_c'</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                mu_t <span class="op">=</span> pm.Normal(<span class="st">'mu_t'</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>                sigma <span class="op">=</span> pm.HalfNormal(<span class="st">'sigma'</span>, <span class="dv">1</span>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>                pm.Normal(<span class="st">'y_c'</span>, mu_c, sigma, observed<span class="op">=</span>c)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>                pm.Normal(<span class="st">'y_t'</span>, mu_t, sigma, observed<span class="op">=</span>t)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                delta <span class="op">=</span> pm.Deterministic(<span class="st">'delta'</span>, mu_t<span class="op">-</span>mu_c)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>                id_ <span class="op">=</span> pm.sample(<span class="dv">600</span>, tune<span class="op">=</span><span class="dv">600</span>, chains<span class="op">=</span><span class="dv">2</span>, target_accept<span class="op">=</span><span class="fl">0.9</span>, progressbar<span class="op">=</span><span class="va">False</span>, random_seed<span class="op">=</span><span class="dv">123</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>            post <span class="op">=</span> id_.posterior[<span class="st">'delta'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> (post <span class="op">&lt;</span> thresh).mean()<span class="op">&gt;</span>rule_p:</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Declared benefit under null -&gt; false positive</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>                fp<span class="op">+=</span><span class="dv">1</span><span class="op">;</span> decided<span class="op">=</span><span class="va">True</span><span class="op">;</span> <span class="cf">break</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># if no decision, no FP counted</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fp<span class="op">/</span>reps</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Frequentist FP rate (optional stopping):'</span>, frequentist_optional_stopping())</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Bayesian FP rate (sequential rule):     '</span>, bayes_sequential())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>Expect the NHST false positive rate to <strong>inflate above 0.05</strong> with optional stopping. The Bayesian sequential rule stays near its nominal behaviour because decisions are based on posterior probabilities rather than a procedure tuned to a single look.</p>
+</blockquote>
+<p><strong>Important nuance</strong>: If you turn posterior thresholds into rigid stop/go rules without a pre-specified utility, you’re doing decision theory casually. The solution is not to abandon Bayes; it’s to <strong>add</strong> explicit utilities (see next).</p>
+<hr>
+</section>
+<section id="decision-analysis-expected-utility-beats-p-values" class="level2">
+<h2 class="anchored" data-anchor-id="decision-analysis-expected-utility-beats-p-values">5) Decision analysis: expected utility beats p-values</h2>
+<p>Suppose: - Benefit: a clinically meaningful reduction is (&lt; -0.3) mmol/L, worth +10 utility units if true. - Cost: adopting an ineffective supplement costs −3 units (money, side-effects, opportunity).</p>
+<p>Bayesian decision: compute expected utility (EU = 10P(&lt;-0.3) - 3(1-P(&lt;-0.3))). Treat if (EU&gt;0). Try that now:</p>
+<div id="d9862159" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>p_benefit <span class="op">=</span> (post <span class="op">&lt;</span> <span class="op">-</span><span class="fl">0.3</span>).mean()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>EU <span class="op">=</span> <span class="dv">10</span><span class="op">*</span>p_benefit <span class="op">-</span> <span class="dv">3</span><span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p_benefit)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"P(benefit)=</span><span class="sc">{</span>p_benefit<span class="sc">:.3f}</span><span class="ss"> → Expected utility = </span><span class="sc">{</span>EU<span class="sc">:.2f}</span><span class="ss"> (treat if &gt;0)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Frequentist NHST has <strong>no native place to put utility</strong>. People try with power calculations and Type I/II trade-offs, but it’s a blunt instrument compared to explicit expected loss minimisation on the posterior.</p>
+<hr>
+</section>
+<section id="multiplicity-the-garden-of-forking-paths-mini-demo" class="level2">
+<h2 class="anchored" data-anchor-id="multiplicity-the-garden-of-forking-paths-mini-demo">6) Multiplicity &amp; the garden of forking paths (mini demo)</h2>
+<p>If you measure 10 biomarkers and test them all at 0.05, you expect <strong>false positives</strong>. If you also try alternative exclusions, transforms, or subgroups, the path you ended up reporting is one of many that were tried. NHST gives you a <em>p</em>-value for the chosen path, not the path-finding process.</p>
+<p>Bayesian route: - Use <strong>hierarchical models</strong> to share strength across outcomes and shrink noisy ones towards the group mean (partial pooling). - Or build a multivariate model with a shared prior. You get calibrated uncertainty <em>after</em> considering multiplicity.</p>
+<p>Below: simulate 10 null biomarkers; count how often any <em>p</em>&lt;0.05 (no correction) vs.&nbsp;a simple Bayesian hierarchical model’s posterior shrinks effects towards 0.</p>
+<div id="5361b3f1" class="cell" data-tags="[]">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">2</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>B, n <span class="op">=</span> <span class="dv">10</span>, <span class="dv">30</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> [np.random.normal(<span class="dv">0</span>,<span class="dv">1</span>, size<span class="op">=</span>n) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(B)]  <span class="co"># 10 null endpoints</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>pvals <span class="op">=</span> [ttest_ind(Y[i][:n<span class="op">//</span><span class="dv">2</span>], Y[i][n<span class="op">//</span><span class="dv">2</span>:], equal_var<span class="op">=</span><span class="va">True</span>).pvalue <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(B)]</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>any_sig <span class="op">=</span> (np.array(pvals) <span class="op">&lt;</span> <span class="fl">0.05</span>).<span class="bu">any</span>()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Any nominally significant p&lt;0.05 among 10 null endpoints?'</span>, any_sig)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple hierarchical shrinkage: each endpoint mean theta_i ~ N(mu, tau), observations ~ N(theta_i, sigma)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>ybar <span class="op">=</span> np.array([np.mean(y[:n<span class="op">//</span><span class="dv">2</span>]) <span class="op">-</span> np.mean(y[n<span class="op">//</span><span class="dv">2</span>:]) <span class="cf">for</span> y <span class="kw">in</span> Y])  <span class="co"># naive diffs</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> hm:</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    tau <span class="op">=</span> pm.HalfNormal(<span class="st">'tau'</span>, <span class="dv">1</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> pm.Normal(<span class="st">'theta'</span>, mu, tau, shape<span class="op">=</span>B)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> pm.HalfNormal(<span class="st">'sigma'</span>, <span class="dv">1</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    pm.Normal(<span class="st">'obs'</span>, theta, sigma, observed<span class="op">=</span>ybar)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    idh <span class="op">=</span> pm.sample(<span class="dv">1500</span>, tune<span class="op">=</span><span class="dv">1500</span>, chains<span class="op">=</span><span class="dv">4</span>, target_accept<span class="op">=</span><span class="fl">0.9</span>, random_seed<span class="op">=</span><span class="dv">11088</span>, return_inferencedata<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>shrunken <span class="op">=</span> idh.posterior[<span class="st">'theta'</span>].mean(dim<span class="op">=</span>[<span class="st">'chain'</span>,<span class="st">'draw'</span>]).values</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">'raw_diff'</span>:ybar, <span class="st">'shrunken'</span>:shrunken})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Hierarchical Bayes <strong>shrinks</strong> noisy effects back toward the grand mean, taming multiplicity by modelling it—no Bonferroni carpet-bombing, no underpowered chaos.</p>
+<hr>
+</section>
+<section id="what-about-bayes-factors" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-bayes-factors">7) What about Bayes factors?</h2>
+<p>You can report Bayes factors (evidence ratios for H₁ vs H₀). They can be sensitive to prior width on the effect under H₁, so they’re best used with <strong>pre-registered</strong> priors. In clinical nutrition, <strong>posterior probabilities of clinically meaningful effect</strong> plus <strong>decision analysis</strong> usually communicate better than a naked evidence ratio. Use what your audience understands and rewards.</p>
+</section>
+<section id="what-to-put-in-your-paper-or-sop" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-put-in-your-paper-or-sop">8) What to put in your paper (or SOP)</h2>
+<ul>
+<li><strong>Model</strong>: likelihood, priors (with sensitivity), and rationale grounded in prior literature.</li>
+<li><strong>Posterior</strong>: means, credible intervals, and probabilities of clinically relevant regions (e.g., Δ&lt;−0.3).</li>
+<li><strong>Decision</strong>: expected utility or cost–benefit threshold.</li>
+<li><strong>Multiplicity</strong>: hierarchical or multivariate structure.</li>
+<li><strong>Sequential</strong>: if you peeked, say so—and show the posterior after each look (no correction needed).</li>
+<li><strong>Code &amp; seeds</strong>: reproducibility.</li>
+</ul>
+</section>
+<section id="bottom-line" class="level2">
+<h2 class="anchored" data-anchor-id="bottom-line">9) Bottom line</h2>
+<p>Frequentist NHST was designed for a world without prior knowledge, with single-shot fixed designs and large n.&nbsp;Nutrition science is the opposite. Bayesian analysis aligns with how we actually think, decide, and iterate.</p>
+<p><strong>If you must use NHST</strong> (journal policy, legacy reasons): - Report effect sizes and intervals (avoid p-value worship). - Pre-register endpoints and analysis plan; correct for multiplicity. - Don’t peek—or use proper group-sequential methods.</p>
+<p><strong>If you can use Bayes</strong> (do it): - Use informative/weakly informative priors from meta-analysis when possible. - Report posterior probabilities of clinically meaningful effects. - Include ROPE, sensitivity, and a simple expected-utility decision.</p>
+<p>That’s science you can defend.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
